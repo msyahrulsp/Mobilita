@@ -59,30 +59,6 @@ void enqueue(PrioQueue *pq, ElType val) {
     ElType tempVal;
     int i, idx;
     /* ALGORITMA */
-    // if (isEmpty(*pq)) {
-    //     IDX_HEAD(*pq) = 0;
-    //     IDX_TAIL(*pq) = 0;
-    // } else if (IDX_TAIL(*pq) == CAPACITY - 1) {
-    //     CreatePrioQueue(&tempPrioQueue);
-    //     for (i = IDX_HEAD(*pq); i <= IDX_TAIL(*pq); i++) {
-    //         dequeue(pq, &tempVal);
-    //         enqueue(&tempPrioQueue, tempVal);
-    //     }
-    //     for (i = IDX_HEAD(tempPrioQueue); i <= IDX_TAIL(tempPrioQueue); i++) {
-    //         dequeue(&tempPrioQueue, &tempVal);
-    //         enqueue(pq, tempVal);
-    //     }
-    //     IDX_TAIL(*pq)++;
-    // } else {
-    //     IDX_TAIL(*pq)++;
-    // }
-    // TAIL(*pq) = val;
-
-    // while (/* condition */)
-    // {
-    //     /* code */
-    // }
-
     if (isEmpty(*pq)) {
         IDX_HEAD(*pq) = 0;
         IDX_TAIL(*pq) = 0;
