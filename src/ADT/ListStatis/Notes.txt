@@ -1,0 +1,12 @@
+Berdasarkan analisis saya, ada beberapa fungsi yang
+menurut saya gaperlu dipake buat liststatik (inventory).
+- LS_plusMinusTab
+- LS_isListEqual
+- LS_extremes
+- LS_sort
+LS_isAllEven juga sebenernya kek ga kepake, tapi kagok
+saya buat realisasinya, jdi saya masukin aja gapapa.
+
+Jadi sementara saya buang dulu fungsi-fungsi ini.
+Kalo ternyata kepake, udah saya simpen jadi tinggal
+saya masukkin lagi terus modifikasi.
