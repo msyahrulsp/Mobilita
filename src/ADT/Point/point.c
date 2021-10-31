@@ -9,7 +9,7 @@
 
 /* *** DEFINISI PROTOTIPE PRIMITIF *** */
 /* *** Konstruktor membentuk POINT *** */
-POINT MakePOINT (float X, float Y) {
+POINT P_makePOINT (float X, float Y) {
 /* Membentuk sebuah POINT dari komponen-komponennya */
     /* KAMUS */
     POINT point;
@@ -21,7 +21,7 @@ POINT MakePOINT (float X, float Y) {
 }
 
 /* *** KELOMPOK Interaksi dengan I/O device, BACA/TULIS  *** */                                                 
-void BacaPOINT (POINT * P) { 
+void P_readPOINT (POINT * P) { 
 /* Membaca nilai absis dan ordinat dari keyboard dan membentuk 
    POINT P berdasarkan dari nilai absis dan ordinat tersebut */
 /* Komponen X dan Y dibaca dalam 1 baris, dipisahkan 1 buah spasi */
@@ -33,9 +33,9 @@ void BacaPOINT (POINT * P) {
     float x, y;
     /* ALGORITMA */
     scanf("%f %f", &x, &y);
-    *P = MakePOINT(x, y);
+    *P = P_MakePOINT(x, y);
 }
-void TulisPOINT (POINT P) {
+void P_displayPOINT (POINT P) {
 /* Nilai P ditulis ke layar dengan format "(X,Y)" 
    tanpa spasi, enter, atau karakter lain di depan, belakang, 
    atau di antaranya 
@@ -50,14 +50,14 @@ void TulisPOINT (POINT P) {
 }               
 
 /* *** Kelompok operasi relasional terhadap POINT *** */
-boolean EQ (POINT P1, POINT P2) {
+boolean P_EQ (POINT P1, POINT P2) {
 /* Mengirimkan true jika P1 = P2 : absis dan ordinatnya sama */
     /* KAMUS */
 
     /* ALGORITMA */
     return ((Absis(P1) == Absis(P2)) && (Ordinat(P1) == Ordinat(P2)));
 }
-boolean NEQ (POINT P1, POINT P2) {
+boolean P_NEQ (POINT P1, POINT P2) {
 /* Mengirimkan true jika P1 tidak sama dengan P2 */
     /* KAMUS */
 
@@ -66,28 +66,28 @@ boolean NEQ (POINT P1, POINT P2) {
 }
 
 /* *** Kelompok menentukan di mana P berada *** */
-boolean IsOrigin (POINT P) {
+boolean P_IsOrigin (POINT P) {
 /* Menghasilkan true jika P adalah titik origin */
     /* KAMUS */
 
     /* ALGORITMA */
     return ((Absis(P) == 0) && (Ordinat(P) == 0));
 }
-boolean IsOnSbX (POINT P) {
+boolean P_IsOnSbX (POINT P) {
 /* Menghasilkan true jika P terletak Pada sumbu X */
     /* KAMUS */
 
     /* ALGORITMA */
     return (Ordinat(P) == 0);
 }
-boolean IsOnSbY (POINT P) {
+boolean P_IsOnSbY (POINT P) {
 /* Menghasilkan true jika P terletak pada sumbu Y */
     /* KAMUS */
 
     /* ALGORITMA */
     return (Absis(P) == 0);
 }
-int Kuadran (POINT P) {
+int P_Kuadran (POINT P) {
 /* Menghasilkan kuadran dari P: 1, 2, 3, atau 4 */
 /* Prekondisi : P bukan titik origin, */
 /*              dan P tidak terletak di salah satu sumbu */
@@ -105,28 +105,28 @@ int Kuadran (POINT P) {
 }
 
 /* *** KELOMPOK OPERASI LAIN TERHADAP TYPE *** */                           
-POINT NextX (POINT P) {
+POINT P_NextX (POINT P) {
 /* Mengirim salinan P dengan absis ditambah satu */    
     /* KAMUS */
 
     /* ALGORITMA */
-    return MakePOINT(Absis(P) + 1, Ordinat(P));
+    return P_MakePOINT(Absis(P) + 1, Ordinat(P));
 }          
-POINT NextY (POINT P) {
+POINT P_NextY (POINT P) {
 /* Mengirim salinan P dengan ordinat ditambah satu */
     /* KAMUS */
 
     /* ALGORITMA */
-    return MakePOINT(Absis(P), Ordinat(P) + 1);
+    return P_MakePOINT(Absis(P), Ordinat(P) + 1);
 }
-POINT PlusDelta (POINT P, float deltaX, float deltaY) {
+POINT P_PlusDelta (POINT P, float deltaX, float deltaY) {
 /* Mengirim salinan P yang absisnya adalah Absis(P) + deltaX dan ordinatnya adalah Ordinat(P) + deltaY */
     /* KAMUS */
 
     /* ALGORITMA */
-    return MakePOINT(Absis(P) + deltaX, Ordinat(P) + deltaY);
+    return P_MakePOINT(Absis(P) + deltaX, Ordinat(P) + deltaY);
 }
-POINT MirrorOf (POINT P, boolean SbX) {
+POINT P_MirrorOf (POINT P, boolean SbX) {
 /* Menghasilkan salinan P yang dicerminkan terhadap salah satu sumbu */
 /* Jika SbX bernilai true, maka dicerminkan terhadap sumbu X */
 /* Jika SbX bernilai false, maka dicerminkan terhadap sumbu Y */
@@ -134,18 +134,18 @@ POINT MirrorOf (POINT P, boolean SbX) {
 
     /* ALGORITMA */
     if (SbX)
-        return MakePOINT(Absis(P), -Ordinat(P));
+        return P_MakePOINT(Absis(P), -Ordinat(P));
     else
-        return MakePOINT(-Absis(P), Ordinat(P));
+        return P_MakePOINT(-Absis(P), Ordinat(P));
 }
-float Jarak0 (POINT P) {
+float P_Jarak0 (POINT P) {
 /* Menghitung jarak P ke (0,0) */
     /* KAMUS */
 
     /* ALGORITMA */
     return sqrt(pow(Absis(P), 2) + pow(Ordinat(P), 2));
 }
-float Panjang (POINT P1, POINT P2) {
+float P_Jarak (POINT P1, POINT P2) {
 /* Menghitung panjang garis yang dibentuk P1 dan P2 */
 /* Perhatikanlah bahwa di sini spec fungsi kurang baik sebab menyangkut ADT Garis. */
 /* Tuliskan spec fungsi yang lebih tepat. */
@@ -154,7 +154,7 @@ float Panjang (POINT P1, POINT P2) {
     /* ALGORITMA */
     return sqrt(pow(Absis(P1) - Absis(P2), 2) + pow(Ordinat(P1) - Ordinat(P2), 2));
 }
-void Geser (POINT *P, float deltaX, float deltaY) {
+void P_Geser (POINT *P, float deltaX, float deltaY) {
 /* I.S. P terdefinisi */
 /* F.S. P digeser, absisnya sebesar deltaX dan ordinatnya sebesar deltaY */
     /* KAMUS */
@@ -163,7 +163,7 @@ void Geser (POINT *P, float deltaX, float deltaY) {
     Absis(*P) += deltaX;
     Ordinat(*P) += deltaY;
 }
-void GeserKeSbX (POINT *P) {
+void P_GeserKeSbX (POINT *P) {
 /* I.S. P terdefinisi */
 /* F.S. P berada pada sumbu X dengan absis sama dengan absis semula. */
 /* Proses : P digeser ke sumbu X. */
@@ -173,7 +173,7 @@ void GeserKeSbX (POINT *P) {
     /* ALGORITMA */
     Ordinat(*P) = 0;
 }
-void GeserKeSbY (POINT *P) {
+void P_GeserKeSbY (POINT *P) {
 /* I.S. P terdefinisi*/
 /* F.S. P berada pada sumbu Y dengan ordinat yang sama dengan semula. */
 /* Proses : P digeser ke sumbu Y. */
@@ -183,7 +183,7 @@ void GeserKeSbY (POINT *P) {
     /* ALGORITMA */
     Absis(*P) = 0;
 }
-void Mirror (POINT *P, boolean SbX) {
+void P_Mirror (POINT *P, boolean SbX) {
 /* I.S. P terdefinisi */
 /* F.S. P dicerminkan tergantung nilai SbX atau SbY */
 /* Jika SbX true maka dicerminkan terhadap sumbu X */
@@ -193,7 +193,7 @@ void Mirror (POINT *P, boolean SbX) {
     else
         Absis(*P) *= -1; 
 }
-void Putar (POINT *P, float Sudut) {
+void P_Putar (POINT *P, float Sudut) {
 /* I.S. P terdefinisi */
 /* F.S. P digeser sebesar Sudut derajat dengan sumbu titik (0,0) */
     /* KAMUS */
