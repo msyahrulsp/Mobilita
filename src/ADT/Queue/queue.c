@@ -6,6 +6,18 @@
 #include "queue.h"
 
 /* *** Kreator *** */
+void Q_CreatePesanan(Pesanan *p, int waktuPesanan, char pickUpPoint, char dropOffPoint, char jenisItem, int perishTime) {
+/* I.S. sembarang */
+/* F.S. Sebuah Pesanan terbentuk sesuai dengan parameter input */
+    /* KAMUS */
+
+    /* ALGORITMA */
+    WAKTU_PESANAN(*p) = waktuPesanan;
+    PICK_UP_POINT(*p) = pickUpPoint;
+    DROP_OFF_POINT(*p) = dropOffPoint;
+    JENIS_ITEM(*p) = jenisItem;
+    PERISH_TIME(*p) = perishTime;
+}
 void Q_CreateQueue(Queue *q) {
 /* I.S. sembarang */
 /* F.S. Sebuah q kosong terbentuk dengan kondisi sbb: */
@@ -45,7 +57,7 @@ int Q_length(Queue q) {
 }
 
 /* *** Primitif Add/Delete *** */
-void Q_enqueue(Queue *q, ElType val) {
+void Q_enqueue(Queue *q, Pesanan val) {
 /* Proses: Menambahkan val pada q dengan aturan sorted insert */
 /* I.S. q mungkin kosong, tabel penampung elemen q TIDAK penuh */
 /* F.S. val menjadi TAIL yang baru, IDX_TAIL "mundur".
@@ -69,7 +81,7 @@ void Q_enqueue(Queue *q, ElType val) {
         
         // Sorted Insert
         i = 0;
-        while (((*q).buffer[i] <= val) && i < Q_length(*q)) i++;
+        while ((WAKTU_PESANAN((*q).buffer[i]) <= WAKTU_PESANAN(val)) && i < Q_length(*q)) i++;
 
         for (j = IDX_TAIL(*q); j >= i; j--) 
             (*q).buffer[j + 1] = (*q).buffer[j];
@@ -79,7 +91,7 @@ void Q_enqueue(Queue *q, ElType val) {
     }
 }
 
-void Q_dequeue(Queue *q, ElType *val) {
+void Q_dequeue(Queue *q, Pesanan *val) {
 /* Proses: Menghapus val pada q dengan aturan FIFO */
 /* I.S. q tidak mungkin kosong */
 /* F.S. val = nilai elemen HEAD pd I.S., HEAD dan IDX_HEAD "mundur"; 
@@ -104,14 +116,15 @@ void Q_displayQueue(Queue q) {
 /* Contoh : jika ada tiga elemen bernilai 1, 20, 30 akan dicetak: [1,20,30] */
 /* Jika Queue kosong : menulis [] */
     /* KAMUS */
-    int i;
-    ElType val;
+    int i, j;
+    Pesanan val;
     /* ALGORTIMA */
-    printf("[");
+    printf("Pesanan yang sedang diantarkan:\n");
+    j = 1;
     for (i = IDX_HEAD(q); i <= IDX_TAIL(q); i++) {
         Q_dequeue(&q, &val);
-        printf("%d",val);
-        if (IDX_TAIL(q) != IDX_UNDEF) printf(",");
+        printf("%d. ", j);
+        // display mesin kata
+        printf(" (Tujuan: %c)\n", DROP_OFF_POINT(val));
     }
-    printf("]");
 }

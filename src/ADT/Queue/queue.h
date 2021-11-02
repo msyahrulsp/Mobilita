@@ -10,18 +10,18 @@
 #define CAPACITY 100
 
 /* Definisi elemen dan address */
-// typedef struct {
-//     waktuPesanan;
-//     pickUpPoint;
-//     dropOffPoint;
-//     jenisItem;
-//     perishTime;
-// } ElType;
+typedef struct {
+    int waktuPesanan;
+    char pickUpPoint;
+    char dropOffPoint;
+    char jenisItem;
+    int perishTime;
+} Pesanan;
 
-typedef int ElType; // Temporary Eltype for testing purpose
+// typedef int ElType; // Temporary Eltype for testing purpose
 
 typedef struct {
-    ElType buffer[CAPACITY]; 
+    Pesanan buffer[CAPACITY]; 
     int idxHead;
     int idxTail;
 } Queue;
@@ -34,7 +34,16 @@ typedef struct {
 #define     HEAD(q) (q).buffer[(q).idxHead]
 #define     TAIL(q) (q).buffer[(q).idxTail]
 
+#define  WAKTU_PESANAN(p) (p).waktuPesanan
+#define  PICK_UP_POINT(p) (p).pickUpPoint
+#define DROP_OFF_POINT(p) (p).dropOffPoint
+#define     JENIS_ITEM(p) (p).jenisItem
+#define    PERISH_TIME(p) (p).perishTime
+
 /* *** Kreator *** */
+void Q_CreatePesanan(Pesanan *p, int waktuPesanan, char pickUpPoint, char dropOffPoint, char jenisItem, int perishTime);
+/* I.S. sembarang */
+/* F.S. Sebuah Pesanan terbentuk sesuai dengan parameter input */
 void Q_CreateQueue(Queue *q);
 /* I.S. sembarang */
 /* F.S. Sebuah q kosong terbentuk dengan kondisi sbb: */
@@ -52,14 +61,14 @@ int Q_length(Queue q);
 /* Mengirimkan banyaknya elemen queue. Mengirimkan 0 jika q kosong. */
 
 /* *** Primitif Add/Delete *** */
-void Q_enqueue(Queue *q, ElType val);
+void Q_enqueue(Queue *q, Pesanan val);
 /* Proses: Menambahkan val pada q dengan aturan FIFO */
 /* I.S. q mungkin kosong, tabel penampung elemen q TIDAK penuh */
 /* F.S. val menjadi TAIL yang baru, IDX_TAIL "mundur".
         Jika q penuh semu, maka perlu dilakukan aksi penggeseran "maju" elemen-elemen q
         menjadi rata kiri untuk membuat ruang kosong bagi TAIL baru  */
 
-void Q_dequeue(Queue *q, ElType *val);
+void Q_dequeue(Queue *q, Pesanan *val);
 /* Proses: Menghapus val pada q dengan aturan FIFO */
 /* I.S. q tidak mungkin kosong */
 /* F.S. val = nilai elemen HEAD pd I.S., HEAD dan IDX_HEAD "mundur"; 
