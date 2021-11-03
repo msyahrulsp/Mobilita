@@ -108,13 +108,9 @@ void Q_dequeue(Queue *q, Pesanan *val) {
 
 /* *** Display Queue *** */
 void Q_displayQueue(Queue q) {
-/* Proses : Menuliskan isi Queue dengan traversal, Queue ditulis di antara kurung 
-   siku; antara dua elemen dipisahkan dengan separator "koma", tanpa tambahan 
-   karakter di depan, di tengah, atau di belakang, termasuk spasi dan enter */
+/* Proses : Menuliskan isi Queue dengan traversal */
 /* I.S. q boleh kosong */
-/* F.S. Jika q tidak kosong: [e1,e2,...,en] */
-/* Contoh : jika ada tiga elemen bernilai 1, 20, 30 akan dicetak: [1,20,30] */
-/* Jika Queue kosong : menulis [] */
+/* F.S. Jika q tidak kosong: menampilkan list pesanan */
     /* KAMUS */
     int i, j;
     Pesanan val;
@@ -124,7 +120,10 @@ void Q_displayQueue(Queue q) {
     for (i = IDX_HEAD(q); i <= IDX_TAIL(q); i++) {
         Q_dequeue(&q, &val);
         printf("%d. ", j);
-        // display mesin kata
-        printf(" (Tujuan: %c)\n", DROP_OFF_POINT(val));
+        if (JENIS_ITEM(val) == 'N') printf("Normal"); 
+        else if (JENIS_ITEM(val) == 'H') printf("Heavy");
+        else if (JENIS_ITEM(val) == 'P') printf("Perishable");
+        else if (JENIS_ITEM(val) == 'V') printf("VIP");
+        printf(" Item (Tujuan: %c)\n", DROP_OFF_POINT(val));
     }
 }
