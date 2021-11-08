@@ -11,14 +11,14 @@ typedef struct {
 } LL_ElType;
 typedef struct node* LL_Address;
 typedef struct node {
-    ElType info;
-    Address next;
+    LL_ElType info;
+    LL_Address next;
 } LL_Node;
 
 #define INFO(p) (p)->info
 #define NEXT(p) (p)->next
 
-Address newNode(LL_ElType val);
+LL_Address newNode(LL_ElType val);
 
 
 #endif
