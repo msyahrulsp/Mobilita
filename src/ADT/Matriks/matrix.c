@@ -259,7 +259,7 @@ boolean M_isSparse(Matrix m) {
     for (i = 0; i < ROWS(m); i++) 
         for (j = 0; j < COLS(m); j++) 
             if (ELMT(m, i, j) != 0) countNot0++;
-    return countNot0 / count(m) <= 0.05;
+    return countNot0 / M_count(m) <= 0.05;
 }
 Matrix M_inverse1(Matrix m) {
 /* Menghasilkan salinan m dengan setiap elemen "di-invers", yaitu dinegasikan (dikalikan -1) */
