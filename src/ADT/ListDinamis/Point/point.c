@@ -33,7 +33,7 @@ void P_readPOINT (POINT * P) {
     float x, y;
     /* ALGORITMA */
     scanf("%f %f", &x, &y);
-    *P = P_MakePOINT(x, y);
+    *P = P_makePOINT(x, y);
 }
 void P_displayPOINT (POINT P) {
 /* Nilai P ditulis ke layar dengan format "(X,Y)" 
@@ -110,21 +110,21 @@ POINT P_NextX (POINT P) {
     /* KAMUS */
 
     /* ALGORITMA */
-    return P_MakePOINT(Absis(P) + 1, Ordinat(P));
+    return P_makePOINT(Absis(P) + 1, Ordinat(P));
 }          
 POINT P_NextY (POINT P) {
 /* Mengirim salinan P dengan ordinat ditambah satu */
     /* KAMUS */
 
     /* ALGORITMA */
-    return P_MakePOINT(Absis(P), Ordinat(P) + 1);
+    return P_makePOINT(Absis(P), Ordinat(P) + 1);
 }
 POINT P_PlusDelta (POINT P, float deltaX, float deltaY) {
 /* Mengirim salinan P yang absisnya adalah Absis(P) + deltaX dan ordinatnya adalah Ordinat(P) + deltaY */
     /* KAMUS */
 
     /* ALGORITMA */
-    return P_MakePOINT(Absis(P) + deltaX, Ordinat(P) + deltaY);
+    return P_makePOINT(Absis(P) + deltaX, Ordinat(P) + deltaY);
 }
 POINT P_MirrorOf (POINT P, boolean SbX) {
 /* Menghasilkan salinan P yang dicerminkan terhadap salah satu sumbu */
@@ -134,9 +134,9 @@ POINT P_MirrorOf (POINT P, boolean SbX) {
 
     /* ALGORITMA */
     if (SbX)
-        return P_MakePOINT(Absis(P), -Ordinat(P));
+        return P_makePOINT(Absis(P), -Ordinat(P));
     else
-        return P_MakePOINT(-Absis(P), Ordinat(P));
+        return P_makePOINT(-Absis(P), Ordinat(P));
 }
 float P_Jarak0 (POINT P) {
 /* Menghitung jarak P ke (0,0) */

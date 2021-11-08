@@ -8,14 +8,14 @@
 #define LISTDIN_H
 
 #include "boolean.h"
-#include "point.h"
+#include "Point/point.h"
 
 /*  Kamus Umum */
 #define IDX_UNDEF -1
 /* Indeks tak terdefinisi*/
 
 /* Definisi elemen dan koleksi objek */
-typedef struct 
+typedef struct
 {
    char buildingName;
    POINT position;
