@@ -9,12 +9,16 @@
 #include "PColor\pcolor.h"
 #include "Queue\queue.h"
 #include "Stack\stack.h"
+#include "ListDinamis\Point\point.h"
 
 // Butuh tipe data Game > Buat load + save ( Ini nampung semua data )
 
 int main(){
 
-    boolean running = true;
+    int time;
+    POINT currentPos;
+    LL_List todolist;
+    LL_List inprogresslist;
     // kapasitas tas int
     // ability (speed boost , return to sender) list statis boolean
 
@@ -49,15 +53,15 @@ int main(){
         if (isEqual(currentWord, "MOVE")) {
             // move
         } else if (isEqual(currentWord, "PICK_UP")) {
-
+            
         } else if (isEqual(currentWord, "DROP_OFF")) {
             
         } else if (isEqual(currentWord, "MAP")) {
             
         } else if (isEqual(currentWord, "TO_DO")) {
-            
+            LL_displayList_InProgress(todolist);
         } else if (isEqual(currentWord, "IN_PROGRESS")) {
-            
+            LL_displayList_InProgress(inprogresslist);
         } else if (isEqual(currentWord, "BUY")) {
             
         } else if (isEqual(currentWord, "INVENTORY")) {
