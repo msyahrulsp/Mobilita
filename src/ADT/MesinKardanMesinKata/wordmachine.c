@@ -1,69 +1,58 @@
-/* File: wordmachine.c */
-/* Realisasi Word Engine */
-
 #include <stdio.h>
-
 #include "wordmachine.h"
 
-/* Word Engine State */
 boolean endWord;
 Word currentWord;
 
 void ignoreBlank() {
-/* Mengabaikan satu atau beberapa BLANK
-   I.S. : currentChar sembarang 
-   F.S. : currentChar ≠ BLANK atau currentChar = MARK */
-    /* KAMUS */
-
-    /* ALGORITMA */
-    while (currentChar == BLANK && currentChar != MARK)
-        adv();
+    while (currentChar == BLANK) adv();
 }
 
 void startWord() {
-/* I.S. : currentChar sembarang 
-   F.S. : endWord = true, dan currentChar = MARK; 
-          atau endWord = false, currentWord adalah kata yang sudah diakuisisi,
-          currentChar karakter pertama sesudah karakter terakhir kata */
-    /* KAMUS */
-
-    /* ALGORTIMA */
     start();
     ignoreBlank();
-    if (currentChar == MARK) endWord = true;
-    else {endWord = false; copyWord();}
+    endWord = (currentChar == MARK);
+    if (!endWord) advWord();
 }
 
 void advWord() {
-/* I.S. : currentChar adalah karakter pertama kata yang akan diakuisisi 
-   F.S. : currentWord adalah kata terakhir yang sudah diakuisisi, 
-          currentChar adalah karakter pertama dari kata berikutnya, mungkin MARK
-          Jika currentChar = MARK, endWord = true.		  
-   Proses : Akuisisi kata menggunakan procedure copyWord */
-    /* KAMUS */
-
-    /* ALGORITMA */
     ignoreBlank();
-    if (currentChar == MARK) endWord = true;
-    else {copyWord(); ignoreBlank();}
+    if (currentChar == MARK && !endWord) {
+        endWord = true;
+    } else {
+        copyWord();
+    }
 }
 
 void copyWord() {
-/* Mengakuisisi kata, menyimpan dalam currentWord
-   I.S. : currentChar adalah karakter pertama dari kata
-   F.S. : currentWord berisi kata yang sudah diakuisisi; 
-          currentChar = BLANK atau currentChar = MARK; 
-          currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
-          Jika panjang kata melebihi CAPACITY, maka sisa kata terpotong */
-    /* KAMUS */
-    int i;
-    /* ALGORITMA */
-    i = 0;
-    do
-    {
+    int i = 0;
+    while ((currentChar != MARK) && (i != CAPACITY)) {
         currentWord.contents[i] = currentChar;
         adv();
         i++;
-        currentWord.length = i;
-    } while (!((currentChar == MARK) || (currentChar == BLANK)) && currentWord.length < CAPACITY);
+    }
+    currentWord.length = (i < CAPACITY) ? i : CAPACITY;
+}
+
+void resetWord() {
+    int i;
+    for(i = 0; i < currentWord.length; i++) {
+        currentWord.contents[i] = BLANK;
+    } 
+    currentWord.length = 0;
+    currentChar = BLANK;
+}
+
+boolean isEqual(Word input, char command[]) {
+    int i, len;
+
+    for (i = 0; command[i] != '\0'; ++i);
+    len = i;
+
+    if (input.length != len) return false;
+    for (i = 0; i < len; i++) {
+        if (input.contents[i] != command[i]) return false;
+    }
+
+    return true;
 }

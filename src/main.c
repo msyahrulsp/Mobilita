@@ -10,6 +10,8 @@
 #include "Queue\queue.h"
 #include "Stack\stack.h"
 
+// Butuh tipe data Game > Buat load + save ( Ini nampung semua data )
+
 int main(){
 
     boolean running;
@@ -17,6 +19,7 @@ int main(){
     // ability (speed boost , return to sender) list statis boolean
 
     // main menu
+    printf("MOBILITA - Main Menu\n");
 
     while (running){
 

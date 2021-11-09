@@ -7,7 +7,7 @@
 #include "boolean.h"
 #include "charmachine.h"
 
-#define CAPACITY 50
+#define CAPACITY 100
 #define BLANK ' '
 
 typedef struct {
@@ -44,5 +44,11 @@ void copyWord();
           currentChar = BLANK atau currentChar = MARK; 
           currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi CAPACITY, maka sisa kata terpotong */
+
+void resetWord();
+/* Reset kata supaya bisa input lagi */
+
+boolean isEqual(Word input, char command[]);
+/* Mengecek kata sama atau tidak */
 
 #endif
