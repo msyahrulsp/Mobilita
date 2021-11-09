@@ -5,20 +5,12 @@
 #define QUEUE_H
 
 #include "boolean.h"
+#include "Pesanan/Pesanan.h"
 
 #define IDX_UNDEF -1
 #define CAPACITY 100
 
 /* Definisi elemen dan address */
-typedef struct {
-    int waktuPesanan;
-    char pickUpPoint;
-    char dropOffPoint;
-    char jenisItem; // N = Normal, H = Heavy, P = Perishable, V = VIP
-    int perishTime;
-} Pesanan;
-
-// typedef int ElType; // Temporary Eltype for testing purpose
 
 typedef struct {
     Pesanan buffer[CAPACITY]; 
@@ -34,16 +26,7 @@ typedef struct {
 #define     HEAD(q) (q).buffer[(q).idxHead]
 #define     TAIL(q) (q).buffer[(q).idxTail]
 
-#define  WAKTU_PESANAN(p) (p).waktuPesanan
-#define  PICK_UP_POINT(p) (p).pickUpPoint
-#define DROP_OFF_POINT(p) (p).dropOffPoint
-#define     JENIS_ITEM(p) (p).jenisItem
-#define    PERISH_TIME(p) (p).perishTime
-
 /* *** Kreator *** */
-void Q_CreatePesanan(Pesanan *p, int waktuPesanan, char pickUpPoint, char dropOffPoint, char jenisItem, int perishTime);
-/* I.S. sembarang */
-/* F.S. Sebuah Pesanan terbentuk sesuai dengan parameter input */
 void Q_CreateQueue(Queue *q);
 /* I.S. sembarang */
 /* F.S. Sebuah q kosong terbentuk dengan kondisi sbb: */
@@ -73,11 +56,5 @@ void Q_dequeue(Queue *q, Pesanan *val);
 /* I.S. q tidak mungkin kosong */
 /* F.S. val = nilai elemen HEAD pd I.S., HEAD dan IDX_HEAD "mundur"; 
         q mungkin kosong */
-
-/* *** Display Queue *** */
-void Q_displayQueue(Queue q);
-/* Proses : Menuliskan isi Queue dengan traversal */
-/* I.S. q boleh kosong */
-/* F.S. Jika q tidak kosong: menampilkan list pesanan */
 
 #endif

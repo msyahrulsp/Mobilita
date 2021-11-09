@@ -6,18 +6,6 @@
 #include "queue.h"
 
 /* *** Kreator *** */
-void Q_CreatePesanan(Pesanan *p, int waktuPesanan, char pickUpPoint, char dropOffPoint, char jenisItem, int perishTime) {
-/* I.S. sembarang */
-/* F.S. Sebuah Pesanan terbentuk sesuai dengan parameter input */
-    /* KAMUS */
-
-    /* ALGORITMA */
-    WAKTU_PESANAN(*p) = waktuPesanan;
-    PICK_UP_POINT(*p) = pickUpPoint;
-    DROP_OFF_POINT(*p) = dropOffPoint;
-    JENIS_ITEM(*p) = jenisItem;
-    PERISH_TIME(*p) = perishTime;
-}
 void Q_CreateQueue(Queue *q) {
 /* I.S. sembarang */
 /* F.S. Sebuah q kosong terbentuk dengan kondisi sbb: */
@@ -104,26 +92,4 @@ void Q_dequeue(Queue *q, Pesanan *val) {
             IDX_HEAD(*q) = IDX_UNDEF;
             IDX_TAIL(*q) = IDX_UNDEF;
     } else IDX_HEAD(*q)++;
-}
-
-/* *** Display Queue *** */
-void Q_displayQueue(Queue q) {
-/* Proses : Menuliskan isi Queue dengan traversal */
-/* I.S. q boleh kosong */
-/* F.S. Jika q tidak kosong: menampilkan list pesanan */
-    /* KAMUS */
-    int i, j;
-    Pesanan val;
-    /* ALGORTIMA */
-    printf("Pesanan yang sedang diantarkan:\n");
-    j = 1;
-    for (i = IDX_HEAD(q); i <= IDX_TAIL(q); i++) {
-        Q_dequeue(&q, &val);
-        printf("%d. ", j);
-        if (JENIS_ITEM(val) == 'N') printf("Normal"); 
-        else if (JENIS_ITEM(val) == 'H') printf("Heavy");
-        else if (JENIS_ITEM(val) == 'P') printf("Perishable");
-        else if (JENIS_ITEM(val) == 'V') printf("VIP");
-        printf(" Item (Tujuan: %c)\n", DROP_OFF_POINT(val));
-    }
 }
