@@ -10,6 +10,7 @@
 #include "Queue\queue.h"
 #include "Stack\stack.h"
 #include "ListDinamis\Point\point.h"
+#include "Pesanan\Pesanan.h"
 
 // Butuh tipe data Game > Buat load + save ( Ini nampung semua data )
 
@@ -19,6 +20,10 @@ int main(){
     POINT currentPos;
     LL_List todolist;
     LL_List inprogresslist;
+    ListDin daftarbangunan;
+    Pesanan order, valpesanan;
+    Stack bag;
+    int idxtdl;
     // kapasitas tas int
     // ability (speed boost , return to sender) list statis boolean
 
@@ -53,7 +58,14 @@ int main(){
         if (isEqual(currentWord, "MOVE")) {
             // move
         } else if (isEqual(currentWord, "PICK_UP")) {
-            
+            idxtdl = LL_pesananAvailable(todolist, currentPos, daftarbangunan);
+            if (idxtdl != IDX_UNDEF){
+                LL_deleteAt(&todolist, idxtdl, &valpesanan);
+                LL_insertFirst(&inprogresslist, valpesanan);
+                push(&bag, valpesanan);
+            } else {
+                printf("Pesanan tidak ditemukan!");
+            }
         } else if (isEqual(currentWord, "DROP_OFF")) {
             
         } else if (isEqual(currentWord, "MAP")) {

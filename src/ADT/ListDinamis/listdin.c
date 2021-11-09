@@ -272,3 +272,13 @@ void LD_compactList(ListDin *l) {
     }
     LD_dealocate(&temp);
 }
+
+POINT LD_buildingtToPoint (ListDin l, char nama){
+    int i = 0;
+    /* ALGORITMA */
+    while (LD_isIdxEff(l, i)) {
+        if (BNAME(l, i) == nama)
+            return l.buffer[i].position;
+        i++;
+    }
+}

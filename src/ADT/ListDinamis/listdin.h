@@ -154,4 +154,6 @@ void LD_compactList(ListDin *l);
 /* I.S. List lidak kosong */
 /* F.S. Ukuran nEff = capacity */
 
+POINT LD_buildingtToPoint (ListDin l, char nama);
+
 #endif

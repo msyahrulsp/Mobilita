@@ -64,7 +64,7 @@ int LL_indexOf(LL_List l, LL_ElType val){
     p = FIRST(l);
     found = false;
     while (p!=NULL && !(found)){
-        if ((INFO(p).perishTime == val.perishTime) && (INFO(p).pickUpPoint==val.pickUpPoint) && (INFO(p).dropOffPoint==val.dropOffPoint) && (INFO(p).jenisItem == val.jenisItem)){
+        if ((INFO(p).perishTime == val.perishTime) && (INFO(p).pickUpPoint==val.pickUpPoint) && (INFO(p).dropOffPoint,val.dropOffPoint) && (INFO(p).jenisItem == val.jenisItem)){
             found = true;
         } else {
             idx += 1;
@@ -75,6 +75,31 @@ int LL_indexOf(LL_List l, LL_ElType val){
         idx = IDX_UNDEF;
     }
     return idx;
+}
+
+int LL_pesananAvailable(LL_List l, POINT titik, ListDin daftarbangunan){
+// Mengembalikan idx todolist apabila ada pesanan yang bisa dipickup dari p, dan IDX_UNDEF jika tidak ada
+    // Kamus Lokal
+    int idx;
+    LL_Address p;
+    boolean found;
+    // Algoritma
+    idx = 0;
+    p = FIRST(l);
+    found = false;
+    while (p!=NULL && !(found)){
+        if (P_EQ(LD_buildingtToPoint(daftarbangunan, INFO(p).pickUpPoint),titik)){
+            found = true;
+        } else {
+            idx += 1;
+            p = NEXT(p);
+        }
+    }
+    if (!found){
+        idx = IDX_UNDEF;
+    }
+    return idx;
+
 }
 
 /****************** PRIMITIF BERDASARKAN NILAI ******************/

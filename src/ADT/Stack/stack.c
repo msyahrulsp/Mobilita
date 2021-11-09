@@ -42,7 +42,11 @@ void push(Stack *s, ElType val) {
     /* KAMUS */
 
     /* ALGORITMA */
-    IDX_TOP(*s)++;
+    if (isEmpty(*s)){
+        IDX_TOP(*s) = 0;
+    } else {
+        IDX_TOP(*s) += 1;
+    }
     TOP(*s) = val;
 }
 
@@ -55,5 +59,9 @@ void pop(Stack *s, ElType *val) {
 
     /* ALGORITMA */
     *val = TOP(*s);
-    IDX_TOP(*s)--;
+    if (IDX_TOP(*s)==0){
+        IDX_TOP(*s) = IDX_UNDEF;
+    } else {
+        IDX_TOP(*s) -= 1;
+    }
 }

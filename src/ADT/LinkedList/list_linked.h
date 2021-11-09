@@ -8,6 +8,8 @@
 
 #include "boolean.h"
 #include "node.h"
+#include "Point\point.h"
+#include "listdin.h"
 
 typedef LL_Address LL_List;
 
@@ -43,6 +45,8 @@ int LL_indexOf(LL_List l, LL_ElType val);
 /* F.S. Mencari apakah ada elemen list l yang bernilai val */
 /* Jika ada, mengembalikan indeks elemen pertama l yang bernilai val */
 /* Mengembalikan IDX_UNDEF jika tidak ditemukan */
+
+int LL_pesananAvailable(LL_List l, POINT titik, ListDin daftarbangunan);
 
 /****************** PRIMITIF BERDASARKAN NILAI ******************/
 /*** PENAMBAHAN ELEMEN ***/
