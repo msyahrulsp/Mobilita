@@ -1,16 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "boolean.h"
-#include "LinkedList\list_linked.h"
-#include "ListDinamis\listdin.h"
-#include "ListStatis\listStatik.h"
-#include "Matriks\matrix.h"
-#include "MesinKardanMesinKata\wordmachine.h"
-#include "PColor\pcolor.h"
-#include "Queue\queue.h"
-#include "Stack\stack.h"
-#include "ListDinamis\Point\point.h"
-#include "Pesanan\Pesanan.h"
+#include "header.h"
 
 // Butuh tipe data Game > Buat load + save ( Ini nampung semua data )
 

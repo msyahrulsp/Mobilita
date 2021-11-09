@@ -5,7 +5,7 @@
 #define QUEUE_H
 
 #include "boolean.h"
-#include "Pesanan/Pesanan.h"
+#include "Pesanan.h"
 
 #define IDX_UNDEF -1
 #define CAPACITY 100

@@ -1,7 +1,7 @@
 #ifndef LOAD_SAVE_H
 #define LOAD_SAVE_H
 
-#include "../ADT/MesinKardanMesinKata/wordmachine.h"
+#include "wordmachine.h"
 
 void load();
 

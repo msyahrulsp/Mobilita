@@ -9,7 +9,7 @@ run: compile
 	$(SRC)/main
 
 compile: 
-	$(CC) -I $(SRC_ADT) $(ADT_FILES) $(SRC)/main.c -o $(SRC)/main
+	$(CC) -I $(SRC_ADT)/Header $(ADT_FILES) $(SRC)/main.c -o $(SRC)/main
 
 run2: $(SRC)/main
 	$(SRC)/main
@@ -18,14 +18,7 @@ driver: driver_compile
 	$(SRC_ADT)/$(f)/driver
 
 driver_compile: $(SRC_ADT)/$(f)
-	$(CC) -I $(SRC_ADT) $(DRIVER_FILES) -o $(SRC_ADT)/$(f)/driver
+	$(CC) -I $(SRC_ADT)/Header $(DRIVER_FILES) -o $(SRC_ADT)/$(f)/driver
 
 driver_run: $(SRC_ADT)/$(f)
 	$(SRC_ADT)/$(f)/driver
-
-# Testing
-loadsave: lcompile
-	$(SRC)/Game/LoadSave/driver
-
-lcompile:
-	$(CC) -I $(SRC_ADT) $(DRIVER_FILES) $(LOAD_FILES) -o src/Game/LoadSave/driver
