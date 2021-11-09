@@ -14,31 +14,70 @@
 
 int main(){
 
-    boolean running;
+    boolean running = true;
     // kapasitas tas int
     // ability (speed boost , return to sender) list statis boolean
 
     // main menu
     printf("MOBILITA - Main Menu\n");
+    printf("ENTER COMMAND: ");
+    startWord();
 
-    while (running){
+    while(!isEqual(currentWord, "NEW_GAME") && !isEqual(currentWord, "LOAD_GAME")) {
+        if(isEqual(currentWord, "EXIT")) {
+            exit(1); // sementara
+        } else {
+            printf("Command salah\n");
+            resetWord();
+            printf("ENTER COMMAND: ");
+            startWord();
+        }
+    }
 
-        // input
+    if (isEqual(currentWord, "NEW_GAME")) {
+        // load default konfigurasi
+    } else {
+        // load game
+    }
+
+    printf("\nSELAMAT BERMAIN!!\n\n");
+    resetWord();
+    printf("ENTER COMMAND: ");
+    startWord();
+
+    while (!isEqual(currentWord, "EXIT")) {
+        if (isEqual(currentWord, "MOVE")) {
             // move
-                // waktu
-            // pick_up
-            // drop_off
-            // map
-            // to_do
-            // in_progress
-            // buy (gadget)
-            // inventory (gadget)
-            // help
-            // save game (bonus)
-            // return (bonus)
-            // endgame -> running = false
+        } else if (isEqual(currentWord, "PICK_UP")) {
+
+        } else if (isEqual(currentWord, "DROP_OFF")) {
+            
+        } else if (isEqual(currentWord, "MAP")) {
+            
+        } else if (isEqual(currentWord, "TO_DO")) {
+            
+        } else if (isEqual(currentWord, "IN_PROGRESS")) {
+            
+        } else if (isEqual(currentWord, "BUY")) {
+            
+        } else if (isEqual(currentWord, "INVENTORY")) {
+            
+        } else if (isEqual(currentWord, "HELP")) {
+            
+        } else if (isEqual(currentWord, "SAVE_GAME")) {
+            
+        } else if (isEqual(currentWord, "RETURN")) {
+            
+        } else {
+            printf("Command salah\n");
+        }
+        resetWord();
+        printf("ENTER COMMAND: ");
+        startWord();
+        // endgame -> running = false
 
     }
 
+    printf("\nKELUAR"); // sementara
     return 0;
 }
