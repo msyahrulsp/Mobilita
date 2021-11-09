@@ -2,13 +2,9 @@
 #define NODE_H
 
 #include <stdlib.h>
+#include "Pesanan.h"
 
-typedef struct {
-    int time;
-    char pu_point;
-    char do_point;
-    char item_type;
-} LL_ElType;
+typedef Pesanan LL_ElType;
 typedef struct node* LL_Address;
 typedef struct node {
     LL_ElType info;

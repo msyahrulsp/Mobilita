@@ -64,7 +64,7 @@ int LL_indexOf(LL_List l, LL_ElType val){
     p = FIRST(l);
     found = false;
     while (p!=NULL && !(found)){
-        if ((INFO(p).time == val.time) && (INFO(p).pu_point==val.pu_point) && (INFO(p).do_point==val.do_point) && (INFO(p).item_type == val.item_type)){
+        if ((INFO(p).perishTime == val.perishTime) && (INFO(p).pickUpPoint==val.pickUpPoint) && (INFO(p).dropOffPoint==val.dropOffPoint) && (INFO(p).jenisItem == val.jenisItem)){
             found = true;
         } else {
             idx += 1;
@@ -218,14 +218,14 @@ void LL_displayList_ToDo(LL_List l){
         p = FIRST(l);
         ctr = 1;
         while (p!=NULL){
-            printf("%d. %c -> %c ", ctr, INFO(p).pu_point, INFO(p).do_point);
-            if (INFO(p).item_type=='N'){
+            printf("%d. %c -> %c ", ctr, INFO(p).pickUpPoint, INFO(p).dropOffPoint);
+            if (INFO(p).jenisItem=='N'){
                 printf("(Normal Item)");
-            } else if (INFO(p).item_type=='H'){
+            } else if (INFO(p).jenisItem=='H'){
                 printf("(Heavy Item)");
-            } else if (INFO(p).item_type=='P'){
+            } else if (INFO(p).jenisItem=='P'){
                 printf("(Perishable Item)");
-            } else if (INFO(p).item_type=='V'){
+            } else if (INFO(p).jenisItem=='V'){
                 printf("(VIP Item)");
             }
             printf("\n");
@@ -251,14 +251,14 @@ void LL_displayList_InProgress(LL_List l){
         ctr = 1;
         while (p!=NULL){
             //printf("%d. %c -> %c ", ctr, INFO(p).pu_point, INFO(p).do_point);
-            if (INFO(p).item_type=='N'){
-                printf("%d. Normal Item (Tujuan: %c)", ctr, INFO(p).do_point);
-            } else if (INFO(p).item_type=='H'){
-                printf("%d. Heavy Item (Tujuan: %c)", ctr, INFO(p).do_point);
-            } else if (INFO(p).item_type=='P'){
-                printf("%d. Perishable Item (Tujuan: %c)", ctr, INFO(p).do_point);
-            } else if (INFO(p).item_type=='V'){
-                printf("%d. VIP Item (Tujuan: %c)", ctr, INFO(p).do_point);
+            if (INFO(p).jenisItem=='N'){
+                printf("%d. Normal Item (Tujuan: %c)", ctr, INFO(p).dropOffPoint);
+            } else if (INFO(p).jenisItem=='H'){
+                printf("%d. Heavy Item (Tujuan: %c)", ctr, INFO(p).dropOffPoint);
+            } else if (INFO(p).jenisItem=='P'){
+                printf("%d. Perishable Item (Tujuan: %c)", ctr, INFO(p).dropOffPoint);
+            } else if (INFO(p).jenisItem=='V'){
+                printf("%d. VIP Item (Tujuan: %c)", ctr, INFO(p).dropOffPoint);
             }
             printf("\n");
             p = NEXT(p);
