@@ -59,7 +59,7 @@ int main(){
         } else if (isEqual(currentWord, "MAP")) {
             
         } else if (isEqual(currentWord, "TO_DO")) {
-            LL_displayList_InProgress(todolist);
+            LL_displayList_ToDo(todolist);
         } else if (isEqual(currentWord, "IN_PROGRESS")) {
             LL_displayList_InProgress(inprogresslist);
         } else if (isEqual(currentWord, "BUY")) {
