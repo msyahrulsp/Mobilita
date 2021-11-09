@@ -17,18 +17,18 @@ void LD_CreateListDin(ListDin *l, int capacity) {
     /* KAMUS */
 
     /* ALGORITMA */
-    CAPACITY(*l) = capacity;
+    CAP(*l) = capacity;
     NEFF(*l) = 0;
-    BUFFER(*l) = (Building*) malloc(CAPACITY(*l) * sizeof(Building));
+    BUFFER(*l) = (Building*) malloc(CAP(*l) * sizeof(Building));
 }
 
 void LD_dealocate(ListDin *l) {
 /* I.S. l terdefinisi; */
-/* F.S. (l) dikembalikan ke system, CAPACITY(l)=0; NEFF(l)=0 */
+/* F.S. (l) dikembalikan ke system, CAP(l)=0; NEFF(l)=0 */
     /* KAMUS */
 
     /* ALGORITMA */
-    CAPACITY(*l) = 0;
+    CAP(*l) = 0;
     NEFF(*l) = 0;
     free(BUFFER(*l));
 }
@@ -62,7 +62,7 @@ boolean LD_isIdxValid(ListDin l, int i) {
     /* KAMUS */
 
     /* ALGORITMA */
-    return i >= 0 && i < CAPACITY(l);
+    return i >= 0 && i < CAP(l);
 }
 boolean LD_isIdxEff(ListDin l, IdxType i) {
 /* Mengirimkan true jika i adalah indeks yang terdefinisi utk list */
@@ -88,7 +88,7 @@ boolean LD_isFull(ListDin l) {
     /* KAMUS */
 
     /* ALGORITMA */
-    return NEFF(l) == CAPACITY(l);
+    return NEFF(l) == CAP(l);
 }
 
 /* ********** BACA dan TULIS dengan INPUT/OUTPUT device ********** */
@@ -98,9 +98,9 @@ void LD_readList(ListDin *l) {
 /* F.S. List l terdefinisi */
 /* Proses : membaca banyaknya elemen l dan mengisi nilainya */
 /* 1. Baca banyaknya elemen diakhiri enter, misalnya N */
-/*    Pembacaan diulangi sampai didapat N yang benar yaitu 0 <= N <= CAPACITY(l) */
+/*    Pembacaan diulangi sampai didapat N yang benar yaitu 0 <= N <= CAP(l) */
 /*    Jika N tidak valid, tidak diberikan pesan kesalahan */
-/* 2. Jika 0 < N <= CAPACITY(l); Lakukan N kali: Baca elemen mulai dari indeks
+/* 2. Jika 0 < N <= CAP(l); Lakukan N kali: Baca elemen mulai dari indeks
       0 satu per satu diakhiri enter */
 /*    Jika N = 0; hanya terbentuk l kosong */
     /* KAMUS */
@@ -109,7 +109,7 @@ void LD_readList(ListDin *l) {
     do
     {
         scanf("%d", &N);
-    } while (!(LD_isIdxValid(*l, N) || N == CAPACITY(*l)));
+    } while (!(LD_isIdxValid(*l, N) || N == CAP(*l)));
 
     NEFF(*l) = N;
 
@@ -163,12 +163,12 @@ void LD_copyList(ListDin lIn, ListDin *lOut) {
     /* KAMUS */
     int i;
     /* ALGORITMA */
-    LD_CreateListDin(lOut, CAPACITY(lIn));
+    LD_CreateListDin(lOut, CAP(lIn));
 
     NEFF(*lOut) = NEFF(lIn);
 
     for (i = 0; i < NEFF(lIn); i++) {
-        ELMT(*lOut, i) = ELMT(lIn, i);
+        LD_ELMT(*lOut, i) = LD_ELMT(lIn, i);
     }
 }
 
@@ -198,7 +198,7 @@ void LD_insertLast(ListDin *l, Building val) {
     /* KAMUS */
 
     /* ALGORITMA */
-    ELMT(*l, LD_length(*l)) = val;
+    LD_ELMT(*l, LD_length(*l)) = val;
     NEFF(*l) += 1;
 }
 /* ********** MENGHAPUS ELEMEN ********** */
@@ -211,7 +211,7 @@ void LD_deleteLast(ListDin *l, Building *val) {
     /* KAMUS */
     
     /* ALGORITMA */
-    *val = ELMT(*l, LD_length(*l) - 1);
+    *val = LD_ELMT(*l, LD_length(*l) - 1);
     NEFF(*l) -= 1;
 }
 
@@ -224,13 +224,13 @@ void LD_growList(ListDin *l, int num) {
     ListDin temp;
     int i;
     /* ALGORITMA */
-    //realloc(l, CAPACITY(*l) + num);
+    //realloc(l, CAP(*l) + num);
     LD_copyList(*l, &temp);
     LD_dealocate(l);
-    LD_CreateListDin(l, CAPACITY(temp) + num);
+    LD_CreateListDin(l, CAP(temp) + num);
     NEFF(*l) = NEFF(temp);
     for (i = 0; i < LD_length(temp); i++) {
-        ELMT(*l, i) = ELMT(temp, i);
+        LD_ELMT(*l, i) = LD_ELMT(temp, i);
     }
     LD_dealocate(&temp);
 }
@@ -243,13 +243,13 @@ void LD_shrinkList(ListDin *l, int num) {
     ListDin temp;
     int i;
     /* ALGORITMA */
-    //realloc(l, CAPACITY(*l) - num);
+    //realloc(l, CAP(*l) - num);
     LD_copyList(*l, &temp);
     LD_dealocate(l);
-    LD_CreateListDin(l, CAPACITY(temp) - num);
+    LD_CreateListDin(l, CAP(temp) - num);
     NEFF(*l) = NEFF(temp);
     for (i = 0; i < LD_length(temp); i++) {
-        ELMT(*l, i) = ELMT(temp, i);
+        LD_ELMT(*l, i) = LD_ELMT(temp, i);
     }
     LD_dealocate(&temp);
 }
@@ -268,7 +268,7 @@ void LD_compactList(ListDin *l) {
     LD_CreateListDin(l, NEFF(temp));
     NEFF(*l) = NEFF(temp);
     for (i = 0; i < LD_length(temp); i++) {
-        ELMT(*l, i) = ELMT(temp, i);
+        LD_ELMT(*l, i) = LD_ELMT(temp, i);
     }
     LD_dealocate(&temp);
 }

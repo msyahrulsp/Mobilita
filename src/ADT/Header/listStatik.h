@@ -35,7 +35,7 @@ typedef struct {
    Definisi elemen pertama: ELMT(l,i) dengan i=0 */
 
 /* ********** SELEKTOR ********** */
-#define ELMT(l, i) (l).contents[(i)]
+#define LS_ELMT(l, i) (l).contents[(i)]
 #define GNAME(l, i) (l).contents[(i)].gadgetname
 #define GPRICE(l, i) (l).contents[(i)].gadgetprice
 

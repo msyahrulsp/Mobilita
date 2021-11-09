@@ -54,7 +54,7 @@ void enqueue(Queue *q, Pesanan val) {
     /* KAMUS */
     int i;
     /* ALGORITMA */
-    if(isEmpty(*q)) {
+    if(Q_isEmpty(*q)) {
         IDX_HEAD(*q) = 0;
         IDX_TAIL(*q) = 0;} 
     else{ // *q is not empty

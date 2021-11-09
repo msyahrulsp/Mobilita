@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "boolean.h"
 #include "header.h"
 
 // Butuh tipe data Game > Buat load + save ( Ini nampung semua data )

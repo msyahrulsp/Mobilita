@@ -51,7 +51,7 @@ ElType M_getElmtDiagonal(Matrix m, Index i) {
     /* KAMUS */
 
     /* ALGORITMA */
-    return ELMT(m, i, i);
+    return M_ELMT(m, i, i);
 }
 
 /* ********** Assignment  Matrix ********** */
@@ -81,7 +81,7 @@ void M_readMatrix(Matrix *m, int nRow, int nCol) {
 
     for (i = 0; i < ROWS(*m); i++)
         for (j = 0; j < COLS(*m); j++)
-            scanf("%d", &ELMT(*m, i, j));
+            scanf("%d", &M_ELMT(*m, i, j));
 }
 void M_displayMatrix(Matrix m) {
 /* I.S. m terdefinisi */
@@ -98,7 +98,7 @@ void M_displayMatrix(Matrix m) {
     /* ALGORITMA */
     for (i = 0; i < ROWS(m); i++) {
         for (j = 0; j < COLS(m); j++) {
-            printf("%d", ELMT(m, i, j));
+            printf("%d", M_ELMT(m, i, j));
             if (j != M_getLastIdxCol(m)) printf(" ");
         }
         if (i != M_getLastIdxRow(m)) printf("\n");
@@ -114,7 +114,7 @@ Matrix M_addMatrix(Matrix m1, Matrix m2) {
     /* ALGORITMA */
     for (i = 0; i < ROWS(m1); i++) 
         for (j = 0; j < COLS(m1); j++) 
-            ELMT(m1, i, j) += ELMT(m2, i, j);
+            M_ELMT(m1, i, j) += M_ELMT(m2, i, j);
 
     return m1;
 }
@@ -126,7 +126,7 @@ Matrix M_subtractMatrix(Matrix m1, Matrix m2) {
     /* ALGORITMA */
     for (i = 0; i < ROWS(m1); i++) 
         for (j = 0; j < COLS(m1); j++) 
-            ELMT(m1, i, j) -= ELMT(m2, i, j);
+            M_ELMT(m1, i, j) -= M_ELMT(m2, i, j);
 
     return m1;
 }
@@ -141,9 +141,9 @@ Matrix M_multiplyMatrix(Matrix m1, Matrix m2) {
 
     for (i = 0; i < ROWS(m); i++) 
         for (j = 0; j < COLS(m); j++) {
-            ELMT(m, i, j) = 0;
+            M_ELMT(m, i, j) = 0;
             for (k = 0; k < COLS(m1); k++) {
-                ELMT(m, i, j) += ELMT(m1, i, k) * ELMT(m2, k, j);
+                M_ELMT(m, i, j) += M_ELMT(m1, i, k) * M_ELMT(m2, k, j);
             }
         }
 
@@ -156,7 +156,7 @@ Matrix M_multiplyConst(Matrix m, ElType x) {
     /* ALGORITMA */
     for (i = 0; i < ROWS(m); i++) 
         for (j = 0; j < COLS(m); j++) 
-            ELMT(m, i, j) *= x;
+            M_ELMT(m, i, j) *= x;
 
     return m;
 }
@@ -168,7 +168,7 @@ void M_pMultiplyConst(Matrix *m, ElType k) {
     /* ALGORITMA */
     for (i = 0; i < ROWS(*m); i++) 
         for (j = 0; j < COLS(*m); j++) 
-            ELMT(*m, i, j) *= k;
+            M_ELMT(*m, i, j) *= k;
 }
 
 /* ********** KELOMPOK OPERASI RELASIONAL TERHADAP Matrix ********** */
@@ -183,7 +183,7 @@ boolean M_isEqual(Matrix m1, Matrix m2) {
     else {
         for (i = 0; i < ROWS(m1); i++) 
             for (j = 0; j < COLS(m1); j++) 
-                if (ELMT(m1, i, j) != ELMT(m2, i, j)) return false;
+                if (M_ELMT(m1, i, j) != M_ELMT(m2, i, j)) return false;
     }
     return true;
 }
@@ -228,7 +228,7 @@ boolean M_isSymmetric(Matrix m) {
     if (!M_isSquare(m)) return false;
     for (i = 0; i < ROWS(m); i++) 
         for (j = 0; j < COLS(m); j++) 
-            if (ELMT(m, i, j) != ELMT(m, j, i)) return false;
+            if (M_ELMT(m, i, j) != M_ELMT(m, j, i)) return false;
     return true;
 }
 boolean M_isIdentity(Matrix m) {
@@ -243,7 +243,7 @@ boolean M_isIdentity(Matrix m) {
             if (i == j) {
                 if (M_getElmtDiagonal(m, i) != 1) return false;
             } else {
-                if (ELMT(m, i, j) != 0) return false;
+                if (M_ELMT(m, i, j) != 0) return false;
             }
         }
             
@@ -258,7 +258,7 @@ boolean M_isSparse(Matrix m) {
     /* ALGORITMA */
     for (i = 0; i < ROWS(m); i++) 
         for (j = 0; j < COLS(m); j++) 
-            if (ELMT(m, i, j) != 0) countNot0++;
+            if (M_ELMT(m, i, j) != 0) countNot0++;
     return countNot0 / M_count(m) <= 0.05;
 }
 Matrix M_inverse1(Matrix m) {
@@ -284,7 +284,7 @@ float M_determinant(Matrix m) {
     float det;
     int i, iM, jM, iMi, jMi;
     /* ALGORITMA */
-    if (COLS(m) == 1) det = ELMT(m, 0, 0);
+    if (COLS(m) == 1) det = M_ELMT(m, 0, 0);
     else {
         det = 0;
         for (i = 0; i < ROWS(m); i++) {
@@ -300,22 +300,22 @@ float M_determinant(Matrix m) {
                     {
                         if (jM !=0)
                         {
-                            ELMT(Minor, iMi, jMi) = ELMT(m, iM, jM);
+                            M_ELMT(Minor, iMi, jMi) = M_ELMT(m, iM, jM);
                             jMi++;
                         }
                     }
                     iMi++;
                 }
             }
-            det += (i % 2 == 0 ? 1 : -1) * ELMT(m, i, 0) * M_determinant(Minor);
+            det += (i % 2 == 0 ? 1 : -1) * M_ELMT(m, i, 0) * M_determinant(Minor);
         }
     }
     return det;
     // /* KAMUS */
     // float det = 0;
     // /* ALGORITMA */
-    // if (COLS(m) == 1) return ELMT(m, 0, 0);
-    // else if (COLS(m) == 2) return (ELMT(m, 0, 0) * ELMT(m, 1, 1) - ELMT(m, 1, 0) * ELMT(m, 0, 1)); 
+    // if (COLS(m) == 1) return M_ELMT(m, 0, 0);
+    // else if (COLS(m) == 2) return (M_ELMT(m, 0, 0) * M_ELMT(m, 1, 1) - M_ELMT(m, 1, 0) * M_ELMT(m, 0, 1)); 
     // else {
     //     Matrix tempM;
     //     for (int j = 0; j < COLS(m); j++) {
@@ -324,15 +324,15 @@ float M_determinant(Matrix m) {
     //         COLS(tempM) -= 1;
     //         for (int k = 0; k < ROWS(tempM); k++) {
     //             for (int l = 0; l < COLS(tempM); l++) {
-    //                 ELMT(tempM, k, l) = ELMT(tempM, k + 1, l);
+    //                 M_ELMT(tempM, k, l) = M_ELMT(tempM, k + 1, l);
     //             }
     //         }
     //         for (int k = 0; k < ROWS(tempM); k++) {
     //             for (int l = j; l < COLS(tempM); l++) {
-    //                 ELMT(tempM, k, l) = ELMT(tempM, k, l + 1);
+    //                 M_ELMT(tempM, k, l) = M_ELMT(tempM, k, l + 1);
     //             }
     //         }
-    //         det += (j % 2 == 1 ? 1 : -1) * ELMT(m, 0, j) * determinant(tempM);
+    //         det += (j % 2 == 1 ? 1 : -1) * M_ELMT(m, 0, j) * determinant(tempM);
     //     }
     //     return det;
     // }
@@ -346,8 +346,8 @@ void M_transpose(Matrix *m) {
     /* ALGORITMA */
     for (i = 0; i < ROWS(*m); i++)
         for (j = i + 1; j < COLS(*m); j++) {
-            temp = ELMT(*m, i, j);
-            ELMT(*m, i, j) = ELMT(*m, j, i);
-            ELMT(*m, j, i) = temp;
+            temp = M_ELMT(*m, i, j);
+            M_ELMT(*m, i, j) = M_ELMT(*m, j, i);
+            M_ELMT(*m, j, i) = temp;
         }
 }

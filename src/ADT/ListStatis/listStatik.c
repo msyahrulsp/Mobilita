@@ -16,7 +16,7 @@ void LS_CreateListGadget(ListGadget *l) {
     int i;
     /* ALGORITMA */
     for (i = 0; i < CAPACITY; i++) {
-        GNAME(*l, i) = NULL;
+        GNAME(*l, i) = ' ';
         GPRICE(*l, i) = VAL_UNDEF;
     }
 }
@@ -31,7 +31,7 @@ int LS_length(ListGadget l) {
     int i;
     /* ALGORITMA */
     for (i = 0; i < CAPACITY; i++) {
-        if (GNAME(l, i) == NULL)
+        if (GNAME(l, i) == ' ')
             return NEFF;
         NEFF++;
     }
@@ -96,7 +96,7 @@ void LS_readList(ListGadget *l) {
     } while (!(n >= 0 && n <= CAPACITY));
 
     for (i = 0; i < n; i++) 
-        scanf("%d", &ELMT(*l, i));
+        scanf("%c %d", &GNAME(*l, i), &GPRICE(*l, i));
 }
 
 void LS_gadgetName(ListGadget l, int idx){
@@ -128,7 +128,7 @@ void LS_displayList(ListGadget l) {
 
     for (int i = 0; i < CAPACITY; i++){
         printf("%d. ", i + 1);
-        if (GNAME(l, i) != NULL){
+        if (GNAME(l, i) != ' '){
             LS_gadgetName(l, i);
         }
         else{
@@ -142,7 +142,7 @@ void LS_displayList(ListGadget l) {
 /* ***  Perhatian : List boleh kosong!! *** */
 int LS_indexOf(ListGadget l, Gadget val) {
 /* Search apakah ada elemen List l yang bernilai val */
-/* Jika ada, menghasilkan indeks i terkecil, dengan ELMT(l,i) = val */
+/* Jika ada, menghasilkan indeks i terkecil, dengan LS_ELMT(l,i) = val */
 /* Jika tidak ada atau jika l kosong, mengirimkan IDX_UNDEF */
 /* Skema Searching yang digunakan bebas */
     /* KAMUS */
@@ -179,7 +179,7 @@ void LS_insertLast(ListGadget *l, Gadget val) {
     /* KAMUS */
     
     /* ALGORITMA */
-    ELMT(*l, LS_length(*l)) = val;
+    LS_ELMT(*l, LS_length(*l)) = val;
 }
 /* ********** MENGHAPUS ELEMEN ********** */
 void LS_deleteLast(ListGadget *l, Gadget *val) {
@@ -191,7 +191,7 @@ void LS_deleteLast(ListGadget *l, Gadget *val) {
     /* KAMUS */
     
     /* ALGORITMA */
-    *val = ELMT(*l, LS_length(*l) - 1);
-    GNAME(*l, LS_length(*l) - 1) = NULL;
+    *val = LS_ELMT(*l, LS_length(*l) - 1);
+    GNAME(*l, LS_length(*l) - 1) = ' ';
     GPRICE(*l, LS_length(*l) - 1) = VAL_UNDEF;
 }
