@@ -35,7 +35,7 @@ boolean isFull(Stack s) {
 }
 
 /* ************ Menambahkan sebuah elemen ke Stack ************ */
-void push(Stack *s, ElType val) {
+void push(Stack *s, S_ElType val) {
 /* Menambahkan val sebagai elemen Stack s */
 /* I.S. s mungkin kosong, tabel penampung elemen stack TIDAK penuh */
 /* F.S. val menjadi TOP yang baru,IDX_TOP bertambah 1 */
@@ -51,7 +51,7 @@ void push(Stack *s, ElType val) {
 }
 
 /* ************ Menghapus sebuah elemen Stack ************ */
-void pop(Stack *s, ElType *val) {
+void pop(Stack *s, S_ElType *val) {
 /* Menghapus val dari Stack s */
 /* I.S. s tidak mungkin kosong */
 /* F.S. val adalah nilai elemen TOP yang lama, IDX_TOP berkurang 1 */

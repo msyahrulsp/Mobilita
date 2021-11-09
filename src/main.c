@@ -88,3 +88,16 @@ int main(){
     printf("\nKELUAR"); // sementara
     return 0;
 }
+
+/*
+printf("1. MOVE -> Untuk berpindah ke lokasi selanjutnya");
+printf("2. PICK_UP -> Untuk mengambil item di lokasi sekarang");
+printf("3. DROP_OFF -> Untuk mengantarkan item ke lokasi jika item di tumpukan teratas tas");
+printf("4. MAP -> Untuk memunculkan peta");
+printf("5. TO_DO -> Untuk menampilkan pesanan yang masuk");
+printf("6. IN_PROGRESS -> Untuk menampilkan pesanan yang sedang dikerjakan");
+printf("7. BUY -> Untuk menampilkan gadget yang dapat dibeli lalu membelinya");
+printf("8. INVENTORY -> Untuk melihat gadget yang dimiliki dan menggunakannya");
+printf("9. HELP -> Untuk mengeluarkan list command dan kegunaannya");
+printf("10. SAVE_GAME -> Untuk melakukan save state");
+*/
