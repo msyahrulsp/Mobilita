@@ -105,4 +105,6 @@ LL_List LL_concat(LL_List l1, LL_List l2) ;
 /* menghasilkan l3 yang baru (dengan elemen list l1 dan l2 secara beurutan). */
 /* Tidak ada alokasi/dealokasi pada prosedur ini */
 
+int LL_length(LL_List l);
+
 #endif
