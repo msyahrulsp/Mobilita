@@ -6,9 +6,11 @@
 typedef struct {
     int Time;
     int Money;
+    POINT Pos;
 } Stat;
 
 typedef struct { // Not Done
+    Stat Player;
     Matrix Map;
     POINT HQ;
     int NBuild;
@@ -16,5 +18,16 @@ typedef struct { // Not Done
     Matrix Adj;
     int NOrder;
     Pesanan Order;
-    Stat Player;
-} Game
+} Game;
+
+void help();
+
+/*
+Waktu, Lokasi, Uang
+Daftar Pesanan
+To Do List
+In Progress List
+Tas
+Inventory
+Peta
+*/

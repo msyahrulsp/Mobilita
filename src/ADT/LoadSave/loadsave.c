@@ -3,17 +3,32 @@
 
 void load() {
     FILE *loadFile;
-    int a;
 
-    loadFile = fopen("./save/Test.txt", "r");
+    resetWord();
+    printf("Masukkan nama save file permainan: ");
+    startWord();
+    toPath();
+    loadFile = fopen(currentWord.contents, "r");
 
-    fscanf(loadFile, "%d", &a);
-    printf("%d", a);
+    while(loadFile == NULL) {
+        printf("File save tersebut tidak ada!\n");
+        resetWord();
+        printf("Masukkan nama save file permainan: ");
+        startWord();
+        toPath();
+        loadFile = fopen(currentWord.contents, "r");
+    }
+    
 }
 
 void save() {
     FILE *saveFile;
 
-    saveFile = fopen("./save/Test.txt", "w");
+    resetWord();
+    printf("Masukkan nama save file permainan: ");
+    startWord();
+    toPath();
+    saveFile = fopen(currentWord.contents, "w");
+
     fprintf(saveFile, "1 2\n5");
 }

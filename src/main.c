@@ -4,6 +4,21 @@
 
 // Butuh tipe data Game > Buat load + save ( Ini nampung semua data )
 
+void help() {
+    printf("\nHELP MENU MOBILITA\n");
+    printf("1. MOVE -> Untuk berpindah ke lokasi selanjutnya\n");
+    printf("2. PICK_UP -> Untuk mengambil item di lokasi sekarang\n");
+    printf("3. DROP_OFF -> Untuk mengantarkan item ke lokasi jika item di tumpukan teratas tas\n");
+    printf("4. MAP -> Untuk memunculkan peta\n");
+    printf("5. TO_DO -> Untuk menampilkan pesanan yang masuk\n");
+    printf("6. IN_PROGRESS -> Untuk menampilkan pesanan yang sedang dikerjakan\n");
+    printf("7. BUY -> Untuk menampilkan gadget yang dapat dibeli lalu membelinya\n");
+    printf("8. INVENTORY -> Untuk melihat gadget yang dimiliki dan menggunakannya\n");
+    printf("9. HELP -> Untuk mengeluarkan list command dan kegunaannya\n");
+    printf("10. SAVE_GAME -> Untuk melakukan save state\n");
+    printf("11. RETURN -> Untuk mengembalikan item teratas di tas\n\n");
+}
+
 int main(){
 
     int time;
@@ -33,11 +48,7 @@ int main(){
         }
     }
 
-    if (isEqual(currentWord, "NEW_GAME")) {
-        // load default konfigurasi
-    } else {
-        // load game
-    }
+    load();
 
     printf("\nSELAMAT BERMAIN!!\n\n");
     resetWord();
@@ -69,9 +80,9 @@ int main(){
         } else if (isEqual(currentWord, "INVENTORY")) {
             
         } else if (isEqual(currentWord, "HELP")) {
-            
+            help();
         } else if (isEqual(currentWord, "SAVE_GAME")) {
-            
+            save();
         } else if (isEqual(currentWord, "RETURN")) {
             
         } else {
@@ -87,16 +98,3 @@ int main(){
     printf("\nKELUAR"); // sementara
     return 0;
 }
-
-/*
-printf("1. MOVE -> Untuk berpindah ke lokasi selanjutnya");
-printf("2. PICK_UP -> Untuk mengambil item di lokasi sekarang");
-printf("3. DROP_OFF -> Untuk mengantarkan item ke lokasi jika item di tumpukan teratas tas");
-printf("4. MAP -> Untuk memunculkan peta");
-printf("5. TO_DO -> Untuk menampilkan pesanan yang masuk");
-printf("6. IN_PROGRESS -> Untuk menampilkan pesanan yang sedang dikerjakan");
-printf("7. BUY -> Untuk menampilkan gadget yang dapat dibeli lalu membelinya");
-printf("8. INVENTORY -> Untuk melihat gadget yang dimiliki dan menggunakannya");
-printf("9. HELP -> Untuk mengeluarkan list command dan kegunaannya");
-printf("10. SAVE_GAME -> Untuk melakukan save state");
-*/

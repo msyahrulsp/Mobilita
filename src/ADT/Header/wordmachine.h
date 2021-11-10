@@ -51,4 +51,7 @@ void resetWord();
 boolean isEqual(Word input, char command[]);
 /* Mengecek kata sama atau tidak */
 
+void toPath();
+/* Mengubah currentWord ke path file */
+
 #endif
