@@ -56,3 +56,28 @@ boolean isEqual(Word input, char command[]) {
 
     return true;
 }
+
+boolean isEqualInt(Word input, int number) {
+    char str[10];
+	
+    sprintf(str,&d,number);
+	
+    return isEqual(input,str);
+}
+
+void toPath() {
+    int i;
+    for (i = currentWord.length - 1; i >= 0; i--) {
+        currentWord.contents[i+7] = currentWord.contents[i];
+    }
+
+    currentWord.contents[0] = '.';
+    currentWord.contents[1] = '/';
+    currentWord.contents[2] = 's';
+    currentWord.contents[3] = 'a';
+    currentWord.contents[4] = 'v';
+    currentWord.contents[5] = 'e';
+    currentWord.contents[6] = '/';
+
+    currentWord.length += 7;
+}

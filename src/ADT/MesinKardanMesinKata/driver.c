@@ -17,6 +17,8 @@ int main(){
             printf("\n");
             break;
         }
+        toPath();
+        printf("%s\n", currentWord.contents);
         resetWord();
         printf("ENTER COMMAND: ");
         startWord();
