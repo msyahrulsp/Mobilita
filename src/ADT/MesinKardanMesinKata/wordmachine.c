@@ -57,6 +57,14 @@ boolean isEqual(Word input, char command[]) {
     return true;
 }
 
+boolean isEqualInt(Word input, int number) {
+    char str[10];
+	
+    sprintf(str,&d,number);
+	
+    return isEqual(input,str);
+}
+
 void toPath() {
     int i;
     for (i = currentWord.length - 1; i >= 0; i--) {

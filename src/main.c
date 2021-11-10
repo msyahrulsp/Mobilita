@@ -21,11 +21,14 @@ void help() {
 
 int main(){
 
-    int time;
+    int time, position;
+    int totalbangunan;
     POINT currentPos;
+    Matrix adj;
     LL_List todolist;
     LL_List inprogresslist;
     ListDin daftarbangunan;
+    ListDin moveable;
     Pesanan order, valpesanan;
     Stack bag;
     int idxtdl;
@@ -49,15 +52,75 @@ int main(){
     }
 
     load();
-
+    // Read konfigurasi
+    //
+    // inisialisasi waktu dan posisi
+    time = 0;
+    position = 0; // index HQ of daftarbangunan
+	
     printf("\nSELAMAT BERMAIN!!\n\n");
+    printf("Waktu: %d\n",time);
     resetWord();
     printf("ENTER COMMAND: ");
     startWord();
 
     while (!isEqual(currentWord, "EXIT")) {
         if (isEqual(currentWord, "MOVE")) {
-            // move
+            LD_CreateListDin(&moveable, totalbangunan);
+            // Melihat konfigurasi adjacency Matrix (adj)
+            for(int j = 0; j < COLS(adj); j++){			
+                if(adj[position][j] == 1){
+                    // Insert to moveable List
+                    LD_insertLast(&moveable, ELMT(daftarbangunan,j);
+                }
+            }
+            // Input
+            printf("Posisi yang dapat dicapai:\n");
+            for(int i = 0; i < LD_length(moveable); i++){
+                printf("%d. %c (%d,%d)\n",(i+1),BNAME(moveable,i),BPOINT(moveable,i)[0],BPOINT(moveable,i)[1]);
+            }
+            // Validation Loop
+            valid = false;
+            while(!valid){
+                printf("Posisi yang dipilih? (ketik 0 jika ingin kembali)\n");
+                resetWord();
+                printf("ENTER COMMAND: ");
+                startWord();
+                if (isEqual(currentWord, "0")){ // Cancel move
+                    valid = true;
+                    printf("\nMove dibatalkan!");
+                }
+                else {
+                    i = 1;
+                    while(i <= LD_length(moveable) && (!isEqualInt(currentWord,i)){
+                        i++;
+                    }
+                    if(i <= LD_length(moveable)){
+                        valid = true;
+                        i--;
+                        // Time Handle
+                        /*
+                        if(isActiveAbility(SpeedBoost)){
+                            later
+                        }
+                        else if(isCarryItem(Heavy){ // TODO in In_Progress
+                            int n = TotalItem(Heavy)
+                            time += (n+1)
+                        }
+                        else {
+                            (time++);
+                        }
+                        */
+                        // Move
+                        printf("Mobita sekarang berada di titik %c (%d,%d)\n",BNAME(moveable,i),BPOINT(moveable,i)[0],BPOINT(moveable,i)[1]);
+                        position = LD_indexOf(daftarbangunan, moveable[i]);
+                    }
+                    else{
+                        printf("\nSilahkan pilih sesuai opsi!\n");
+                    }
+                }
+            }
+            LD_dealocate(&moveable);
         } else if (isEqual(currentWord, "PICK_UP")) {
             idxtdl = LL_pesananAvailable(todolist, currentPos, daftarbangunan);
             if (idxtdl != IDX_UNDEF){
@@ -88,6 +151,7 @@ int main(){
         } else {
             printf("Command salah\n");
         }
+        printf("Waktu: %d\n",time);
         resetWord();
         printf("ENTER COMMAND: ");
         startWord();
