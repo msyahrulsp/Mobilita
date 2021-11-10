@@ -195,3 +195,16 @@ void LS_deleteLast(ListGadget *l, Gadget *val) {
     GNAME(*l, LS_length(*l) - 1) = LS_NAME_UNDEF;
     GPRICE(*l, LS_length(*l) - 1) = LS_VAL_UNDEF;
 }
+
+void LS_deleteElmt(ListGadget *l, int idx) {
+/* Proses : Menghapus elemen dalam indeks tertentu */
+/* I.S. List tidak kosong */
+/* F.S. val adalah nilai elemen terakhir l sebelum penghapusan, */
+/*      Banyaknya elemen List berkurang satu */
+/*      List l mungkin menjadi kosong */
+    /* KAMUS */
+    
+    /* ALGORITMA */
+    GNAME(*l, idx) = LS_NAME_UNDEF;
+    GPRICE(*l, idx) = LS_VAL_UNDEF;
+}

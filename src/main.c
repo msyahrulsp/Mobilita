@@ -19,6 +19,98 @@ void help() {
     printf("11. RETURN -> Untuk mengembalikan item teratas di tas\n\n");
 }
 
+void buy(ListGadget inventory, int *money){
+    printf("Uang Anda sekarang: %d Yen\n", *money);
+    printf("Gadget yang tersedia:\n");
+    printf("1. Kain Pembungkus Waktu (800 Yen)\n");
+    printf("2. Senter Pembesar (1200 Yen)\n");
+    printf("3. Pintu Kemana Saja (1500 Yen)\n");
+    printf("4. Mesin Waktu (3000 Yen)\n");
+    printf("Gadget mana yang ingin kau beli? (ketik 0 jika ingin kembali)\n");
+
+    resetWord();
+    printf("\nENTER COMMAND: ");
+    startWord();
+    if(isEqual(currentWord, "1")){
+        if(*money >= 800){
+            Gadget gd;
+            gd.gadgetname = 'K';
+            gd.gadgetprice = 800;
+            LS_insertLast(&inventory, gd);
+            *money -= gd.gadgetprice;
+            printf("Kain Pembungkus Waktu berhasil dibeli!\n");
+            printf("Uang Anda sekarang: %d Yen\n", *money);
+            //Kain Pembungkus Waktu berhasil dibeli!
+        }
+        else{
+            printf("Uang tidak cukup untuk membeli gadget!\n");
+        }
+    }
+    else if(isEqual(currentWord, "2")){
+        if(*money >= 1200){
+            Gadget gd;
+            gd.gadgetname = 'B';
+            gd.gadgetprice = 1200;
+            LS_insertLast(&inventory, gd);
+            *money -= gd.gadgetprice;
+            printf("Senter Pembesar berhasil dibeli!\n");
+            printf("Uang Anda sekarang: %d Yen\n", *money);
+            //Senter Pembesar berhasil dibeli!
+        }
+        else{
+            printf("Uang tidak cukup untuk membeli gadget!\n");
+        }
+    }
+    else if(isEqual(currentWord, "3")){
+        if(*money >= 1500){
+            Gadget gd;
+            gd.gadgetname = 'D';
+            gd.gadgetprice = 1500;
+            LS_insertLast(&inventory, gd);
+            *money -= gd.gadgetprice;
+            printf("Pintu Kemana Saja berhasil dibeli!\n");
+            printf("Uang Anda sekarang: %d Yen\n", *money);
+            //Pintu Kemana Saja berhasil dibeli!
+        }
+        else{
+            printf("Uang tidak cukup untuk membeli gadget!\n");
+        }
+    }
+    else if(isEqual(currentWord, "4")){
+        if(*money >= 3000){
+            Gadget gd;
+            gd.gadgetname = 'T';
+            gd.gadgetprice = 3000;
+            LS_insertLast(&inventory, gd);
+            *money -= gd.gadgetprice;
+            printf("Mesin Waktu berhasil dibeli!\n");
+            printf("Uang Anda sekarang: %d Yen\n", *money);
+            //Mesin Waktu berhasil dibeli!
+        }
+        else{
+            printf("Uang tidak cukup untuk membeli gadget!\n");
+        }
+    }
+    else if(isEqual(currentWord, "5")){
+        if(*money >= 800){
+            Gadget gd;
+            gd.gadgetname = 'S';
+            gd.gadgetprice = 800;
+            LS_insertLast(&inventory, gd);
+            *money -= gd.gadgetprice;
+            printf("Senter Pengecil berhasil dibeli!\n");
+            printf("Uang Anda sekarang: %d Yen\n", *money);
+            //Senter Pengecil berhasil dibeli!
+        }
+        else{
+            printf("Uang tidak cukup untuk membeli gadget!\n");
+        }
+    }
+    else{
+        printf("Gadget dengan kode tersebut tidak ada.\n");
+    }
+}
+
 int main(){
 
     int time, position;
@@ -32,6 +124,11 @@ int main(){
     Pesanan order, valpesanan;
     Stack bag;
     int idxtdl;
+    int bagCapacity;
+    int money;
+
+    ListGadget inventory;
+    LS_CreateListGadget(&inventory);
     // kapasitas tas int
     // ability (speed boost , return to sender) list statis boolean
 
@@ -57,6 +154,7 @@ int main(){
     // inisialisasi waktu dan posisi
     time = 0;
     position = 0; // index HQ of daftarbangunan
+    bagCapacity = 3; // batasan untuk ukuran tas
 	
     printf("\nSELAMAT BERMAIN!!\n\n");
     printf("Waktu: %d\n",time);
@@ -77,10 +175,10 @@ int main(){
             // Input
             printf("Posisi yang dapat dicapai:\n");
             for(int i = 0; i < LD_length(moveable); i++){
-                printf("%d. %c (%d,%d)\n",(i+1),BNAME(moveable,i),BPOINT(moveable,i)[0],BPOINT(moveable,i)[1]);
+                printf("%d. %c (%d,%d)\n",(i+1),BNAME(moveable,i),BPOINT(&moveable,i)[0],BPOINT(moveable,i)[1]);
             }
             // Validation Loop
-            valid = false;
+            boolean valid = false;
             while(!valid){
                 printf("Posisi yang dipilih? (ketik 0 jika ingin kembali)\n");
                 resetWord();
@@ -91,7 +189,7 @@ int main(){
                     printf("\nMove dibatalkan!");
                 }
                 else {
-                    i = 1;
+                    int i = 1;
                     while(i <= LD_length(moveable) && (!isEqualInt(currentWord,i)){
                         i++;
                     }
@@ -133,15 +231,85 @@ int main(){
         } else if (isEqual(currentWord, "DROP_OFF")) {
             
         } else if (isEqual(currentWord, "MAP")) {
+            char posisiMobita, lokasiPickUp;
+            char lokasiDropOff, destinasiAvail;
+            
             
         } else if (isEqual(currentWord, "TO_DO")) {
             LL_displayList_ToDo(todolist);
         } else if (isEqual(currentWord, "IN_PROGRESS")) {
             LL_displayList_InProgress(inprogresslist);
         } else if (isEqual(currentWord, "BUY")) {
-            
+            buy(inventory, &money);
         } else if (isEqual(currentWord, "INVENTORY")) {
-            
+            LS_displayList(inventory);
+            printf("Gadget mana yang ingin digunakan? (ketik 0 jika ingin kembali)\n");
+            resetWord();
+            printf("\nENTER COMMAND: ");
+            startWord();
+
+            // Memroses inputan menjadi indeks sebenarnya
+            int idx = 0; // Sementara saja, yang benernya idx diterima dari mesin kata
+            char gd = GNAME(inventory, idx);
+            if (gd == 'K'){
+                Stack tempBag; // Membuat stack untuk tempat penampungan item sementara
+                S_CreateStack(&tempBag);
+
+                boolean foundPerishable = false;
+                S_ElType item; // Variabel untuk menampung item yang dipindahkan
+                while(!foundPerishable){
+                    if(JENIS_ITEM(TOP(bag)) != 'P'){
+                        foundPerishable = true;
+                    }
+                    else{
+                        S_pop(&bag, &item);
+                        S_push(&tempBag, item); // Item dipindahkan ke temporaryBag
+                    }
+                }
+                if (foundPerishable == true){
+                    // Mengembalikan waktu perishable item.
+                    // Waktu perishable asalnya dimana ya?
+                    // Saya gatau di mana jadi belum bisa ambil nilai waktu asalnya
+                    LS_deleteElmt(&inventory, idx);
+                    printf("Kain Pembungkus Waktu berhasil digunakan!\n");
+                }
+                else{
+                    printf("Tidak ada perishable item di tas!\n");
+                }
+                while(S_isEmpty(tempBag) != true){
+                    S_pop(&tempBag, &item);
+                    S_push(&bag, item);
+                }
+            }
+            if (gd == 'B'){
+                if (bagCapacity <= 100){
+                    bagCapacity = bagCapacity * 2;
+                    if (bagCapacity > 100){
+                        bagCapacity = 100;
+                    }
+                    LS_deleteElmt(&inventory, idx);
+                    printf("Senter Pembesar berhasil digunakan!\n");
+                }
+                else{
+                    printf("Kapasitas tas sudah tidak bisa dibesarkan lagi!\n");
+                }
+            }
+            if (gd == 'D'){
+                // Move ke bangunan mana saja
+            }
+            if (gd == 'T'){
+                if (time < 50){
+                    time = 0;
+                }
+                else{
+                    time = time - 50;
+                }
+                LS_deleteElmt(&inventory, idx);
+                printf("Mesin Waktu berhasil digunakan!\n");
+            }
+            if (gd == 'S'){
+                // Menghilangkan efek heavy item
+            }
         } else if (isEqual(currentWord, "HELP")) {
             help();
         } else if (isEqual(currentWord, "SAVE_GAME")) {

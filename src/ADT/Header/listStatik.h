@@ -148,4 +148,6 @@ void LS_deleteLast(ListGadget *l, Gadget *val);
 /*      Banyaknya elemen List berkurang satu */
 /*      List l mungkin menjadi kosong */
 
+void LS_deleteElmt(ListGadget *l, int idx);
+
 #endif
