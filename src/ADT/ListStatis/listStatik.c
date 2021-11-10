@@ -15,9 +15,9 @@ void LS_CreateListGadget(ListGadget *l) {
     /* KAMUS */
     int i;
     /* ALGORITMA */
-    for (i = 0; i < CAPACITY; i++) {
-        GNAME(*l, i) = ' ';
-        GPRICE(*l, i) = VAL_UNDEF;
+    for (i = 0; i < LS_CAPACITY; i++) {
+        GNAME(*l, i) = LS_NAME_UNDEF;
+        GPRICE(*l, i) = LS_VAL_UNDEF;
     }
 }
 
@@ -30,8 +30,8 @@ int LS_length(ListGadget l) {
     int NEFF = 0;
     int i;
     /* ALGORITMA */
-    for (i = 0; i < CAPACITY; i++) {
-        if (GNAME(l, i) == ' ')
+    for (i = 0; i < LS_CAPACITY; i++) {
+        if (GNAME(l, i) == LS_NAME_UNDEF)
             return NEFF;
         NEFF++;
     }
@@ -45,7 +45,7 @@ boolean LS_isIdxValid(ListGadget l, int i) {
     /* KAMUS */
 
     /* ALGORITMA */
-    return (i >= 0) && (i < CAPACITY);
+    return (i >= 0) && (i < LS_CAPACITY);
 }
 boolean LS_isIdxEff(ListGadget l, int i) {
 /* Mengirimkan true jika i adalah indeks yang terdefinisi utk List l */
@@ -71,7 +71,7 @@ boolean LS_isFull(ListGadget l) {
     /* KAMUS */
 
     /* ALGORITMA */
-    return LS_length(l) == CAPACITY;
+    return LS_length(l) == LS_CAPACITY;
 }
 
 /* ********** BACA dan TULIS dengan INPUT/OUTPUT device ********** */
@@ -93,7 +93,7 @@ void LS_readList(ListGadget *l) {
     do
     {
         scanf("%d", &n);
-    } while (!(n >= 0 && n <= CAPACITY));
+    } while (!(n >= 0 && n <= LS_CAPACITY));
 
     for (i = 0; i < n; i++) 
         scanf("%c %d", &GNAME(*l, i), &GPRICE(*l, i));
@@ -126,9 +126,9 @@ void LS_displayList(ListGadget l) {
 /* Contoh : jika ada tiga elemen bernilai 1, 20, 30 akan dicetak: [1,20,30] */
 /* Jika List kosong : menulis [] */
 
-    for (int i = 0; i < CAPACITY; i++){
+    for (int i = 0; i < LS_CAPACITY; i++){
         printf("%d. ", i + 1);
-        if (GNAME(l, i) != ' '){
+        if (GNAME(l, i) != LS_NAME_UNDEF){
             LS_gadgetName(l, i);
         }
         else{
@@ -154,7 +154,7 @@ int LS_indexOf(ListGadget l, Gadget val) {
         i++;
     }
 
-    return IDX_UNDEF;
+    return LS_IDX_UNDEF;
 }
 
 /* ********** OPERASI LAIN ********** */
@@ -192,6 +192,6 @@ void LS_deleteLast(ListGadget *l, Gadget *val) {
     
     /* ALGORITMA */
     *val = LS_ELMT(*l, LS_length(*l) - 1);
-    GNAME(*l, LS_length(*l) - 1) = ' ';
-    GPRICE(*l, LS_length(*l) - 1) = VAL_UNDEF;
+    GNAME(*l, LS_length(*l) - 1) = LS_NAME_UNDEF;
+    GPRICE(*l, LS_length(*l) - 1) = LS_VAL_UNDEF;
 }

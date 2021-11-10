@@ -10,11 +10,13 @@
 #include "boolean.h"
 
 /*  Kamus Umum */
-#define CAPACITY 100
+#define LS_CAPACITY 100
 /* Kapasitas penyimpanan */
-#define IDX_UNDEF -1
+#define LS_IDX_UNDEF -1
 /* Indeks tak terdefinisi*/
-#define VAL_UNDEF -999
+#define LS_NAME_UNDEF 'U'
+/* Gadget tak terdefinisi*/
+#define LS_VAL_UNDEF -999
 /* Nilai elemen tak terdefinisi*/
 
 /* Definisi elemen dan koleksi objek */
@@ -23,9 +25,9 @@ typedef struct {
    int gadgetprice;
 } Gadget; /* type elemen List */
 typedef struct {
-   Gadget contents[CAPACITY]; /* memori tempat penyimpan elemen (container) */
+   Gadget contents[LS_CAPACITY]; /* memori tempat penyimpan elemen (container) */
 } ListGadget;
-/* Indeks yang digunakan [0..CAPACITY-1] */
+/* Indeks yang digunakan [0..LS_CAPACITY-1] */
 /* Jika l adalah ListGadget, cara deklarasi dan akses: */
 /* Deklarasi : l : ListGadget */
 /* Maka cara akses: 
@@ -43,7 +45,7 @@ typedef struct {
 /* Konstruktor : create List kosong  */
 void LS_CreateListGadget(ListGadget *l);
 /* I.S. l sembarang */
-/* F.S. Terbentuk List l kosong dengan kapasitas CAPACITY */
+/* F.S. Terbentuk List l kosong dengan kapasitas LS_CAPACITY */
 /* Proses: Inisialisasi semua elemen List l dengan VAL_UNDEF */
 
 /* ********** SELEKTOR (TAMBAHAN) ********** */
@@ -75,9 +77,9 @@ void LS_readList(ListGadget *l);
 /* F.S. List l terdefinisi */
 /* Proses: membaca banyaknya elemen l dan mengisi nilainya */
 /* 1. Baca banyaknya elemen diakhiri enter, misalnya n */
-/*    Pembacaan diulangi sampai didapat n yang benar yaitu 0 <= n <= CAPACITY */
+/*    Pembacaan diulangi sampai didapat n yang benar yaitu 0 <= n <= LS_CAPACITY */
 /*    Jika n tidak valid, tidak diberikan pesan kesalahan */
-/* 2. Jika 0 < n <= CAPACITY; Lakukan n kali: 
+/* 2. Jika 0 < n <= LS_CAPACITY; Lakukan n kali: 
           Baca elemen mulai dari indeks 0 satu per satu diakhiri enter */
 /*    Jika n = 0; hanya terbentuk List kosong */
 void LS_gadgetName(ListGadget l, int idx);

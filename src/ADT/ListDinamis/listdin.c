@@ -11,13 +11,13 @@
 
 /* ********** KONSTRUKTOR ********** */
 /* Konstruktor : create list kosong  */
-void LD_CreateListDin(ListDin *l, int capacity) {
+void LD_CreateListDin(ListDin *l, int LD_CAPACITY) {
 /* I.S. l sembarang, capacity > 0 */
 /* F.S. Terbentuk list dinamis l kosong dengan kapasitas capacity */
     /* KAMUS */
 
     /* ALGORITMA */
-    CAP(*l) = capacity;
+    CAP(*l) = LD_CAPACITY;
     NEFF(*l) = 0;
     BUFFER(*l) = (Building*) malloc(CAP(*l) * sizeof(Building));
 }

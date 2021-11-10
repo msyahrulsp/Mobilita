@@ -25,7 +25,7 @@ typedef struct
 {
     Building *buffer; /* memori tempat penyimpan elemen (container) */
     int nEff;       /* >=0, banyaknya elemen efektif */
-    int capacity;   /* ukuran elemen */
+    int LD_CAPACITY;   /* ukuran elemen */
 } ListDin;
 /* Indeks yang digunakan [0..capacity-1] */
 /* Jika l adalah : ListDin, cara deklarasi dan akses: */
@@ -45,11 +45,11 @@ typedef struct
 #define LD_ELMT(l, i) (l).buffer[i]
 #define BNAME(l, i) (l).buffer[i].buildingName
 #define BPOINT(l, i) (l).buffer[i].position
-#define CAP(l) (l).capacity
+#define CAP(l) (l).LD_CAPACITY
 
 /* ********** KONSTRUKTOR ********** */
 /* Konstruktor : create list kosong  */
-void LD_CreateListDin(ListDin *l, int capacity);
+void LD_CreateListDin(ListDin *l, int LD_CAPACITY);
 /* I.S. l sembarang, capacity > 0 */
 /* F.S. Terbentuk list dinamis l kosong dengan kapasitas capacity */
 
