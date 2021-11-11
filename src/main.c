@@ -112,26 +112,20 @@ void buy(ListGadget inventory, int *money){
 }
 
 int main(){
-
+	// KAMUS
+    int idxtdl;
     int time, position;
+    int bagCapacity, money;
     int totalbangunan;
     POINT currentPos;
     Matrix adj;
-    LL_List todolist;
-    LL_List inprogresslist;
-    ListDin daftarbangunan;
-    ListDin moveable;
+    LL_List todolist, inprogresslist;
+    ListDin daftarbangunan, moveable;
     Pesanan order, valpesanan;
     Stack bag;
-    int idxtdl;
-    int bagCapacity;
-    int money;
-
     ListGadget inventory;
-    LS_CreateListGadget(&inventory);
-    // kapasitas tas int
-    // ability (speed boost , return to sender) list statis boolean
-
+    Ability SpeedBoost, ReturnToSender;
+	
     // main menu
     printf("MOBILITA - Main Menu\n");
     printf("ENTER COMMAND: ");
@@ -151,10 +145,13 @@ int main(){
     load();
     // Read konfigurasi
     //
-    // inisialisasi waktu dan posisi
+    // inisialisasi variabel
     time = 0;
     position = 0; // index HQ of daftarbangunan
     bagCapacity = 3; // batasan untuk ukuran tas
+    LS_CreateListGadget(&inventory);
+    AB_createAbility(&SpeedBoost, true);
+    AB_createAbility(&ReturnToSender, false);
 	
     printf("\nSELAMAT BERMAIN!!\n\n");
     printf("Waktu: %d\n",time);
@@ -196,19 +193,23 @@ int main(){
                     if(i <= LD_length(moveable)){
                         valid = true;
                         i--;
-                        // Time Handle
-                        /*
-                        if(isActiveAbility(SpeedBoost)){
-                            later
+                        // Time Handle                       
+                        if(AB_isActive(SpeedBoost)){
+                            if ((Count(SpeedBoost) % 2)!=0){
+								time++;
+							}
+							AB_useAbility(&SpeedBoost);
+							if (Count(SpeedBoost) == 0){
+								AB_deactivate(&SpeedBoost);
+							}
                         }
-                        else if(isCarryItem(Heavy){ // TODO in In_Progress
+                        /*else if(isCarryItem(Heavy){ // TODO in In_Progress
                             int n = TotalItem(Heavy)
                             time += (n+1)
-                        }
+                        }*/
                         else {
                             (time++);
-                        }
-                        */
+                        }                    
                         // Move
                         printf("Mobita sekarang berada di titik %c (%d,%d)\n",BNAME(moveable,i),BPOINT(moveable,i)[0],BPOINT(moveable,i)[1]);
                         position = LD_indexOf(daftarbangunan, moveable[i]);
@@ -227,6 +228,9 @@ int main(){
                     LL_deleteAt(&todolist, idxtdl, &valpesanan);
                     LL_insertFirst(&inprogresslist, valpesanan);
                     push(&bag, valpesanan);
+                    if(JENIS_ITEM(valpesanan) == 'H'){
+                        AB_deactivate(&SpeedBoost);
+                    }
                 } else {
                     printf("Tidak bisa mengambil pesanan karena tas sudah penuh\n");
                 }
@@ -239,9 +243,12 @@ int main(){
                 if (JENIS_ITEM(valpesanan) == 'N') {
                     printf("Pesanan Normal Item berhasil diantarkan\n");
                     printf("Uang yang didapatkan: 200 Yen");
-                } else if (JENIS_ITEM(valpesanan) == 'H') {
-                    // Harus atur waktu lagi
+                } else if (JENIS_ITEM(valpesanan) == 'H') {                 
                     // Dapet Reward
+                    /*if(!isCarryItem(Heavy)){
+                          AB_reset(&SpeedBoost,true);
+                          AB_activate(&SpeedBoost);
+                    }*/
                     printf("Pesanan Heavy Item berhasil diantarkan\n");
                     printf("Uang yang didapatkan: 400 Yen");
                 } else if (JENIS_ITEM(valpesanan) == 'P') {
@@ -255,7 +262,7 @@ int main(){
                     printf("Uang yang didapatkan: 600 Yen");
                 }
             } else {
-                printf("Tidak dapat pesanan yang dapat diantarkan!\n");
+                printf("Tidak ada pesanan yang dapat diantarkan!\n");
             }
         } else if (isEqual(currentWord, "MAP")) {
             char posisiMobita, lokasiPickUp;
