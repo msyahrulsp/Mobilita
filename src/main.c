@@ -225,11 +225,16 @@ int main(){
             idxtdl = LL_pesananAvailable(todolist, currentPos, daftarbangunan);
             if (idxtdl != IDX_UNDEF){
                 if (LL_length(inprogresslist)<bagCapacity){
-                    LL_deleteAt(&todolist, idxtdl, &valpesanan);
-                    LL_insertFirst(&inprogresslist, valpesanan);
-                    push(&bag, valpesanan);
-                    if(JENIS_ITEM(valpesanan) == 'H'){
-                        AB_deactivate(&SpeedBoost);
+                    if(JENIS_ITEM(TOP(bag)) != 'V'){
+                        LL_deleteAt(&todolist, idxtdl, &valpesanan);
+                        LL_insertFirst(&inprogresslist, valpesanan);
+                        S_push(&bag, valpesanan);
+                        if(JENIS_ITEM(valpesanan) == 'H'){
+                           AB_reset(&SpeedBoost,true);
+                        }
+                    }
+                    else{
+                        printf("Item VIP sedang dalam proses, tidak dapat mengambil item\n");
                     }
                 } else {
                     printf("Tidak bisa mengambil pesanan karena tas sudah penuh\n");
@@ -238,15 +243,16 @@ int main(){
                 printf("Pesanan tidak ditemukan\n");
             }
         } else if (isEqual(currentWord, "DROP_OFF")) {
-            if (!LL_isEmpty(&bag)) {
-                pop(&bag, &valpesanan);
+            // TODO : handle kesesuaian lokasi pengiriman
+            if (!S_isEmpty(bag) && !LL_isEmpty(inprogresslist)) {
+                LL_deleteFirst(&inprogresslist, &valpesanan);
+                S_pop(&bag, &valpesanan);
                 if (JENIS_ITEM(valpesanan) == 'N') {
                     printf("Pesanan Normal Item berhasil diantarkan\n");
                     printf("Uang yang didapatkan: 200 Yen");
                 } else if (JENIS_ITEM(valpesanan) == 'H') {                 
                     // Dapet Reward
                     /*if(!isCarryItem(Heavy)){
-                          AB_reset(&SpeedBoost,true);
                           AB_activate(&SpeedBoost);
                     }*/
                     printf("Pesanan Heavy Item berhasil diantarkan\n");
@@ -254,15 +260,17 @@ int main(){
                 } else if (JENIS_ITEM(valpesanan) == 'P') {
                     // dapet reward
                     // check perishableitem
+                    bagCapacity++; // ability increase Capacity
                     printf("Pesanan Perishable Item berhasil diantarkan\n");
                     printf("Uang yang didapatkan: 400 Yen");
                 } else if (JENIS_ITEM(valpesanan) == 'V') {
                     // dapet reward
+                    AB_isActive(ReturnToSender) ? AB_stackAbility(ReturnToSender): AB_activate(ReturnToSender);
                     printf("Pesanan VIP Item berhasil diantarkan\n");
                     printf("Uang yang didapatkan: 600 Yen");
                 }
             } else {
-                printf("Tidak ada pesanan yang dapat diantarkan!\n");
+                printf("Tidak ada pesanan yang sedang diantarkan!\n");
             }
         } else if (isEqual(currentWord, "MAP")) {
             char posisiMobita, lokasiPickUp;
@@ -349,7 +357,28 @@ int main(){
         } else if (isEqual(currentWord, "SAVE_GAME")) {
             save();
         } else if (isEqual(currentWord, "RETURN")) {
-            
+            if(AB_isActive(ReturnToSender)){
+                if(!S_isEmpty(bag) && !LL_isEmpty(inprogresslist)){
+                    if(JENIS_ITEM(TOP(bag)) != 'V'){
+                        LL_deleteFirst(&inprogresslist, &valpesanan);
+                        S_pop(&bag, &valpesanan);
+                        // TODO : reset durasi persishable, kembalikan item ke lokasi pickup
+                        LL_insertLast(&todolist, valpesanan);
+                    }
+                    else {
+                        printf("Ability tidak dapat digunakan untuk item VIP\n");
+                    }
+                } else {
+                    printf("Tidak ada item yang sedang dibawa\n");
+                }
+                printf("Ability berhasil digunakan\n");
+                AB_useAbility(&ReturnToSender);
+                if (Count(ReturnToSender)==0){
+                    AB_reset(&ReturnToSender, false);
+                }
+            } else {
+                printf("Anda tidak memiliki ability ini\n");
+            }
         } else {
             printf("Command salah\n");
         }
