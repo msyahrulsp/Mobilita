@@ -220,11 +220,16 @@ int main(){
             }
             LD_dealocate(&moveable);
         } else if (isEqual(currentWord, "PICK_UP")) {
+            currentPos = BPOINT(daftarbangunan, position);
             idxtdl = LL_pesananAvailable(todolist, currentPos, daftarbangunan);
             if (idxtdl != IDX_UNDEF){
-                LL_deleteAt(&todolist, idxtdl, &valpesanan);
-                LL_insertFirst(&inprogresslist, valpesanan);
-                push(&bag, valpesanan);
+                if (LL_length(inprogresslist)<bagCapacity){
+                    LL_deleteAt(&todolist, idxtdl, &valpesanan);
+                    LL_insertFirst(&inprogresslist, valpesanan);
+                    push(&bag, valpesanan);
+                } else {
+                    printf("Tidak bisa mengambil pesanan karena tas sudah penuh");
+                }
             } else {
                 printf("Pesanan tidak ditemukan!");
             }
