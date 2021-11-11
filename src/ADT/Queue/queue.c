@@ -210,7 +210,7 @@ void Q_displayToDoList(Queue q, int curTime) {
     j = 1;
     for (i = IDX_HEAD(q); i <= IDX_TAIL(q); i++) {
         Q_dequeue(&q, &val);
-        printf("%d. %c -> %c (", j);
+        printf("%d. %c -> %c (", j, PICK_UP_POINT(val), DROP_OFF_POINT(val));
         if (JENIS_ITEM(val) == 'N') printf("Normal)\n"); 
         else if (JENIS_ITEM(val) == 'H') printf("Heavy)\n");
         else if (JENIS_ITEM(val) == 'P') printf("Perishable, sisa waktu %d)\n", PERISH_TIME(val) - curTime);
