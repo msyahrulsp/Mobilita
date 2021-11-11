@@ -228,13 +228,35 @@ int main(){
                     LL_insertFirst(&inprogresslist, valpesanan);
                     push(&bag, valpesanan);
                 } else {
-                    printf("Tidak bisa mengambil pesanan karena tas sudah penuh");
+                    printf("Tidak bisa mengambil pesanan karena tas sudah penuh\n");
                 }
             } else {
-                printf("Pesanan tidak ditemukan!");
+                printf("Pesanan tidak ditemukan\n");
             }
         } else if (isEqual(currentWord, "DROP_OFF")) {
-            
+            if (!LL_isEmpty(&bag)) {
+                pop(&bag, &valpesanan);
+                if (JENIS_ITEM(valpesanan) == 'N') {
+                    printf("Pesanan Normal Item berhasil diantarkan\n");
+                    printf("Uang yang didapatkan: 200 Yen");
+                } else if (JENIS_ITEM(valpesanan) == 'H') {
+                    // Harus atur waktu lagi
+                    // Dapet Reward
+                    printf("Pesanan Heavy Item berhasil diantarkan\n");
+                    printf("Uang yang didapatkan: 400 Yen");
+                } else if (JENIS_ITEM(valpesanan) == 'P') {
+                    // dapet reward
+                    // check perishableitem
+                    printf("Pesanan Perishable Item berhasil diantarkan\n");
+                    printf("Uang yang didapatkan: 400 Yen");
+                } else if (JENIS_ITEM(valpesanan) == 'V') {
+                    // dapet reward
+                    printf("Pesanan VIP Item berhasil diantarkan\n");
+                    printf("Uang yang didapatkan: 600 Yen");
+                }
+            } else {
+                printf("Tidak dapat pesanan yang dapat diantarkan!\n");
+            }
         } else if (isEqual(currentWord, "MAP")) {
             char posisiMobita, lokasiPickUp;
             char lokasiDropOff, destinasiAvail;
