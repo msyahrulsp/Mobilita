@@ -12,5 +12,6 @@
 #include "point.h"
 #include "Pesanan.h"
 #include "loadsave.h"
+#include "ability.h"
 
 #endif
