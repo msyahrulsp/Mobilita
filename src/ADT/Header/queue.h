@@ -50,12 +50,6 @@ void enqueue(Queue *q, Pesanan val);
 /* F.S. val menjadi TAIL yang baru, IDX_TAIL "mundur".
         Jika q penuh semu, maka perlu dilakukan aksi penggeseran "maju" elemen-elemen q
         menjadi rata kiri untuk membuat ruang kosong bagi TAIL baru  */
-void vipEnqueue(Queue *q, Pesanan val);
-/* Proses: Menambahkan val pada q dengan aturan FIFO */
-/* I.S. q mungkin kosong, tabel penampung elemen q TIDAK penuh */
-/* F.S. val menjadi TAIL yang baru, IDX_TAIL "mundur".
-        Jika q penuh semu, maka perlu dilakukan aksi penggeseran "maju" elemen-elemen q
-        menjadi rata kiri untuk membuat ruang kosong bagi TAIL baru  */
 
 void Q_enqueue(Queue *q, Pesanan val);
 /* Proses: Menambahkan val pada q dengan aturan FIFO */
@@ -69,20 +63,5 @@ void Q_dequeue(Queue *q, Pesanan *val);
 /* I.S. q tidak mungkin kosong */
 /* F.S. val = nilai elemen HEAD pd I.S., HEAD dan IDX_HEAD "mundur"; 
         q mungkin kosong */
-
-void Q_enqueueToDoList(Queue *daftarPesanan, Queue *toDoList, int curTime);
-/* Proses: Memindahkan pesanan dari daftarPesanan ke toDoList */
-/* I.S. daftarPesanan terdefinisi */
-/* F.S toDoList mungkin bertambah mungkin tidak */
-
-void Q_displayToDoList(Queue toDoList, int curTime);
-/* Proses: Menampilkan toDoList ke layar */
-/* I.S. toDoList terdefinisi */
-/* F.S. menampilkan toDoList ke layar */
-
-void Q_checkPerish(Queue *toDoList, int curTime);
-/* Proses: menghapus Perishable Item saat waktunya habis */
-/* I.S. toDoList terdefinisi */
-/* F.S. toDoList mungkin berkurang mungkin tidak */
 
 #endif
