@@ -45,6 +45,8 @@ typedef struct
 #define LD_ELMT(l, i) (l).buffer[i]
 #define BNAME(l, i) (l).buffer[i].buildingName
 #define BPOINT(l, i) (l).buffer[i].position
+#define BPOINTX(l, i) (l).buffer[i].position.X
+#define BPOINTY(l, i) (l).buffer[i].position.Y
 #define CAP(l) (l).LD_CAPACITY
 
 /* ********** KONSTRUKTOR ********** */

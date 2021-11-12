@@ -172,7 +172,7 @@ int main(){
             // Input
             printf("Posisi yang dapat dicapai:\n");
             for(int i = 0; i < LD_length(moveable); i++){
-                printf("%d. %c (%d,%d)\n",(i+1),BNAME(moveable,i),BPOINT(&moveable,i)[0],BPOINT(moveable,i)[1]);
+                printf("%d. %c (%d,%d)\n",(i+1),BNAME(moveable,i),BPOINTX(moveable,i),BPOINTY(moveable,i));
             }
             // Validation Loop
             boolean valid = false;
@@ -184,8 +184,7 @@ int main(){
                 if (isEqual(currentWord, "0")){ // Cancel move
                     valid = true;
                     printf("\nMove dibatalkan!");
-                }
-                else {
+                } else {
                     int i = 1;
                     while(i <= LD_length(moveable) && (!isEqualInt(currentWord,i))){
                         i++;
@@ -211,8 +210,9 @@ int main(){
                             (time++);
                         }                    
                         // Move
-                        printf("Mobita sekarang berada di titik %c (%d,%d)\n",BNAME(moveable,i),BPOINT(moveable,i)[0],BPOINT(moveable,i)[1]);
-                        position = LD_indexOf(daftarbangunan, moveable[i]);
+                        printf("Mobita sekarang berada di titik %c (%d,%d)\n",BNAME(moveable,i),BPOINTX(moveable,i),BPOINTY(moveable,i));
+                        //position = LD_indexOf(daftarbangunan, moveable[i]);
+                        position = LD_indexOf(daftarbangunan, LD_ELMT(moveable,i));
                     } else{
                         printf("\nSilahkan pilih sesuai opsi!\n");
                     }
