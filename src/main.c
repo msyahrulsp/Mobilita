@@ -109,8 +109,7 @@ void buy(ListGadget inventory, int *money){
     else{
         printf("Gadget dengan kode tersebut tidak ada.\n");
     }
-}
-
+}/*==================================================================*/
 int main(){
 	// KAMUS
     int idxtdl;
@@ -164,9 +163,10 @@ int main(){
             LD_CreateListDin(&moveable, totalbangunan);
             // Melihat konfigurasi adjacency Matrix (adj)
             for(int j = 0; j < COLS(adj); j++){			
-                if(adj[position][j] == 1){
+                /*if(adj[position][j] == 1){*/
+                if (M_ELMT(adj,position,j)==1){
                     // Insert to moveable List
-                    LD_insertLast(&moveable, ELMT(daftarbangunan,j);
+                    LD_insertLast(&moveable, LD_ELMT(daftarbangunan,j));
                 }
             }
             // Input
@@ -187,7 +187,7 @@ int main(){
                 }
                 else {
                     int i = 1;
-                    while(i <= LD_length(moveable) && (!isEqualInt(currentWord,i)){
+                    while(i <= LD_length(moveable) && (!isEqualInt(currentWord,i))){
                         i++;
                     }
                     if(i <= LD_length(moveable)){
@@ -213,8 +213,7 @@ int main(){
                         // Move
                         printf("Mobita sekarang berada di titik %c (%d,%d)\n",BNAME(moveable,i),BPOINT(moveable,i)[0],BPOINT(moveable,i)[1]);
                         position = LD_indexOf(daftarbangunan, moveable[i]);
-                    }
-                    else{
+                    } else{
                         printf("\nSilahkan pilih sesuai opsi!\n");
                     }
                 }

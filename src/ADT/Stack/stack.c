@@ -42,7 +42,7 @@ void S_push(Stack *s, S_ElType val) {
     /* KAMUS */
 
     /* ALGORITMA */
-    if (isEmpty(*s)){
+    if (S_isEmpty(*s)){
         IDX_TOP(*s) = 0;
     } else {
         IDX_TOP(*s) += 1;
@@ -69,7 +69,7 @@ void S_pop(Stack *s, S_ElType *val) {
 int S_length(Stack s){
     Stack s1;
     S_ElType val;
-    CreateStack(&s1);
+    S_CreateStack(&s1);
     int ctr = 0;
     while (!S_isEmpty(s)){
         S_pop(&s, &val);

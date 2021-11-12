@@ -335,18 +335,3 @@ LL_List LL_concat(LL_List l1, LL_List l2) {
     }
     return l3;
 }
-
-int LL_length(LL_List l){
-// Mengembalikan jumlah element list
-    // Kamus Lokal
-    int ctr;
-    LL_Address p;
-    // Algoritma
-    p = l;
-    ctr = 0;
-    while (p!=NULL){
-        p = NEXT(p);
-        ctr += 1;
-    }
-    return ctr;
-}
