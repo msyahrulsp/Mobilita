@@ -109,7 +109,34 @@ void buy(ListGadget inventory, int *money){
     else{
         printf("Gadget dengan kode tersebut tidak ada.\n");
     }
-}/*==================================================================*/
+}
+
+void delSenterPengecilEff(Stack *bag){
+    Stack tempBag; // Membuat stack untuk tempat penampungan item sementara
+    S_CreateStack(&tempBag);
+
+    boolean foundGadgetEff = false;
+    S_ElType item; // Variabel untuk menampung item yang dipindahkan
+    while(!foundGadgetEff){
+        if(JENIS_ITEM(TOP(*bag)) != 'n'){
+            foundGadgetEff = true;
+        }
+        else{
+            S_pop(bag, &item);
+            S_push(&tempBag, item); // Item dipindahkan ke temporaryBag
+        }
+    }
+    if (foundGadgetEff == true){
+        JENIS_ITEM(TOP(*bag)) = 'H';
+    }
+    while(S_isEmpty(tempBag) != true){
+        S_pop(&tempBag, &item);
+        S_push(bag, item);
+    }
+}
+                
+
+/*==================================================================*/
 int main(){
 	// KAMUS
     int idxtdl;
@@ -247,23 +274,27 @@ int main(){
                 LL_deleteFirst(&inprogresslist, &valpesanan);
                 S_pop(&bag, &valpesanan);
                 if (JENIS_ITEM(valpesanan) == 'N') {
+                    delSenterPengecilEff(&bag);
                     printf("Pesanan Normal Item berhasil diantarkan\n");
                     printf("Uang yang didapatkan: 200 Yen");
-                } else if (JENIS_ITEM(valpesanan) == 'H') {                 
+                } else if ((JENIS_ITEM(valpesanan) == 'H') || (JENIS_ITEM(valpesanan) == 'n')) {                 
                     // Dapet Reward
                     /*if(!isCarryItem(Heavy)){
                           AB_activate(&SpeedBoost);
                     }*/
+                    delSenterPengecilEff(&bag);
                     printf("Pesanan Heavy Item berhasil diantarkan\n");
                     printf("Uang yang didapatkan: 400 Yen");
                 } else if (JENIS_ITEM(valpesanan) == 'P') {
                     // dapet reward
                     // check perishableitem
                     bagCapacity++; // ability increase Capacity
+                    delSenterPengecilEff(&bag);
                     printf("Pesanan Perishable Item berhasil diantarkan\n");
                     printf("Uang yang didapatkan: 400 Yen");
                 } else if (JENIS_ITEM(valpesanan) == 'V') {
                     // dapet reward
+                    delSenterPengecilEff(&bag);
                     AB_isActive(ReturnToSender) ? AB_stackAbility(ReturnToSender): AB_activate(ReturnToSender);
                     printf("Pesanan VIP Item berhasil diantarkan\n");
                     printf("Uang yang didapatkan: 600 Yen");
@@ -350,6 +381,32 @@ int main(){
             }
             if (gd == 'S'){
                 // Menghilangkan efek heavy item
+                Stack tempBag; // Membuat stack untuk tempat penampungan item sementara
+                S_CreateStack(&tempBag);
+
+                boolean foundHeavy = false;
+                S_ElType item; // Variabel untuk menampung item yang dipindahkan
+                while(!foundHeavy){
+                    if(JENIS_ITEM(TOP(bag)) != 'H'){
+                        foundHeavy = true;
+                    }
+                    else{
+                        S_pop(&bag, &item);
+                        S_push(&tempBag, item); // Item dipindahkan ke temporaryBag
+                    }
+                }
+                if (foundHeavy == true){
+                    JENIS_ITEM(TOP(bag)) = 'n';
+                    LS_deleteElmt(&inventory, idx);
+                    printf("Senter Pengecil berhasil digunakan!\n");
+                }
+                else{
+                    printf("Tidak ada heavy item di tas!\n");
+                }
+                while(S_isEmpty(tempBag) != true){
+                    S_pop(&tempBag, &item);
+                    S_push(&bag, item);
+                }
             }
         } else if (isEqual(currentWord, "HELP")) {
             help();
@@ -371,6 +428,7 @@ int main(){
                     printf("Tidak ada item yang sedang dibawa\n");
                 }
                 printf("Ability berhasil digunakan\n");
+                delSenterPengecilEff(&bag);
                 AB_useAbility(&ReturnToSender);
                 if (Count(ReturnToSender)==0){
                     AB_reset(&ReturnToSender, false);
