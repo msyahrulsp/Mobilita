@@ -64,7 +64,7 @@ int LL_indexOf(LL_List l, LL_ElType val){
     p = FIRST(l);
     found = false;
     while (p!=NULL && !(found)){
-        if ((INFO(p).perishTime == val.perishTime) && (INFO(p).pickUpPoint==val.pickUpPoint) && (INFO(p).dropOffPoint,val.dropOffPoint) && (INFO(p).jenisItem == val.jenisItem)){
+        if ((INFO(p).perishTime == val.perishTime) && (INFO(p).pickUpPoint==val.pickUpPoint) && (INFO(p).dropOffPoint == val.dropOffPoint) && (INFO(p).jenisItem == val.jenisItem)){
             found = true;
         } else {
             idx += 1;
@@ -334,4 +334,19 @@ LL_List LL_concat(LL_List l1, LL_List l2) {
         p = NEXT(p);
     }
     return l3;
+}
+
+int heavy_InProgress(LL_List l){
+    LL_Address p;
+    int ctr = 0;
+
+    p = FIRST(l);
+    while (p!=NULL){
+        if (INFO(p).jenisItem=='H'){
+            ctr += 1;
+        }
+        p = NEXT(p);
+    }
+
+    return ctr;
 }

@@ -134,7 +134,7 @@ void delSenterPengecilEff(Stack *bag){
         S_push(bag, item);
     }
 }
-                
+
 
 /*==================================================================*/
 int main(){
@@ -143,15 +143,16 @@ int main(){
     int time, position;
     int bagCapacity, money;
     int totalbangunan;
-    POINT currentPos;
+    POINT point_currentPos;
     Matrix adj;
+    Queue daftarpesanan;
     LL_List todolist, inprogresslist;
     ListDin daftarbangunan, moveable;
     Pesanan order, valpesanan;
     Stack bag;
     ListGadget inventory;
-    Ability SpeedBoost, ReturnToSender;
-	
+    //Ability SpeedBoost, ReturnToSender;
+
     // main menu
     printf("MOBILITA - Main Menu\n");
     printf("ENTER COMMAND: ");
@@ -168,7 +169,7 @@ int main(){
         }
     }
 
-    load();
+    //load();
     // Read konfigurasi
     //
     // inisialisasi variabel
@@ -176,9 +177,12 @@ int main(){
     position = 0; // index HQ of daftarbangunan
     bagCapacity = 3; // batasan untuk ukuran tas
     LS_CreateListGadget(&inventory);
-    AB_createAbility(&SpeedBoost, true);
-    AB_createAbility(&ReturnToSender, false);
-	
+    LL_CreateList(&todolist);
+    LL_CreateList(&inprogresslist);
+    S_CreateStack(&bag);
+    //AB_createAbility(&SpeedBoost, true);
+    //AB_createAbility(&ReturnToSender, false);
+
     printf("\nSELAMAT BERMAIN!!\n\n");
     printf("Waktu: %d\n",time);
     resetWord();
@@ -189,8 +193,7 @@ int main(){
         if (isEqual(currentWord, "MOVE")) {
             LD_CreateListDin(&moveable, totalbangunan);
             // Melihat konfigurasi adjacency Matrix (adj)
-            for(int j = 0; j < COLS(adj); j++){			
-                /*if(adj[position][j] == 1){*/
+            for(int j = 0; j < COLS(adj); j++){
                 if (M_ELMT(adj,position,j)==1){
                     // Insert to moveable List
                     LD_insertLast(&moveable, LD_ELMT(daftarbangunan,j));
@@ -199,7 +202,7 @@ int main(){
             // Input
             printf("Posisi yang dapat dicapai:\n");
             for(int i = 0; i < LD_length(moveable); i++){
-                printf("%d. %c (%d,%d)\n",(i+1),BNAME(moveable,i),BPOINTX(moveable,i),BPOINTY(moveable,i));
+                printf("%.d. %c (%d,%d)\n",(i+1),BNAME(moveable,i),BPOINTX(moveable,i),BPOINTY(moveable,i));
             }
             // Validation Loop
             boolean valid = false;
@@ -210,17 +213,18 @@ int main(){
                 startWord();
                 if (isEqual(currentWord, "0")){ // Cancel move
                     valid = true;
-                    printf("\nMove dibatalkan!");
+                    printf("Move dibatalkan!\n");
                 } else {
                     int i = 1;
-                    while(i <= LD_length(moveable) && (!isEqualInt(currentWord,i))){
+                    int int_currentWord = atoi(currentWord.contents);
+                    while((i <= LD_length(moveable)) && (int_currentWord!=i)){
                         i++;
                     }
                     if(i <= LD_length(moveable)){
                         valid = true;
                         i--;
-                        // Time Handle                       
-                        if(AB_isActive(SpeedBoost)){
+                        // Time Handle
+                        /*if(AB_isActive(SpeedBoost)){
                             if ((Count(SpeedBoost) % 2)!=0){
 								time++;
 							}
@@ -228,47 +232,53 @@ int main(){
 							if (Count(SpeedBoost) == 0){
 								AB_deactivate(&SpeedBoost);
 							}
+                        } */
+                        time = time + 1 + heavy_InProgress(inprogresslist);
+                        // Daftar Pesanan -> To Do List
+                        while (HEAD(daftarpesanan).waktuPesanan <= time){
+                            Q_dequeue(&daftarpesanan, &order);
+                            LL_insertLast(&todolist, order);
                         }
-                        /*else if(isCarryItem(Heavy){ // TODO in In_Progress
-                            int n = TotalItem(Heavy)
-                            time += (n+1)
-                        }*/
-                        else {
-                            (time++);
-                        }                    
                         // Move
                         printf("Mobita sekarang berada di titik %c (%d,%d)\n",BNAME(moveable,i),BPOINTX(moveable,i),BPOINTY(moveable,i));
-                        //position = LD_indexOf(daftarbangunan, moveable[i]);
                         position = LD_indexOf(daftarbangunan, LD_ELMT(moveable,i));
                     } else{
-                        printf("\nSilahkan pilih sesuai opsi!\n");
+                        printf("Silahkan pilih sesuai opsi!\n");
                     }
                 }
             }
             LD_dealocate(&moveable);
         } else if (isEqual(currentWord, "PICK_UP")) {
-            currentPos = BPOINT(daftarbangunan, position);
-            idxtdl = LL_pesananAvailable(todolist, currentPos, daftarbangunan);
+            point_currentPos = BPOINT(daftarbangunan, position);
+            idxtdl = LL_pesananAvailable(todolist, point_currentPos, daftarbangunan);
             if (idxtdl != IDX_UNDEF){
                 if (LL_length(inprogresslist)<bagCapacity){
                     if(JENIS_ITEM(TOP(bag)) != 'V'){
                         LL_deleteAt(&todolist, idxtdl, &valpesanan);
                         LL_insertFirst(&inprogresslist, valpesanan);
                         S_push(&bag, valpesanan);
-                        if(JENIS_ITEM(valpesanan) == 'H'){
-                           AB_reset(&SpeedBoost,true);
+                        if (valpesanan.jenisItem == 'N'){
+                            printf("Pesanan berupa Normal Item berhasil diambil!\n");
+                        } else if (valpesanan.jenisItem == 'H'){
+                            printf("Pesanan berupa Heavy Item berhasil diambil!\n");
+                        } else if (valpesanan.jenisItem == 'P'){
+                            printf("Pesanan berupa Perishable Item berhasil diambil!\n");
+                        } else if (valpesanan.jenisItem == 'V'){
+                            printf("Pesanan berupa VIP Item berhasil diambil!\n");
                         }
-                    }
-                    else{
+                        /*if(JENIS_ITEM(valpesanan) == 'H'){
+                           AB_reset(&SpeedBoost,true);
+                        }*/
+                    } /*else{
                         printf("Item VIP sedang dalam proses, tidak dapat mengambil item\n");
-                    }
+                    }*/
                 } else {
                     printf("Tidak bisa mengambil pesanan karena tas sudah penuh\n");
                 }
             } else {
                 printf("Pesanan tidak ditemukan\n");
             }
-        } else if (isEqual(currentWord, "DROP_OFF")) {
+        } /*else if (isEqual(currentWord, "DROP_OFF")) {
             // TODO : handle kesesuaian lokasi pengiriman
             if (!S_isEmpty(bag) && !LL_isEmpty(inprogresslist)) {
                 LL_deleteFirst(&inprogresslist, &valpesanan);
@@ -277,12 +287,12 @@ int main(){
                     delSenterPengecilEff(&bag);
                     printf("Pesanan Normal Item berhasil diantarkan\n");
                     printf("Uang yang didapatkan: 200 Yen");
-                } else if ((JENIS_ITEM(valpesanan) == 'H') || (JENIS_ITEM(valpesanan) == 'n')) {                 
+                } else if ((JENIS_ITEM(valpesanan) == 'H') || (JENIS_ITEM(valpesanan) == 'n')) {
                     // Dapet Reward
-                    /*if(!isCarryItem(Heavy)){
+                    if(!isCarryItem(Heavy)){
                           AB_activate(&SpeedBoost);
                     }*/
-                    delSenterPengecilEff(&bag);
+                    /*delSenterPengecilEff(&bag);
                     printf("Pesanan Heavy Item berhasil diantarkan\n");
                     printf("Uang yang didapatkan: 400 Yen");
                 } else if (JENIS_ITEM(valpesanan) == 'P') {
@@ -305,13 +315,13 @@ int main(){
         } else if (isEqual(currentWord, "MAP")) {
             char posisiMobita, lokasiPickUp;
             char lokasiDropOff, destinasiAvail;
-            
-            
-        } else if (isEqual(currentWord, "TO_DO")) {
+
+
+        } */else if (isEqual(currentWord, "TO_DO")) {
             LL_displayList_ToDo(todolist);
         } else if (isEqual(currentWord, "IN_PROGRESS")) {
             LL_displayList_InProgress(inprogresslist);
-        } else if (isEqual(currentWord, "BUY")) {
+        } /*else if (isEqual(currentWord, "BUY")) {
             buy(inventory, &money);
         } else if (isEqual(currentWord, "INVENTORY")) {
             LS_displayList(inventory);
@@ -438,7 +448,7 @@ int main(){
             }
         } else {
             printf("Command salah\n");
-        }
+        }*/
         printf("Waktu: %d\n",time);
         resetWord();
         printf("ENTER COMMAND: ");
