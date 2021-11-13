@@ -151,6 +151,7 @@ int main(){
     Pesanan order, valpesanan;
     Stack bag;
     ListGadget inventory;
+    LL_List perishablelist;
     //Ability SpeedBoost, ReturnToSender;
 
     // main menu
@@ -179,9 +180,20 @@ int main(){
     LS_CreateListGadget(&inventory);
     LL_CreateList(&todolist);
     LL_CreateList(&inprogresslist);
+    LL_CreateList(&perishablelist);
     S_CreateStack(&bag);
     //AB_createAbility(&SpeedBoost, true);
     //AB_createAbility(&ReturnToSender, false);
+
+    // Menyalin perishable item dari to do list
+    // Untuk keperluan efek gadget Kain Pembungkus Waktu
+    LL_Address perishableptr = FIRST(todolist);
+    while (perishableptr != NULL){
+        if (JENIS_ITEM(INFO(perishableptr)) == 'P'){
+            LL_insertFirst(&perishablelist, INFO(perishableptr));
+        }
+        perishableptr = NEXT(perishableptr);
+    }
 
     printf("\nSELAMAT BERMAIN!!\n\n");
     printf("Waktu: %d\n",time);
@@ -321,7 +333,7 @@ int main(){
             LL_displayList_ToDo(todolist);
         } else if (isEqual(currentWord, "IN_PROGRESS")) {
             LL_displayList_InProgress(inprogresslist);
-        } /*else if (isEqual(currentWord, "BUY")) {
+        } else if (isEqual(currentWord, "BUY")) {
             buy(inventory, &money);
         } else if (isEqual(currentWord, "INVENTORY")) {
             LS_displayList(inventory);
@@ -330,95 +342,162 @@ int main(){
             printf("\nENTER COMMAND: ");
             startWord();
 
+            int idx;
             // Memroses inputan menjadi indeks sebenarnya
-            int idx = 0; // Sementara saja, yang benernya idx diterima dari mesin kata
-            char gd = GNAME(inventory, idx);
-            if (gd == 'K'){
-                Stack tempBag; // Membuat stack untuk tempat penampungan item sementara
-                S_CreateStack(&tempBag);
+            if (!isEqual(currentWord, "0")){
+                boolean valid = false;
+                if (isEqual(currentWord, "1")){
+                    idx = 0;
+                    boolean valid = true;
+                }
+                else if (isEqual(currentWord, "2")){
+                    idx = 1;
+                    boolean valid = true;
+                }
+                else if (isEqual(currentWord, "3")){
+                    idx = 2;
+                    boolean valid = true;
+                }
+                else if (isEqual(currentWord, "4")){
+                    idx = 3;
+                    boolean valid = true;
+                }
+                else if (isEqual(currentWord, "5")){
+                    idx = 4;
+                    boolean valid = true;
+                }
+                if (valid == true){
+                    char gd = GNAME(inventory, idx);
+                    if (gd == 'K'){
+                        Stack tempBag; // Membuat stack untuk tempat penampungan item sementara
+                        S_CreateStack(&tempBag);
 
-                boolean foundPerishable = false;
-                S_ElType item; // Variabel untuk menampung item yang dipindahkan
-                while(!foundPerishable){
-                    if(JENIS_ITEM(TOP(bag)) != 'P'){
-                        foundPerishable = true;
+                        boolean foundPerishable = false;
+                        S_ElType item; // Variabel untuk menampung item yang dipindahkan
+                        while(!foundPerishable){
+                            if(JENIS_ITEM(TOP(bag)) != 'P'){
+                                foundPerishable = true;
+                            }
+                            else{
+                                S_pop(&bag, &item);
+                                S_push(&tempBag, item); // Item dipindahkan ke temporaryBag
+                            }
+                        }
+                        if (foundPerishable == true){
+                            // Mengembalikan waktu perishable item.
+                            LL_Address ptr = FIRST(perishablelist);
+                            while (ptr != NULL){
+                                // Semua perishable item sudah disalin ke perishable list
+                                // Seharusnya gadget pasti terpakai apabila foundPerishable == true
+                                boolean flag = WAKTU_PESANAN(TOP(bag)) == WAKTU_PESANAN(INFO(ptr));
+                                flag = flag && (PICK_UP_POINT(TOP(bag)) == PICK_UP_POINT(INFO(ptr)));
+                                flag = flag && (DROP_OFF_POINT(TOP(bag)) == DROP_OFF_POINT(INFO(ptr)));
+                                if (flag){
+                                    PERISH_TIME(TOP(bag)) = PERISH_TIME(INFO(ptr));
+                                }
+                                else{
+                                    ptr = NEXT(ptr);
+                                }
+                            }
+                            LS_deleteElmt(&inventory, idx);
+                            printf("Kain Pembungkus Waktu berhasil digunakan!\n");
+                        }
+                        else{
+                            printf("Tidak ada perishable item di tas!\n");
+                        }
+                        while(S_isEmpty(tempBag) != true){
+                            S_pop(&tempBag, &item);
+                            S_push(&bag, item);
+                        }
                     }
-                    else{
-                        S_pop(&bag, &item);
-                        S_push(&tempBag, item); // Item dipindahkan ke temporaryBag
+                    if (gd == 'B'){
+                        if (bagCapacity <= 100){
+                            bagCapacity = bagCapacity * 2;
+                            if (bagCapacity > 100){
+                                bagCapacity = 100;
+                            }
+                            LS_deleteElmt(&inventory, idx);
+                            printf("Senter Pembesar berhasil digunakan!\n");
+                        }
+                        else{
+                            printf("Kapasitas tas sudah tidak bisa dibesarkan lagi!\n");
+                        }
                     }
-                }
-                if (foundPerishable == true){
-                    // Mengembalikan waktu perishable item.
-                    // Waktu perishable asalnya dimana ya?
-                    // Saya gatau di mana jadi belum bisa ambil nilai waktu asalnya
-                    LS_deleteElmt(&inventory, idx);
-                    printf("Kain Pembungkus Waktu berhasil digunakan!\n");
-                }
-                else{
-                    printf("Tidak ada perishable item di tas!\n");
-                }
-                while(S_isEmpty(tempBag) != true){
-                    S_pop(&tempBag, &item);
-                    S_push(&bag, item);
-                }
-            }
-            if (gd == 'B'){
-                if (bagCapacity <= 100){
-                    bagCapacity = bagCapacity * 2;
-                    if (bagCapacity > 100){
-                        bagCapacity = 100;
-                    }
-                    LS_deleteElmt(&inventory, idx);
-                    printf("Senter Pembesar berhasil digunakan!\n");
-                }
-                else{
-                    printf("Kapasitas tas sudah tidak bisa dibesarkan lagi!\n");
-                }
-            }
-            if (gd == 'D'){
-                // Move ke bangunan mana saja
-            }
-            if (gd == 'T'){
-                if (time < 50){
-                    time = 0;
-                }
-                else{
-                    time = time - 50;
-                }
-                LS_deleteElmt(&inventory, idx);
-                printf("Mesin Waktu berhasil digunakan!\n");
-            }
-            if (gd == 'S'){
-                // Menghilangkan efek heavy item
-                Stack tempBag; // Membuat stack untuk tempat penampungan item sementara
-                S_CreateStack(&tempBag);
+                    if (gd == 'D'){
+                        boolean valid = false;
+                        while(!valid){
+                            printf("Posisi yang dipilih? (ketik 0 jika ingin kembali)\n");
+                            resetWord();
+                            printf("ENTER COMMAND: ");
+                            startWord();
+                            if (isEqual(currentWord, "0")){ // Cancel move
+                                valid = true;
+                                printf("\nMove dibatalkan!");
+                            } else {
+                                int i = 1;
+                                int int_currentWord = atoi(currentWord.contents);
+                                while(i <= LD_length(daftarbangunan) && (!isEqualInt(currentWord,i))){
+                                    i++;
+                                }
+                                if(i <= LD_length(daftarbangunan)){
+                                    valid = true;
+                                    i--;     
+                                    // Move
+                                    printf("Mobita sekarang berada di titik %c (%d,%d)\n",BNAME(daftarbangunan,i),BPOINTX(daftarbangunan,i),BPOINTY(daftarbangunan,i));
 
-                boolean foundHeavy = false;
-                S_ElType item; // Variabel untuk menampung item yang dipindahkan
-                while(!foundHeavy){
-                    if(JENIS_ITEM(TOP(bag)) != 'H'){
-                        foundHeavy = true;
+                                    position = LD_indexOf(daftarbangunan, LD_ELMT(daftarbangunan,i));
+                                    LS_deleteElmt(&inventory, idx);
+                                } else{
+                                    printf("\nMasukan tidak sesuai!\n");
+                                }
+                            }
+                        }
                     }
-                    else{
-                        S_pop(&bag, &item);
-                        S_push(&tempBag, item); // Item dipindahkan ke temporaryBag
+                    if (gd == 'T'){
+                        if (time < 50){
+                            time = 0;
+                        }
+                        else{
+                            time = time - 50;
+                        }
+                        LS_deleteElmt(&inventory, idx);
+                        printf("Mesin Waktu berhasil digunakan!\n");
                     }
-                }
-                if (foundHeavy == true){
-                    JENIS_ITEM(TOP(bag)) = 'n';
-                    LS_deleteElmt(&inventory, idx);
-                    printf("Senter Pengecil berhasil digunakan!\n");
+                    if (gd == 'S'){
+                        // Menghilangkan efek heavy item
+                        Stack tempBag; // Membuat stack untuk tempat penampungan item sementara
+                        S_CreateStack(&tempBag);
+
+                        boolean foundHeavy = false;
+                        S_ElType item; // Variabel untuk menampung item yang dipindahkan
+                        while(!foundHeavy){
+                            if(JENIS_ITEM(TOP(bag)) != 'H'){
+                                foundHeavy = true;
+                            }
+                            else{
+                                S_pop(&bag, &item);
+                                S_push(&tempBag, item); // Item dipindahkan ke temporaryBag
+                            }
+                        }
+                        if (foundHeavy == true){
+                            JENIS_ITEM(TOP(bag)) = 'n';
+                            LS_deleteElmt(&inventory, idx);
+                            printf("Senter Pengecil berhasil digunakan!\n");
+                        }
+                        else{
+                            printf("Tidak ada heavy item di tas!\n");
+                        }
+                        while(S_isEmpty(tempBag) != true){
+                            S_pop(&tempBag, &item);
+                            S_push(&bag, item);
+                        }
+                    }
                 }
                 else{
-                    printf("Tidak ada heavy item di tas!\n");
-                }
-                while(S_isEmpty(tempBag) != true){
-                    S_pop(&tempBag, &item);
-                    S_push(&bag, item);
+                    printf("Nomor tidak dikenali!\n");
                 }
             }
-        } else if (isEqual(currentWord, "HELP")) {
+        } /*else if (isEqual(currentWord, "HELP")) {
             help();
         } else if (isEqual(currentWord, "SAVE_GAME")) {
             save();
