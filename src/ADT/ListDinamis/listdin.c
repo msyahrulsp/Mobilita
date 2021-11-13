@@ -116,7 +116,7 @@ void LD_readList(ListDin *l) {
     for (i = 0; i < NEFF(*l); i++) {
         scanf("%c %d %d", &BNAME(*l, i), &Absis(BPOINT(*l, i)), &Ordinat(BPOINT(*l, i)));
     }
-    
+
 }
 void LD_displayList(ListDin l) {
 /* Proses : Menuliskan isi list dengan traversal, list ditulis dengan format berikut:
@@ -129,7 +129,7 @@ void LD_displayList(ListDin l) {
     int i;
     /* ALGORITMA */
     for (i = 0; i < LD_length(l); i++) {
-        printf("%c (%d,%d)\n", BNAME(l, i), Absis(BPOINT(l, i)), Ordinat(BPOINT(l, i)));
+        printf("%c (%.0f,%.0f)\n", BNAME(l, i), Absis(BPOINT(l, i)), Ordinat(BPOINT(l, i)));
     }
 }
 
@@ -143,14 +143,22 @@ IdxType LD_indexOf(ListDin l, Building val) {
 /* Skema Searching yang digunakan bebas */
     /* KAMUS */
     int i = 0;
+    boolean found = false;
     /* ALGORITMA */
-    while (LD_isIdxEff(l, i)) {
-        if (BNAME(l, i) == val.buildingName)
-            return i;
-        i++;
+
+    while (i<LD_length(l) && !found){
+        if (BNAME(l,i)==val.buildingName && P_EQ(BPOINT(l,i), val.position)){
+            found = true;
+        } else {
+            i += 1;
+        }
     }
 
-    return IDX_UNDEF;
+    if (!found){
+        i = IDX_UNDEF;
+    }
+
+    return i;
 }
 
 
@@ -209,7 +217,7 @@ void LD_deleteLast(ListDin *l, Building *val) {
 /*      Banyaknya elemen list berkurang satu */
 /*      List l mungkin menjadi kosong */
     /* KAMUS */
-    
+
     /* ALGORITMA */
     *val = LD_ELMT(*l, LD_length(*l) - 1);
     NEFF(*l) -= 1;
