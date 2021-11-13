@@ -9,7 +9,7 @@
 
 /* *** DEFINISI PROTOTIPE PRIMITIF *** */
 /* *** Konstruktor membentuk POINT *** */
-POINT P_makePOINT (float X, float Y) {
+POINT P_makePOINT (int X, int Y) {
 /* Membentuk sebuah POINT dari komponen-komponennya */
     /* KAMUS */
     POINT point;
@@ -30,7 +30,7 @@ void P_readPOINT (POINT * P) {
 /* I.S. Sembarang */
 /* F.S. P terdefinisi */
     /* KAMUS */
-    float x, y;
+    int x, y;
     /* ALGORITMA */
     scanf("%f %f", &x, &y);
     *P = P_makePOINT(x, y);
@@ -119,7 +119,7 @@ POINT P_NextY (POINT P) {
     /* ALGORITMA */
     return P_makePOINT(Absis(P), Ordinat(P) + 1);
 }
-POINT P_PlusDelta (POINT P, float deltaX, float deltaY) {
+POINT P_PlusDelta (POINT P, int deltaX, int deltaY) {
 /* Mengirim salinan P yang absisnya adalah Absis(P) + deltaX dan ordinatnya adalah Ordinat(P) + deltaY */
     /* KAMUS */
 
@@ -138,14 +138,14 @@ POINT P_MirrorOf (POINT P, boolean SbX) {
     else
         return P_makePOINT(-Absis(P), Ordinat(P));
 }
-float P_Jarak0 (POINT P) {
+int P_Jarak0 (POINT P) {
 /* Menghitung jarak P ke (0,0) */
     /* KAMUS */
 
     /* ALGORITMA */
     return sqrt(pow(Absis(P), 2) + pow(Ordinat(P), 2));
 }
-float P_Jarak (POINT P1, POINT P2) {
+int P_Jarak (POINT P1, POINT P2) {
 /* Menghitung panjang garis yang dibentuk P1 dan P2 */
 /* Perhatikanlah bahwa di sini spec fungsi kurang baik sebab menyangkut ADT Garis. */
 /* Tuliskan spec fungsi yang lebih tepat. */
@@ -154,7 +154,7 @@ float P_Jarak (POINT P1, POINT P2) {
     /* ALGORITMA */
     return sqrt(pow(Absis(P1) - Absis(P2), 2) + pow(Ordinat(P1) - Ordinat(P2), 2));
 }
-void P_Geser (POINT *P, float deltaX, float deltaY) {
+void P_Geser (POINT *P, int deltaX, int deltaY) {
 /* I.S. P terdefinisi */
 /* F.S. P digeser, absisnya sebesar deltaX dan ordinatnya sebesar deltaY */
     /* KAMUS */

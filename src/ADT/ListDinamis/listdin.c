@@ -129,7 +129,7 @@ void LD_displayList(ListDin l) {
     int i;
     /* ALGORITMA */
     for (i = 0; i < LD_length(l); i++) {
-        printf("%c (%.0f,%.0f)\n", BNAME(l, i), Absis(BPOINT(l, i)), Ordinat(BPOINT(l, i)));
+        printf("%c (%d,%d)\n", BNAME(l, i), Absis(BPOINT(l, i)), Ordinat(BPOINT(l, i)));
     }
 }
 
