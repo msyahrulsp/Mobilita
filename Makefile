@@ -22,3 +22,5 @@ driver_compile: $(SRC_ADT)/$(f)
 
 driver_run: $(SRC_ADT)/$(f)
 	$(SRC_ADT)/$(f)/driver
+
+# $(CC) -I $(SRC_ADT)/Header $(DRIVER_FILES) src/ADT/ListDinamis/listdin.c src/ADT/Point/point.c src/ADT/Queue/queue.c src/ADT/Pesanan/Pesanan.c src/ADT/LinkedList/list_linked.c src/ADT/LinkedList/node.c src/ADT/Stack/stack.c src/ADT/ListStatis/listStatik.c -o $(SRC_ADT)/$(f)/driver

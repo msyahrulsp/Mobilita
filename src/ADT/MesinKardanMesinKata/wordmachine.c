@@ -3,6 +3,69 @@
 
 boolean endWord;
 Word currentWord;
+Scn Scanner;
+
+static int retval;
+
+void startScan() {
+    advFile();
+    while (currentChar == BLANK) advFile();
+    endWord = (currentChar == MARK);
+    if (!endWord) advScan(); // ini udah bener
+}
+
+void advScan() {
+    while (currentChar == BLANK || currentChar == MARK) advFile();
+    getScan();
+}
+
+void getScan() {
+    int temp, num = 0;
+    if ((int)currentChar >= 65 && (int)currentChar <= 90) {
+        Scanner.let = currentChar;
+        Scanner.num = 0;
+        advFile();
+    } else {
+        while ((currentChar != BLANK) && (currentChar != MARK)) {
+            switch (currentChar) {
+                case '0':
+                    temp = 0;
+                    break;
+                case '1':
+                    temp = 1;
+                    break;
+                case '2':
+                    temp = 2;
+                    break;
+                case '3':
+                    temp = 3;
+                    break;
+                case '4':
+                    temp = 4;
+                    break;
+                case '5':
+                    temp = 5;
+                    break;
+                case '6':
+                    temp = 6;
+                    break;
+                case '7':
+                    temp = 7;
+                    break;
+                case '8':
+                    temp = 8;
+                    break;
+                case '9':
+                    temp = 9;
+                    break;
+            }
+            num = (num * 10) + temp;
+            advFile();
+        }
+        Scanner.num = num;
+        Scanner.let = ' ';
+    }
+}
 
 void ignoreBlank() {
     while (currentChar == BLANK) adv();
@@ -60,7 +123,7 @@ boolean isEqual(Word input, char command[]) {
 boolean isEqualInt(Word input, int number) {
     char str[10];
 	
-    sprintf(str,&d,number);
+    sprintf(str,"&d",number);
 	
     return isEqual(input,str);
 }

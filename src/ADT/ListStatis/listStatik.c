@@ -117,6 +117,19 @@ void LS_gadgetName(ListGadget l, int idx){
     }
 }
 
+boolean LS_insertGadget(ListGadget *l, Gadget val) {
+    int i = 0;
+    boolean done = false;
+    while (i < 5 && !done) {
+        if (GNAME(*l, i) == LS_NAME_UNDEF) {
+            LS_ELMT(*l, i) = val;
+            done = true;
+        }
+    }
+
+    return done;
+}
+
 void LS_displayList(ListGadget l) {
 /* Proses : Menuliskan isi List dengan traversal, List ditulis di antara kurung 
    siku; antara dua elemen dipisahkan dengan separator "koma", tanpa tambahan 
@@ -126,7 +139,7 @@ void LS_displayList(ListGadget l) {
 /* Contoh : jika ada tiga elemen bernilai 1, 20, 30 akan dicetak: [1,20,30] */
 /* Jika List kosong : menulis [] */
 
-    for (int i = 0; i < LS_CAPACITY; i++){
+    for (int i = 0; i < 5; i++){
         printf("%d. ", i + 1);
         if (GNAME(l, i) != LS_NAME_UNDEF){
             LS_gadgetName(l, i);

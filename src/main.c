@@ -28,6 +28,7 @@ void buy(ListGadget inventory, int *money){
     printf("4. Mesin Waktu (3000 Yen)\n");
     printf("Gadget mana yang ingin kau beli? (ketik 0 jika ingin kembali)\n");
 
+    boolean added;
     resetWord();
     printf("\nENTER COMMAND: ");
     startWord();
@@ -36,11 +37,15 @@ void buy(ListGadget inventory, int *money){
             Gadget gd;
             gd.gadgetname = 'K';
             gd.gadgetprice = 800;
-            LS_insertLast(&inventory, gd);
-            *money -= gd.gadgetprice;
-            printf("Kain Pembungkus Waktu berhasil dibeli!\n");
-            printf("Uang Anda sekarang: %d Yen\n", *money);
-            //Kain Pembungkus Waktu berhasil dibeli!
+            added = LS_insertGadget(&inventory, gd);
+            if (!added) {
+                printf("Inventory kamu sudah penuh!\n");
+            } else {
+                *money -= gd.gadgetprice;
+                printf("Kain Pembungkus Waktu berhasil dibeli!\n");
+                printf("Uang Anda sekarang: %d Yen\n", *money);
+                //Kain Pembungkus Waktu berhasil dibeli!
+            }
         }
         else{
             printf("Uang tidak cukup untuk membeli gadget!\n");
@@ -51,11 +56,15 @@ void buy(ListGadget inventory, int *money){
             Gadget gd;
             gd.gadgetname = 'B';
             gd.gadgetprice = 1200;
-            LS_insertLast(&inventory, gd);
-            *money -= gd.gadgetprice;
-            printf("Senter Pembesar berhasil dibeli!\n");
-            printf("Uang Anda sekarang: %d Yen\n", *money);
-            //Senter Pembesar berhasil dibeli!
+            added = LS_insertGadget(&inventory, gd);
+            if (!added) {
+                printf("Inventory kamu sudah penuh!\n");
+            } else {
+                *money -= gd.gadgetprice;
+                printf("Senter Pembesar berhasil dibeli!\n");
+                printf("Uang Anda sekarang: %d Yen\n", *money);
+                //Senter Pembesar berhasil dibeli!
+            }
         }
         else{
             printf("Uang tidak cukup untuk membeli gadget!\n");
@@ -66,11 +75,15 @@ void buy(ListGadget inventory, int *money){
             Gadget gd;
             gd.gadgetname = 'D';
             gd.gadgetprice = 1500;
-            LS_insertLast(&inventory, gd);
-            *money -= gd.gadgetprice;
-            printf("Pintu Kemana Saja berhasil dibeli!\n");
-            printf("Uang Anda sekarang: %d Yen\n", *money);
-            //Pintu Kemana Saja berhasil dibeli!
+            added = LS_insertGadget(&inventory, gd);
+            if (!added) {
+                printf("Inventory kamu sudah penuh!\n");
+            } else {
+                *money -= gd.gadgetprice;
+                printf("Pintu Kemana Saja berhasil dibeli!\n");
+                printf("Uang Anda sekarang: %d Yen\n", *money);
+                //Pintu Kemana Saja berhasil dibeli!
+            }
         }
         else{
             printf("Uang tidak cukup untuk membeli gadget!\n");
@@ -81,11 +94,15 @@ void buy(ListGadget inventory, int *money){
             Gadget gd;
             gd.gadgetname = 'T';
             gd.gadgetprice = 3000;
-            LS_insertLast(&inventory, gd);
-            *money -= gd.gadgetprice;
-            printf("Mesin Waktu berhasil dibeli!\n");
-            printf("Uang Anda sekarang: %d Yen\n", *money);
-            //Mesin Waktu berhasil dibeli!
+            added = LS_insertGadget(&inventory, gd);
+            if (!added) {
+                printf("Inventory kamu sudah penuh!\n");
+            } else {
+                *money -= gd.gadgetprice;
+                printf("Mesin Waktu berhasil dibeli!\n");
+                printf("Uang Anda sekarang: %d Yen\n", *money);
+                //Mesin Waktu berhasil dibeli!
+            }
         }
         else{
             printf("Uang tidak cukup untuk membeli gadget!\n");
@@ -96,15 +113,22 @@ void buy(ListGadget inventory, int *money){
             Gadget gd;
             gd.gadgetname = 'S';
             gd.gadgetprice = 800;
-            LS_insertLast(&inventory, gd);
-            *money -= gd.gadgetprice;
-            printf("Senter Pengecil berhasil dibeli!\n");
-            printf("Uang Anda sekarang: %d Yen\n", *money);
-            //Senter Pengecil berhasil dibeli!
+            added = LS_insertGadget(&inventory, gd);
+            if (!added) {
+                printf("Inventory kamu sudah penuh!\n");
+            } else {
+                *money -= gd.gadgetprice;
+                printf("Senter Pengecil berhasil dibeli!\n");
+                printf("Uang Anda sekarang: %d Yen\n", *money);
+                //Senter Pengecil berhasil dibeli!
+            }
         }
         else{
             printf("Uang tidak cukup untuk membeli gadget!\n");
         }
+    }
+    else if(isEqual(currentWord, "0")) {
+        // Back
     }
     else{
         printf("Gadget dengan kode tersebut tidak ada.\n");
@@ -172,9 +196,12 @@ int main(){
         }
     }
 
-    //load();
-    // Read konfigurasi
-    //
+    if (isEqual(currentWord, "NEW_GAME")) {
+        load(1); // Nama File harus Default
+    } else {
+        load(0); // Nama File bebas, asal gk Default
+    }
+    
     // inisialisasi variabel
     time = 0;
     position = 0; // index HQ of daftarbangunan
@@ -591,11 +618,11 @@ int main(){
                     printf("Nomor tidak dikenali!\n");
                 }
             }
-        } /*else if (isEqual(currentWord, "HELP")) {
+        } else if (isEqual(currentWord, "HELP")) {
             help();
         } else if (isEqual(currentWord, "SAVE_GAME")) {
             save();
-        } else if (isEqual(currentWord, "RETURN")) {
+        } /*else if (isEqual(currentWord, "RETURN")) {
             if(AB_isActive(ReturnToSender)){
                 if(!S_isEmpty(bag) && !LL_isEmpty(inprogresslist)){
                     if(JENIS_ITEM(TOP(bag)) != 'V'){

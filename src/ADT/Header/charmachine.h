@@ -5,11 +5,17 @@
 #define CHAR_ENGINE_H
 
 #include "boolean.h"
+#include <stdio.h>
 
 #define MARK '\n'
 /* Char Engine State */
 extern char currentChar;
 extern boolean eot;
+extern FILE *loadFile;
+
+void startFile();
+
+void advFile();
 
 void start();
 /* Mesin siap dioperasikan. Pita disiapkan untuk dibaca.

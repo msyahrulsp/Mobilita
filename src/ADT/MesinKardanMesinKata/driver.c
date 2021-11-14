@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "wordmachine.h"
 
+static int retval;
+
 int main(){
     printf("ENTER COMMAND: ");
     startWord();
@@ -24,13 +26,22 @@ int main(){
         startWord();
     }
 
-    FILE *saveFile;
+    // FILE *saveFile;
 
-    saveFile = fopen("./save/Test.txt", "w");
-    if (saveFile == NULL) {
-        printf("404");
-        return 0;
-    }
-    fprintf(saveFile, "1245");
+    // saveFile = fopen("./save/Test", "w");
+    // if (saveFile == NULL) {
+    //     printf("404");
+    //     return 0;
+    // }
+    // fprintf(saveFile, "1245");
+
+    FILE *loadFile;
+    loadFile = fopen("./save/Test", "r");
+    retval = fscanf(loadFile, "%c", &currentChar);
+    printf("%c\n", currentChar);
+    retval = fscanf(loadFile, "%c", &currentChar);
+    printf("%c\n", currentChar);
+    retval = fscanf(loadFile, "%c", &currentChar);
+    printf("%c\n", currentChar);
     return 0;
 }

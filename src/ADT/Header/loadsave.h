@@ -3,8 +3,12 @@
 
 #include "wordmachine.h"
 #include "game.h"
+#include "listdin.h"
+#include "queue.h"
 
-void load();
+extern Game data;
+
+void load(int type);
 
 void save();
 

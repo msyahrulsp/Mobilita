@@ -34,6 +34,15 @@ boolean S_isFull(Stack s) {
     return IDX_TOP(s) == CAPACITY - 1;
 }
 
+void S_reverseCopy(Stack *s, Stack input) {
+    S_CreateStack(s);
+    S_ElType holder;
+    while(!S_isEmpty(input)) {
+        S_pop(&input, &holder);
+        S_push(s, holder);
+    }
+}
+
 /* ************ Menambahkan sebuah elemen ke Stack ************ */
 void S_push(Stack *s, S_ElType val) {
 /* Menambahkan val sebagai elemen Stack s */

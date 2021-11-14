@@ -6,9 +6,19 @@
 
 char currentChar;
 boolean eot;
+FILE *loadFile;
 
 static FILE * tape;
 static int retval;
+
+void startFile() {
+       tape = loadFile;
+       advFile();
+}
+
+void advFile() {
+       retval = fscanf(loadFile, "%c", &currentChar);
+}
 
 void start() {
 /* Mesin siap dioperasikan. Pita disiapkan untuk dibaca.

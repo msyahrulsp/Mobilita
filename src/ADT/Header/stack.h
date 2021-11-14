@@ -35,6 +35,8 @@ boolean S_isEmpty(Stack s);
 boolean S_isFull(Stack s);
 /* Mengirim true jika tabel penampung nilai s stack penuh */
 
+void S_reverseCopy(Stack *s, Stack input);
+
 /* ************ Menambahkan sebuah elemen ke Stack ************ */
 void S_push(Stack *s, S_ElType val);
 /* Menambahkan val sebagai elemen Stack s */

@@ -84,6 +84,8 @@ void LS_readList(ListGadget *l);
 /*    Jika n = 0; hanya terbentuk List kosong */
 void LS_gadgetName(ListGadget l, int idx);
 
+boolean LS_insertGadget(ListGadget *l, Gadget val);
+
 void LS_displayList(ListGadget l);
 /* Proses : Menuliskan isi List dengan traversal, List ditulis di antara kurung 
    siku; antara dua elemen dipisahkan dengan separator "koma", tanpa tambahan 

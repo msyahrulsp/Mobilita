@@ -15,9 +15,21 @@ typedef struct {
    int length;
 } Word;
 
+typedef struct {
+   char let;
+   int num;
+} Scn;
+
 /* Word Engine State */
 extern boolean endWord;
 extern Word currentWord;
+extern Scn Scanner;
+
+void startScan();
+
+void advScan();
+
+void getScan();
 
 void ignoreBlank();
 /* Mengabaikan satu atau beberapa BLANK

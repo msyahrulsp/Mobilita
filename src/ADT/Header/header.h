@@ -5,7 +5,6 @@
 #include "listdin.h"
 #include "listStatik.h"
 #include "matrix.h"
-#include "wordmachine.h"
 #include "pcolor.h"
 #include "queue.h"
 #include "stack.h"

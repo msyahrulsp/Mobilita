@@ -7,7 +7,11 @@ void AB_createAbility (Ability *a, boolean option){
 /* Membuat ability dengan count awal sesuai spesifikasi masing-masing */
 	/* KAMUS LOKAL */
 	/* ALGORITMA */
-	option ? Count(*a) = 10: Count(*a) = 1;
+	if (option) {
+		Count(*a) = 10;
+	} else {
+		Count(*a) = 1;
+	}
 	Active(*a) = false;
 }
 /* *** Kondisi Aktivasi Ability *** */
@@ -27,7 +31,7 @@ boolean isActive(Ability a){
 /* Mengirimkan true jika ability active */
 	/* KAMUS LOKAL */
 	/* ALGORITMA */
-	return (Active(*a) == true);
+	return (Active(a) == true);
 }
 /* *** Operasi terhadap Ability *** */
 void AB_stackAbility(Ability *a){
