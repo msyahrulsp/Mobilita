@@ -335,10 +335,7 @@ int main(){
                     starSymbol = starSymbol || (i == M_getLastIdxRow(peta));
                     starSymbol = starSymbol || (j == M_getLastIdxCol(peta));
                     if (starSymbol){
-                        M_ELMT(peta, i, j) = '*';
-                        // HANYA CONTOH
-                        // HARUSNYA BEGINI
-                        // M_ELMT(&peta, i, j) = '*';
+                        printf("*");
                     }
                     else{
                         int k = 0;
@@ -346,18 +343,85 @@ int main(){
                             boolean xAvail = i == BPOINTX(daftarbangunan, k);
                             boolean yAvail = j == BPOINTY(daftarbangunan, k);
                             if (xAvail && yAvail){
-                                // Memasukkan nama bangunan ke matriks peta
-                                M_ELMT(peta, i, j) = BNAME(daftarbangunan, k);
+                                // Pengecekan Posisi Mobita
+                                boolean posMobita = i == Absis(point_currentPos);
+                                posMobita = posMobita && (j == Ordinat(point_currentPos));
+                                if (posMobita == true){
+                                    print_yellow(BNAME(daftarbangunan, k));
+                                }
+                                // Pengecekan bangunan lokasi pick up
+                                boolean pickupLoc;
+                                LL_Address ptr = FIRST(inprogresslist);
+                                boolean searching = true;
+                                POINT pickUpPoint;
+                                int bIdx = 0;
+                                while ((searching) && (bIdx < LD_length(daftarbangunan))){
+                                    if (BNAME(daftarbangunan, bIdx) == PICK_UP_POINT(INFO(ptr))){
+                                        pickUpPoint = BPOINT(daftarbangunan, bIdx);
+                                        searching = false;
+                                    }
+                                    bIdx += 1;
+                                }
+                                pickupLoc = i == Absis(pickUpPoint);
+                                pickupLoc = pickupLoc && (j == Ordinat(pickUpPoint));
+                                pickupLoc = pickupLoc && (!posMobita);
+                                if (pickupLoc == true){
+                                    print_red(PICK_UP_POINT(INFO(ptr)));
+                                }
+                                // Pengecekan bangunan lokasi drop off
+                                boolean dropOffLoc;
+                                S_ElType ptrBag = TOP(bag);
+                                POINT dropOffPoint;
+                                bIdx = 0;
+                                searching = true;
+                                while ((searching) && (bIdx < LD_length(daftarbangunan))){
+                                    if (BNAME(daftarbangunan, bIdx) == PICK_UP_POINT(ptrBag)){
+                                        dropOffPoint = BPOINT(daftarbangunan, i);
+                                        searching = false;
+                                    }
+                                    bIdx += 1;
+                                }
+                                dropOffLoc = i == Absis(dropOffPoint);
+                                dropOffLoc = dropOffLoc && (j == Ordinat(dropOffPoint));
+                                dropOffLoc = dropOffLoc && (!pickupLoc);
+                                if (dropOffLoc == true){
+                                    print_blue(PICK_UP_POINT(ptrBag));
+                                }
+
+                                // Pengecekan destinasi yang bisa dicapai untuk tampilan peta
+                                LD_CreateListDin(&moveable, totalbangunan);
+                                // Melihat konfigurasi adjacency Matrix (adj)
+                                for(int z = 0; z < COLS(adj); z++){
+                                    if (M_ELMT(adj, position, z) == 1){
+                                        // Insert to moveable List
+                                        LD_insertLast(&moveable, LD_ELMT(daftarbangunan,z));
+                                    }
+                                }
+                                boolean destinasiAvail;
+                                int s = 0; // indeks untuk iterasi moveable
+                                while (s < LD_length(moveable)){
+                                    destinasiAvail = i == BPOINTX(moveable, s);
+                                    destinasiAvail = destinasiAvail && (j == BPOINTY(moveable, s));
+                                    destinasiAvail = destinasiAvail && (!dropOffLoc);
+                                    if (destinasiAvail == true){
+                                        print_green(BNAME(moveable, s));
+                                    }
+                                    s += 1;
+                                }
+                                if (!destinasiAvail){
+                                    printf("%c", BNAME(daftarbangunan, k));
+                                }
                             }
                             k += 1;
                         }
                         boolean isHQloc = i == hqX;
                         isHQloc = isHQloc && (j == hqY);
                         if (isHQloc){
-                            M_ELMT(peta, i, j) = '8';
+                            printf("8");
                         }
                     }
                 }
+                printf("\n");
             }
         } else if (isEqual(currentWord, "TO_DO")) {
             LL_displayList_ToDo(todolist);
