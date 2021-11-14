@@ -143,6 +143,8 @@ int main(){
     int time, position;
     int bagCapacity, money;
     int totalbangunan;
+    int N, M; // Ukuran matriks peta
+    int hqX, hqY; // Lokasi HeadQuarters
     POINT point_currentPos;
     Matrix adj;
     Queue daftarpesanan;
@@ -324,12 +326,40 @@ int main(){
             } else {
                 printf("Tidak ada pesanan yang sedang diantarkan!\n");
             }
-        } else if (isEqual(currentWord, "MAP")) {
-            char posisiMobita, lokasiPickUp;
-            char lokasiDropOff, destinasiAvail;
-
-
-        } */else if (isEqual(currentWord, "TO_DO")) {
+        }*/else if (isEqual(currentWord, "MAP")) {
+            Matrix peta;
+            M_CreateMatrix(N + 2, M + 2, &peta);
+            for (int i = 0; i < ROWS(peta); i++){
+                for (int j = 0; j < COLS(peta); j++){
+                    boolean starSymbol = (i == 0) || (j == 0);
+                    starSymbol = starSymbol || (i == M_getLastIdxRow(peta));
+                    starSymbol = starSymbol || (j == M_getLastIdxCol(peta));
+                    if (starSymbol){
+                        M_ELMT(peta, i, j) = '*';
+                        // HANYA CONTOH
+                        // HARUSNYA BEGINI
+                        // M_ELMT(&peta, i, j) = '*';
+                    }
+                    else{
+                        int k = 0;
+                        while (k < LD_length(daftarbangunan)){
+                            boolean xAvail = i == BPOINTX(daftarbangunan, k);
+                            boolean yAvail = j == BPOINTY(daftarbangunan, k);
+                            if (xAvail && yAvail){
+                                // Memasukkan nama bangunan ke matriks peta
+                                M_ELMT(peta, i, j) = BNAME(daftarbangunan, k);
+                            }
+                            k += 1;
+                        }
+                        boolean isHQloc = i == hqX;
+                        isHQloc = isHQloc && (j == hqY);
+                        if (isHQloc){
+                            M_ELMT(peta, i, j) = '8';
+                        }
+                    }
+                }
+            }
+        } else if (isEqual(currentWord, "TO_DO")) {
             LL_displayList_ToDo(todolist);
         } else if (isEqual(currentWord, "IN_PROGRESS")) {
             LL_displayList_InProgress(inprogresslist);
