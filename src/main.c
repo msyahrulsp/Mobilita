@@ -172,7 +172,7 @@ int main(){
     ListDin moveable;
     Pesanan order, valpesanan; // holder
     LL_List perishablelist;
-    //Ability SpeedBoost, ReturnToSender;
+    Ability SpeedBoost, ReturnToSender;
 
     // main menu
     printf("MOBILITA - Main Menu\n");
@@ -199,8 +199,8 @@ int main(){
     // inisialisasi variabel
     position = 0; // index HQ of Building(data)
     LL_CreateList(&perishablelist);
-    //AB_createAbility(&SpeedBoost, true);
-    //AB_createAbility(&ReturnToSender, false);
+    AB_createAbility(&SpeedBoost, true);
+    AB_createAbility(&ReturnToSender, false);
 
     // Menyalin perishable item dari to do list
     // Untuk keperluan efek gadget Kain Pembungkus Waktu
@@ -253,7 +253,7 @@ int main(){
                         valid = true;
                         i--;
                         // Time Handle
-                        /*if(AB_isActive(SpeedBoost)){
+                        if(AB_isActive(SpeedBoost)){
                             if ((Count(SpeedBoost) % 2)!=0){
 								Time(data)++;
 							}
@@ -261,8 +261,9 @@ int main(){
 							if (Count(SpeedBoost) == 0){
 								AB_deactivate(&SpeedBoost);
 							}
-                        } */
-                        Time(data) = Time(data) + 1 + heavy_InProgress(IPL(data));
+                        } else {
+                            Time(data) = Time(data) + 1 + heavy_InProgress(IPL(data));
+                        }
                         // Daftar Pesanan -> To Do List
                         while (HEAD(Order(data)).waktuPesanan <= Time(data)){
                             Q_dequeue(&Order(data), &order);

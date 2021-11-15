@@ -27,7 +27,7 @@ void AB_deactivate (Ability *a){
 	/* ALGORITMA */
 	Active(*a) = false;
 }
-boolean isActive(Ability a){
+boolean AB_isActive(Ability a){
 /* Mengirimkan true jika ability active */
 	/* KAMUS LOKAL */
 	/* ALGORITMA */
