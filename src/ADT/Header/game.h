@@ -13,31 +13,49 @@ typedef struct {
     POINT Pos;
 } Stat;
 
+/*==================== LIST MACRO FOR MAIN ====================*/
+// Stat
 #define Money(d) (d).Player.Money
 #define Time(d) (d).Player.Time
 #define PosX(d) (d).Player.Pos.X // PosX Mobita
 #define PosY(d) (d).Player.Pos.Y // PosY Mobita
+
+// Map
 #define Map(d) (d).Map
+
+// HQ
 #define HQ(d) (d).HQ
-#define NBuild(d) (d).NBuild
 
 // Building
+#define NBuild(d) (d).NBuild
 #define Building(d) (d).Building
 #define BuiNEFF(d) (d).Building.nEff
 #define BuiNAME(d, i) (d).Building.buffer[i].buildingName
 #define BuiPOINT(d, i) (d).Building.buffer[i].position 
 
+// Adjacency Matrix
 #define Adj(d) (d).Adj
 #define AdjE(d, i, j) (d).Adj.contents[(i)][(j)]
 
+// Pesanan
 #define NOrder(d) (d).NOrder
 #define Order(d) (d).Order
 #define OrderE(d, i) (d).Order.buffer[(i)]
 
+// ToDoList
 #define NToDo(d) (d).NToDo
-#define NIPL(d) (d).NIPL
-#define MTas(d) (d).MaxTas
+#define ToDo(d) (d).ToDo
 
+// InProgressList
+#define NIPL(d) (d).NIPL
+#define IPL(d) (d).IPL
+
+// Tas
+#define MTas(d) (d).MaxTas
+#define Tas(d) (d).Tas
+
+// Inventory
+#define Invent(d) (d).Invent
 #define InventE(d, i) (d).Invent.contents[i]
 
 typedef struct { 
