@@ -125,6 +125,7 @@ boolean LS_insertGadget(ListGadget *l, Gadget val) {
             LS_ELMT(*l, i) = val;
             done = true;
         }
+        i++;
     }
 
     return done;
