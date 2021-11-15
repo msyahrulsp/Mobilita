@@ -283,10 +283,59 @@ void LD_compactList(ListDin *l) {
 
 POINT LD_buildingtToPoint (ListDin l, char nama){
     int i = 0;
+    boolean found;
     /* ALGORITMA */
-    while (LD_isIdxEff(l, i)) {
-        if (BNAME(l, i) == nama)
-            return l.buffer[i].position;
-        i++;
+    found = false;
+    while (LD_isIdxEff(l, i) && !found) {
+        if (BNAME(l, i) == nama){
+            found = true;
+        } else {
+            i++;
+        }
     }
+    return l.buffer[i].position;
+}
+
+boolean LD_isBuildingIn (ListDin l, char b){
+
+    int i = 0;
+    boolean found = false;
+    /* ALGORITMA */
+
+    while (i<LD_length(l) && !found){
+        if (BNAME(l,i)==b){
+            found = true;
+        } else {
+            i += 1;
+        }
+    }
+
+    return found;
+
+}
+
+IdxType LD_point_indexOf(ListDin l, POINT val) {
+/* Search apakah ada elemen List l yang bernilai val */
+/* Jika ada, menghasilkan indeks i terkecil, dengan elemen ke-i = val */
+/* Jika tidak ada, mengirimkan IDX_UNDEF */
+/* Menghasilkan indeks tak terdefinisi (IDX_UNDEF) jika List l kosong */
+/* Skema Searching yang digunakan bebas */
+    /* KAMUS */
+    int i = 0;
+    boolean found = false;
+    /* ALGORITMA */
+
+    while (i<LD_length(l) && !found){
+        if (P_EQ(BPOINT(l,i), val)){
+            found = true;
+        } else {
+            i += 1;
+        }
+    }
+
+    if (!found){
+        i = IDX_UNDEF;
+    }
+
+    return i;
 }

@@ -8,8 +8,9 @@
 #include "queue.h"
 
 typedef struct {
-    int Time;
     int Money;
+    int Time;
+    int NDrop;
     POINT Pos;
 } Stat;
 
@@ -17,6 +18,8 @@ typedef struct {
 // Stat
 #define Money(d) (d).Player.Money
 #define Time(d) (d).Player.Time
+#define NDrop(d) (d).Player.NDrop
+#define Pos(d) (d).Player.Pos
 #define PosX(d) (d).Player.Pos.X // PosX Mobita
 #define PosY(d) (d).Player.Pos.Y // PosY Mobita
 
@@ -52,6 +55,7 @@ typedef struct {
 
 // Tas
 #define MTas(d) (d).MaxTas
+#define NTas(d) (d).NTas
 #define Tas(d) (d).Tas
 
 // Inventory
@@ -71,6 +75,7 @@ typedef struct {
     int NIPL;
     LL_List IPL; // In Progress List
     int MaxTas;
+    int NTas;
     Stack Tas; // Tas
     ListGadget Invent; // Invent Gadget
 } Game;

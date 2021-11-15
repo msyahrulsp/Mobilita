@@ -350,3 +350,79 @@ int heavy_InProgress(LL_List l){
 
     return ctr;
 }
+
+int LL_pu_isIn(LL_List l, char x){
+    int idx;
+    LL_Address p;
+    boolean found;
+    // Algoritma
+    idx = 0;
+    p = FIRST(l);
+    found = false;
+    while (p!=NULL && !(found)){
+        if (INFO(p).pickUpPoint==x){
+            found = true;
+        } else {
+            idx += 1;
+            p = NEXT(p);
+        }
+    }
+    if (!found){
+        idx = IDX_UNDEF;
+    }
+    return idx;
+}
+
+int LL_do_isIn(LL_List l, char x){
+    int idx;
+    LL_Address p;
+    boolean found;
+    // Algoritma
+    idx = 0;
+    p = FIRST(l);
+    found = false;
+    while (p!=NULL && !(found)){
+        if (INFO(p).dropOffPoint==x){
+            found = true;
+        } else {
+            idx += 1;
+            p = NEXT(p);
+        }
+    }
+    if (!found){
+        idx = IDX_UNDEF;
+    }
+    return idx;
+}
+
+int LL_dropOffAvailable(LL_List l, POINT titik, ListDin daftarbangunan){
+
+    int idx;
+    LL_Address p;
+    boolean found;
+    // Algoritma
+    idx = 0;
+    p = FIRST(l);
+    found = false;
+    if (P_EQ(LD_buildingtToPoint(daftarbangunan, INFO(p).dropOffPoint),titik)){
+        found = true;
+    }
+    if (!found){
+        idx = IDX_UNDEF;
+    }
+    return idx;
+}
+
+void LL_disapPerishable (LL_List *l, int time){
+    int idx = 0;
+    LL_Address p = FIRST(*l);
+    LL_ElType val;
+    while (p!=NULL){
+        if (INFO(p).jenisItem == 'P' && INFO(p).perishTime == time){
+            LL_deleteAt(l, idx, &val);
+        } else {
+            idx += 1;
+            p = NEXT(p);
+        }
+    }
+}

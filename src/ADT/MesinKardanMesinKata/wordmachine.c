@@ -120,13 +120,14 @@ boolean isEqual(Word input, char command[]) {
     return true;
 }
 
-boolean isEqualInt(Word input, int number) {
-    char str[10];
+// boolean isEqualInt(Word input, int number) {
+//     char str[10];
 	
-    sprintf(str,"&d",number);
+//     number = atoi(input);
+//     sprintf(str,"&d",number);
 	
-    return isEqual(input,str);
-}
+//     return isEqual(input,str);
+// }
 
 void toPath() {
     int i;

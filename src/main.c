@@ -142,7 +142,7 @@ void delSenterPengecilEff(Stack *bag){
     boolean foundGadgetEff = false;
     S_ElType item; // Variabel untuk menampung item yang dipindahkan
     while(!foundGadgetEff){
-        if(JENIS_ITEM(TOP(*bag)) != 'n'){
+        if(JENIS_ITEM(TOP(*bag)) != 'N'){
             foundGadgetEff = true;
         }
         else{
@@ -166,13 +166,15 @@ int main(){
     // Semua var dari hasil load dah diubah ke macro
     // Pos Mobita dah ke load, tapi gk tau var apa yang perlu diubah disini
 
-    int idxtdl;
-    int position; // perlu ubah ?
+    int idxtdl, idxipl;
+    int position; 
+    Building dumpBuilding;
     POINT point_currentPos; // holder ?
     ListDin moveable;
     Pesanan order, valpesanan; // holder
     LL_List perishablelist;
     Ability SpeedBoost, ReturnToSender;
+    Matrix map;
 
     // main menu
     printf("MOBILITA - Main Menu\n");
@@ -181,6 +183,7 @@ int main(){
 
     while(!isEqual(currentWord, "NEW_GAME") && !isEqual(currentWord, "LOAD_GAME")) {
         if(isEqual(currentWord, "EXIT")) {
+            printf("KELUAR\n");
             exit(1); // sementara
         } else {
             printf("Command salah\n");
@@ -197,10 +200,12 @@ int main(){
     }
     
     // inisialisasi variabel
-    position = 0; // index HQ of Building(data)
+    position = LD_point_indexOf(Building(data), Pos(data)); // index HQ of Building(data)
     LL_CreateList(&perishablelist);
     AB_createAbility(&SpeedBoost, true);
     AB_createAbility(&ReturnToSender, false);
+    LD_CreateListDin(&moveable, NBuild(data));
+    M_ContructorMap(Building(data), &map, Map(data).rowEff, Map(data).colEff);
 
     // Menyalin perishable item dari to do list
     // Untuk keperluan efek gadget Kain Pembungkus Waktu
@@ -219,19 +224,21 @@ int main(){
     startWord();
 
     while (!isEqual(currentWord, "EXIT")) {
-        if (isEqual(currentWord, "MOVE")) {
-            LD_CreateListDin(&moveable, NBuild(data));
-            // Melihat konfigurasi adjacency Matrix (Adj(data))
-            for(int j = 0; j < COLS(Adj(data)); j++){
-                if (M_ELMT(Adj(data),position,j)==1){
-                    // Insert to moveable List
-                    LD_insertLast(&moveable, LD_ELMT(Building(data),j));
-                }
+        while (!LD_isEmpty(moveable)) {
+            LD_deleteLast(&moveable, &dumpBuilding);
+        }
+        // Melihat konfigurasi adjacency Matrix (Adj(data))
+        for(int j = 0; j < COLS(Adj(data)); j++){
+            if (M_ELMT(Adj(data),position,j)==1){
+                // Insert to moveable List
+                LD_insertLast(&moveable, LD_ELMT(Building(data),j));
             }
+        }
+        if (isEqual(currentWord, "MOVE")) {
             // Input
             printf("Posisi yang dapat dicapai:\n");
             for(int i = 0; i < LD_length(moveable); i++){
-                printf("%.d. %c (%d,%d)\n",(i+1),BNAME(moveable,i),BPOINTX(moveable,i),BPOINTY(moveable,i));
+                printf("%d. %c (%d,%d)\n",(i+1),BNAME(moveable,i),BPOINTX(moveable,i),BPOINTY(moveable,i));
             }
             // Validation Loop
             boolean valid = false;
@@ -264,6 +271,22 @@ int main(){
                         } else {
                             Time(data) = Time(data) + 1 + heavy_InProgress(IPL(data));
                         }
+                        // Handle Perishable item
+                        LL_disapPerishable(&IPL(data), Time(data));
+                        Stack tempTas;
+                        Pesanan tempPesanan;
+                        while (S_isEmpty(Tas(data))) {
+                            S_pop(&Tas(data), &tempPesanan);
+                            if (JENIS_ITEM(tempPesanan) == 'P' && PERISH_TIME(tempPesanan) == Time(data)) {
+                                // DO NOTHING
+                            } else {
+                                S_push(&tempTas, tempPesanan);
+                            }
+                        }
+                        while (S_isEmpty(tempTas)) {
+                            S_pop(&tempTas, &tempPesanan);
+                            S_push(&Tas(data), tempPesanan);
+                        }
                         // Daftar Pesanan -> To Do List
                         while (HEAD(Order(data)).waktuPesanan <= Time(data)){
                             Q_dequeue(&Order(data), &order);
@@ -272,12 +295,14 @@ int main(){
                         // Move
                         printf("Mobita sekarang berada di titik %c (%d,%d)\n",BNAME(moveable,i),BPOINTX(moveable,i),BPOINTY(moveable,i));
                         position = LD_indexOf(Building(data), LD_ELMT(moveable,i));
+                        PosX(data) = BPOINTX(Building(data), position);
+                        PosY(data) = BPOINTY(Building(data), position);
                     } else{
                         printf("Silahkan pilih sesuai opsi!\n");
                     }
                 }
             }
-            LD_dealocate(&moveable);
+            // LD_dealocate(&moveable);
         } else if (isEqual(currentWord, "PICK_UP")) {
             point_currentPos = BPOINT(Building(data), position);
             idxtdl = LL_pesananAvailable(ToDo(data), point_currentPos, Building(data));
@@ -296,149 +321,66 @@ int main(){
                         } else if (valpesanan.jenisItem == 'V'){
                             printf("Pesanan berupa VIP Item berhasil diambil!\n");
                         }
-                        /*if(JENIS_ITEM(valpesanan) == 'H'){
+                        if(JENIS_ITEM(valpesanan) == 'H'){
                            AB_reset(&SpeedBoost,true);
-                        }*/
-                    } /*else{
+                        }
+                    } else {
                         printf("Item VIP sedang dalam proses, tidak dapat mengambil item\n");
-                    }*/
+                    }
                 } else {
                     printf("Tidak bisa mengambil pesanan karena tas sudah penuh\n");
                 }
             } else {
                 printf("Pesanan tidak ditemukan\n");
             }
-        } /*else if (isEqual(currentWord, "DROP_OFF")) {
+        } else if (isEqual(currentWord, "DROP_OFF")) {
             // TODO : handle kesesuaian lokasi pengiriman
-            if (!S_isEmpty(Tas(data)) && !LL_isEmpty(IPL(data))) {
+            point_currentPos = BPOINT(Building(data), position);
+            idxipl = LL_dropOffAvailable(IPL(data), point_currentPos, Building(data));
+            if (idxipl != IDX_UNDEF){
                 LL_deleteFirst(&IPL(data), &valpesanan);
                 S_pop(&Tas(data), &valpesanan);
                 if (JENIS_ITEM(valpesanan) == 'N') {
-                    delSenterPengecilEff(&Tas(data));
+                    //delSenterPengecilEff(&Tas(data));
                     printf("Pesanan Normal Item berhasil diantarkan\n");
+                    Money(data) += 200;
+                    NDrop(data)++;
                     printf("Uang yang didapatkan: 200 Yen");
-                } else if ((JENIS_ITEM(valpesanan) == 'H') || (JENIS_ITEM(valpesanan) == 'n')) {
+                } else if (JENIS_ITEM(valpesanan) == 'H') {
                     // Dapet Reward
-                    if(!isCarryItem(Heavy)){
-                          AB_activate(&SpeedBoost);
-                    }*/
-                    /*delSenterPengecilEff(&Tas(data));
+                    if(heavy_InProgress(IPL(data))==0){
+                        AB_activate(&SpeedBoost);
+                    }
+                    //delSenterPengecilEff(&Tas(data));
                     printf("Pesanan Heavy Item berhasil diantarkan\n");
+                    Money(data) += 400;
+                    NDrop(data)++;
                     printf("Uang yang didapatkan: 400 Yen");
                 } else if (JENIS_ITEM(valpesanan) == 'P') {
                     // dapet reward
                     // check perishableitem
-                    MTas(data)++; // ability increase Capacity
-                    delSenterPengecilEff(&Tas(data));
+                    if (MTas(data) != 100) {
+                        MTas(data)++; // ability increase Capacity
+                    }
+                    // delSenterPengecilEff(&Tas(data));
                     printf("Pesanan Perishable Item berhasil diantarkan\n");
+                    Money(data) += 400;
+                    NDrop(data)++;
                     printf("Uang yang didapatkan: 400 Yen");
-                } else if (JENIS_ITEM(valpesanan) == 'V') {
+                } /*else if (JENIS_ITEM(valpesanan) == 'V') {
                     // dapet reward
-                    delSenterPengecilEff(&Tas(data));
-                    AB_isActive(ReturnToSender) ? AB_stackAbility(ReturnToSender): AB_activate(ReturnToSender);
+                    // delSenterPengecilEff(&Tas(data));
+                    //AB_isActive(ReturnToSender) ? AB_stackAbility(&ReturnToSender): AB_activate(&ReturnToSender);
                     printf("Pesanan VIP Item berhasil diantarkan\n");
+                    Money(data) += 600;
+                    NDrop(data)++;
                     printf("Uang yang didapatkan: 600 Yen");
-                }
+                }*/
             } else {
-                printf("Tidak ada pesanan yang sedang diantarkan!\n");
+                printf("Tidak ada pesanan yang bisa diantarkan!\n"); 
             }
-        }*/else if (isEqual(currentWord, "MAP")) {
-            Matrix peta;
-            M_CreateMatrix(Map(data).rowEff + 2, Map(data).colEff + 2, &peta);
-            for (int i = 0; i < ROWS(peta); i++){
-                for (int j = 0; j < COLS(peta); j++){
-                    boolean starSymbol = (i == 0) || (j == 0);
-                    starSymbol = starSymbol || (i == M_getLastIdxRow(peta));
-                    starSymbol = starSymbol || (j == M_getLastIdxCol(peta));
-                    if (starSymbol){
-                        printf("*");
-                    }
-                    else{
-                        int k = 0;
-                        while (k < LD_length(Building(data))){
-                            boolean xAvail = i == BPOINTX(Building(data), k);
-                            boolean yAvail = j == BPOINTY(Building(data), k);
-                            if (xAvail && yAvail){
-                                // Pengecekan Posisi Mobita
-                                boolean posMobita = i == Absis(point_currentPos);
-                                posMobita = posMobita && (j == Ordinat(point_currentPos));
-                                if (posMobita == true){
-                                    print_yellow(BNAME(Building(data), k));
-                                }
-                                // Pengecekan bangunan lokasi pick up
-                                boolean pickupLoc;
-                                LL_Address ptr = FIRST(IPL(data));
-                                boolean searching = true;
-                                POINT pickUpPoint;
-                                int bIdx = 0;
-                                while ((searching) && (bIdx < LD_length(Building(data)))){
-                                    if (BNAME(Building(data), bIdx) == PICK_UP_POINT(INFO(ptr))){
-                                        pickUpPoint = BPOINT(Building(data), bIdx);
-                                        searching = false;
-                                    }
-                                    bIdx += 1;
-                                }
-                                pickupLoc = i == Absis(pickUpPoint);
-                                pickupLoc = pickupLoc && (j == Ordinat(pickUpPoint));
-                                pickupLoc = pickupLoc && (!posMobita);
-                                if (pickupLoc == true){
-                                    print_red(PICK_UP_POINT(INFO(ptr)));
-                                }
-                                // Pengecekan bangunan lokasi drop off
-                                boolean dropOffLoc;
-                                S_ElType ptrBag = TOP(Tas(data));
-                                POINT dropOffPoint;
-                                bIdx = 0;
-                                searching = true;
-                                while ((searching) && (bIdx < LD_length(Building(data)))){
-                                    if (BNAME(Building(data), bIdx) == PICK_UP_POINT(ptrBag)){
-                                        dropOffPoint = BPOINT(Building(data), i);
-                                        searching = false;
-                                    }
-                                    bIdx += 1;
-                                }
-                                dropOffLoc = i == Absis(dropOffPoint);
-                                dropOffLoc = dropOffLoc && (j == Ordinat(dropOffPoint));
-                                dropOffLoc = dropOffLoc && (!pickupLoc);
-                                if (dropOffLoc == true){
-                                    print_blue(PICK_UP_POINT(ptrBag));
-                                }
-
-                                // Pengecekan destinasi yang bisa dicapai untuk tampilan peta
-                                LD_CreateListDin(&moveable, NBuild(data));
-                                // Melihat konfigurasi adjacency Matrix (Adj(data))
-                                for(int z = 0; z < COLS(Adj(data)); z++){
-                                    if (M_ELMT(Adj(data), position, z) == 1){
-                                        // Insert to moveable List
-                                        LD_insertLast(&moveable, LD_ELMT(Building(data),z));
-                                    }
-                                }
-                                boolean destinasiAvail;
-                                int s = 0; // indeks untuk iterasi moveable
-                                while (s < LD_length(moveable)){
-                                    destinasiAvail = i == BPOINTX(moveable, s);
-                                    destinasiAvail = destinasiAvail && (j == BPOINTY(moveable, s));
-                                    destinasiAvail = destinasiAvail && (!dropOffLoc);
-                                    if (destinasiAvail == true){
-                                        print_green(BNAME(moveable, s));
-                                    }
-                                    s += 1;
-                                }
-                                if (!destinasiAvail){
-                                    printf("%c", BNAME(Building(data), k));
-                                }
-                            }
-                            k += 1;
-                        }
-                        boolean isHQloc = i == HQ(data).X;
-                        isHQloc = isHQloc && (j == HQ(data).Y);
-                        if (isHQloc){
-                            printf("8");
-                        }
-                    }
-                }
-                printf("\n");
-            }
+        } else if (isEqual(currentWord, "MAP")) {
+            M_displayMap(map, position, ToDo(data), IPL(data), Building(data), moveable);
         } else if (isEqual(currentWord, "TO_DO")) {
             LL_displayList_ToDo(ToDo(data));
         } else if (isEqual(currentWord, "IN_PROGRESS")) {
@@ -546,7 +488,7 @@ int main(){
                             } else {
                                 int i = 1;
                                 int int_currentWord = atoi(currentWord.contents);
-                                while(i <= LD_length(Building(data)) && (!isEqualInt(currentWord,i))){
+                                while(i <= LD_length(Building(data)) && (int_currentWord != i)){
                                     i++;
                                 }
                                 if(i <= LD_length(Building(data))){

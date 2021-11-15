@@ -32,7 +32,7 @@ void P_readPOINT (POINT * P) {
     /* KAMUS */
     int x, y;
     /* ALGORITMA */
-    scanf("%f %f", &x, &y);
+    scanf("%d %d", &x, &y);
     *P = P_makePOINT(x, y);
 }
 void P_displayPOINT (POINT P) {
@@ -46,7 +46,7 @@ void P_displayPOINT (POINT P) {
     /* KAMUS */
 
     /* ALGORITMA */
-    printf("(%.2f,%.2f)", Absis(P), Ordinat(P));
+    printf("(%d,%d)", Absis(P), Ordinat(P));
 }               
 
 /* *** Kelompok operasi relasional terhadap POINT *** */

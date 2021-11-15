@@ -43,6 +43,8 @@ void load(int type) {
     advScan();
     Time(data) = Scanner.num;
     advScan();
+    NDrop(data) = Scanner.num;
+    advScan();
     PosX(data) = Scanner.num;
     advScan();
     PosY(data) = Scanner.num;
@@ -64,9 +66,13 @@ void load(int type) {
     NBuild(data) = Scanner.num;
 
     // Building
-    LD_CreateListDin(&Building(data), NBuild(data));
+    LD_CreateListDin(&Building(data), NBuild(data) + 1);
+    BuiNAME(data, 0) = '8';
+    BuiPOINT(data, 0).X = HQ(data).X;
+    BuiPOINT(data, 0).Y = HQ(data).Y;
+    BuiNEFF(data) = 1;
     int i;
-    for (i = 0; i < NBuild(data); i++) {
+    for (i = 1; i < NBuild(data) + 1; i++) {
         advScan();
         BuiNAME(data, i) = Scanner.let;
         advScan();
@@ -113,7 +119,7 @@ void load(int type) {
         }
         Q_CreatePesanan(&odr, to, bp, bd, ji, p);
 
-        if (to >= Time(data)) {
+        if (to <= Time(data)) {
             LL_insertLast(&data.ToDo, odr);
         }
 
@@ -135,8 +141,10 @@ void load(int type) {
     // Tas
     advScan();
     MTas(data) = Scanner.num;
+    advScan();
+    NTas(data) = Scanner.num;
     S_CreateStack(&data.Tas);
-    for (i = 0; i < MTas(data); i++) {
+    for (i = 0; i < NTas(data); i++) {
         advScan();
         to = Scanner.num;
         advScan();
@@ -182,7 +190,7 @@ void save() {
     saveFile = fopen(currentWord.contents, "w");
 
     // Stat (Uang, Waktu, Pos)
-    fprintf(saveFile, "%d %d %d %d\n", Money(data), Time(data), PosX(data), PosY(data));
+    fprintf(saveFile, "%d %d %d %d %d\n", Money(data), Time(data), NDrop(data), PosX(data), PosY(data));
     // Ukuran Map
     fprintf(saveFile, "%d %d\n", Map(data).rowEff, Map(data).colEff);
     // HQ

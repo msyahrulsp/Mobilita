@@ -109,4 +109,12 @@ int LL_length(LL_List l);
 
 int heavy_InProgress(LL_List l);
 
+int LL_pu_isIn(LL_List l, char x);
+
+int LL_do_isIn(LL_List l, char x);
+
+int LL_dropOffAvailable(LL_List l, POINT titik, ListDin daftarbangunan);
+
+void LL_disapPerishable (LL_List *l, int time);
+
 #endif

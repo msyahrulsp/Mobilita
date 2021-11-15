@@ -158,4 +158,8 @@ void LD_compactList(ListDin *l);
 
 POINT LD_buildingtToPoint (ListDin l, char nama);
 
+boolean LD_isBuildingIn (ListDin l, char b);
+
+IdxType LD_point_indexOf(ListDin l, POINT val);
+
 #endif
