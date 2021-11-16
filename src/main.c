@@ -315,6 +315,7 @@ int main(){
         } else if (isEqual(currentWord, "PICK_UP")) {
             point_currentPos = BPOINT(Building(data), position);
             idxtdl = LL_pesananAvailable(ToDo(data), point_currentPos, Building(data));
+            printf("%d, %d\n", LL_length(IPL(data)), MTas(data));
             if (idxtdl != IDX_UNDEF){
                 if (LL_length(IPL(data))<MTas(data)){
                     if(JENIS_ITEM(TOP(Tas(data))) != 'V'){
@@ -393,7 +394,11 @@ int main(){
         } else if (isEqual(currentWord, "IN_PROGRESS")) {
             LL_displayList_InProgress(IPL(data));
         } else if (isEqual(currentWord, "BUY")) {
-            buy(&Invent(data), &Money(data));
+            if (position == 0){
+                buy(&Invent(data), &Money(data));
+            } else {
+                printf("Pembelian gadget hanya dapat dilakukan di Headquarters!\n");
+            }
         } else if (isEqual(currentWord, "INVENTORY")) {
             LS_displayList(Invent(data));
             printf("Gadget mana yang ingin digunakan? (ketik 0 jika ingin kembali)\n");

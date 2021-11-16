@@ -96,14 +96,14 @@ void S_disapPerishable(Stack *tas, int curTime, int addTime) {
     Stack tempTas;
     Pesanan tempPesanan;
     S_CreateStack(&tempTas);
-    while (S_isEmpty(*tas)) {
+    while (!S_isEmpty(*tas)) {
         S_pop(tas, &tempPesanan);
         if (JENIS_ITEM(tempPesanan) == 'P') {
             TIMER(tempPesanan) -= addTime;
         }
         S_push(&tempTas, tempPesanan);
     }
-    while (S_isEmpty(tempTas)) {
+    while (!S_isEmpty(tempTas)) {
         S_pop(&tempTas, &tempPesanan);
         if (JENIS_ITEM(tempPesanan) == 'P' && TIMER(tempPesanan) <= 0) {
             // DO NOTHING
