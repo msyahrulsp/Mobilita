@@ -485,7 +485,7 @@ int main(){
                                 printf("%d. %c (%d,%d)\n",(i+1),BNAME(Building(data),i),BPOINTX(Building(data),i),BPOINTY(Building(data),i));
                             }
                         }
-                        printf("Posisi yang dipilih? (ketik 0 jika ingin kembali)\\nn");
+                        printf("Posisi yang dipilih? (ketik 0 jika ingin kembali)\n\n");
                         resetWord();
                         printf("ENTER COMMAND: ");
                         startWord();
