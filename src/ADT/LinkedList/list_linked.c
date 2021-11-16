@@ -404,8 +404,10 @@ int LL_dropOffAvailable(LL_List l, POINT titik, ListDin daftarbangunan){
     idx = 0;
     p = FIRST(l);
     found = false;
-    if (P_EQ(LD_buildingtToPoint(daftarbangunan, INFO(p).dropOffPoint),titik)){
-        found = true;
+    if (p!=NULL){
+        if (P_EQ(LD_buildingtToPoint(daftarbangunan, INFO(p).dropOffPoint),titik)){
+            found = true;
+        }
     }
     if (!found){
         idx = IDX_UNDEF;
