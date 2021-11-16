@@ -80,4 +80,6 @@ typedef struct {
     ListGadget Invent; // Invent Gadget
 } Game;
 
-void help();
+void help(int type);
+
+void printMobilita();

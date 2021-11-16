@@ -101,7 +101,7 @@ void load(int type) {
     int to, p;
     char bp, bd, ji;
     Q_CreateQueue(&Order(data));
-    LL_CreateList(&data.ToDo);
+    LL_CreateList(&ToDo(data));
     for (i = 0; i < NOrder(data); i++) {
         advScan();
         to = Scanner.num;
@@ -120,7 +120,7 @@ void load(int type) {
         Q_CreatePesanan(&odr, to, bp, bd, ji, p);
 
         if (to <= Time(data)) {
-            LL_insertLast(&data.ToDo, odr);
+            LL_insertLast(&ToDo(data), odr);
         }
 
         Q_enqueue(&Order(data), odr);
@@ -128,14 +128,14 @@ void load(int type) {
     // IPL
     advScan();
     NIPL(data) = Scanner.num;
-    LL_CreateList(&data.IPL);
+    LL_CreateList(&IPL(data));
     for (i = 0; i < NIPL(data); i++) {
         advScan();
         ji = Scanner.let;
         advScan();
         bd = Scanner.let;
         Q_CreatePesanan(&odr, 'U', 'U', bd, ji, -1);
-        LL_insertLast(&data.IPL, odr);
+        LL_insertLast(&IPL(data), odr);
     }
 
     // Tas
@@ -143,7 +143,7 @@ void load(int type) {
     MTas(data) = Scanner.num;
     advScan();
     NTas(data) = Scanner.num;
-    S_CreateStack(&data.Tas);
+    S_CreateStack(&Tas(data));
     for (i = 0; i < NTas(data); i++) {
         advScan();
         to = Scanner.num;
@@ -160,7 +160,7 @@ void load(int type) {
             p = NULL_PERISHTIME;
         }
         Q_CreatePesanan(&odr, to, bp, bd, ji, p);
-        S_push(&data.Tas, odr);
+        S_push(&Tas(data), odr);
     }
 
     // Invent;
@@ -243,7 +243,7 @@ void save() {
     // Tas
     Stack temp;
     Pesanan holder;
-    S_reverseCopy(&temp, data.Tas);
+    S_reverseCopy(&temp, Tas(data));
     fprintf(saveFile, "%d\n", MTas(data));
     while(!S_isEmpty(temp)) {
         S_pop(&temp, &holder);
@@ -259,6 +259,7 @@ void save() {
     for (i = 0; i < 5; i++) {
         fprintf(saveFile, "%c %d\n", InventE(data, i).gadgetname, InventE(data, i).gadgetprice);
     }
+    printf("Save file berhasil terbuat!\n");
 
     fclose(saveFile);
 }

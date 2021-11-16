@@ -9,7 +9,7 @@ run: compile
 	$(SRC)/main
 
 compile: 
-	$(CC) -I $(SRC_ADT)/Header $(ADT_FILES) $(SRC)/main.c -o $(SRC)/main
+	$(CC) -I $(SRC_ADT)/Header $(ADT_FILES) $(SRC)/main.c -o $(SRC)/main && cls
 
 run2: $(SRC)/main
 	$(SRC)/main
@@ -18,7 +18,7 @@ driver: driver_compile
 	$(SRC_ADT)/$(f)/driver
 
 driver_compile: $(SRC_ADT)/$(f)
-	$(CC) -I $(SRC_ADT)/Header $(DRIVER_FILES) -o $(SRC_ADT)/$(f)/driver
+	$(CC) -I $(SRC_ADT)/Header $(DRIVER_FILES) -o $(SRC_ADT)/$(f)/driver && cls
 
 driver_run: $(SRC_ADT)/$(f)
 	$(SRC_ADT)/$(f)/driver
