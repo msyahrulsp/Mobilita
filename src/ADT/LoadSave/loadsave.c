@@ -38,7 +38,7 @@ void load(int type) {
     }
     startScan();
 
-    // Stat Load
+    // Stat
     Money(data) = Scanner.num;
     advScan();
     Time(data) = Scanner.num;
@@ -48,6 +48,16 @@ void load(int type) {
     PosX(data) = Scanner.num;
     advScan();
     PosY(data) = Scanner.num;
+
+    // Ability
+    advScan();
+    Speed(data).active = Scanner.num; // 0 atau 1
+    advScan();
+    Speed(data).count = Scanner.num; // 0 <= x <= 10
+    advScan();
+    Ret(data).active = Scanner.num; // 0 atau 1
+    advScan();
+    Ret(data).count = Scanner.num; // bebas
 
     // Map
     advScan();
@@ -63,16 +73,16 @@ void load(int type) {
 
     // NBuild
     advScan();
-    NBuild(data) = Scanner.num;
+    NBuild(data) = Scanner.num + 1;
 
     // Building
-    LD_CreateListDin(&Building(data), NBuild(data) + 1);
+    LD_CreateListDin(&Building(data), NBuild(data));
     BuiNAME(data, 0) = '8';
     BuiPOINT(data, 0).X = HQ(data).X;
     BuiPOINT(data, 0).Y = HQ(data).Y;
     BuiNEFF(data) = 1;
     int i;
-    for (i = 1; i < NBuild(data) + 1; i++) {
+    for (i = 1; i < NBuild(data); i++) {
         advScan();
         BuiNAME(data, i) = Scanner.let;
         advScan();
@@ -83,11 +93,11 @@ void load(int type) {
     }
 
     // Adjacency
-    Adj(data).colEff = NBuild(data) + 1;
-    Adj(data).rowEff = NBuild(data) + 1;
+    Adj(data).colEff = NBuild(data);
+    Adj(data).rowEff = NBuild(data);
     int j;
-    for (i = 0; i < NBuild(data) + 1; i++) {
-        for (j = 0; j < NBuild(data) + 1; j++) {
+    for (i = 0; i < NBuild(data); i++) {
+        for (j = 0; j < NBuild(data); j++) {
             advScan();
             AdjE(data, i, j) = Scanner.num;
         }
@@ -98,7 +108,7 @@ void load(int type) {
     NOrder(data) = Scanner.num;
 
     Pesanan odr;
-    int to, p;
+    int to, d, t;
     char bp, bd, ji;
     Q_CreateQueue(&Order(data));
     LL_CreateList(&ToDo(data));
@@ -113,11 +123,14 @@ void load(int type) {
         ji = Scanner.let;
         if (currentChar == BLANK) {
             advScan();
-            p = Scanner.num;
+            d = Scanner.num; // duration
+            advScan();
+            t = Scanner.num; // timer
         } else {
-            p = NULL_PERISHTIME;
+            d = NULL_PERISHTIME;
+            t = NULL_PERISHTIME;
         }
-        Q_CreatePesanan(&odr, to, bp, bd, ji, p);
+        Q_CreatePesanan(&odr, to, bp, bd, ji, d, t);
 
         if (to <= Time(data)) {
             LL_insertLast(&ToDo(data), odr);
@@ -134,7 +147,7 @@ void load(int type) {
         ji = Scanner.let;
         advScan();
         bd = Scanner.let;
-        Q_CreatePesanan(&odr, 'U', 'U', bd, ji, -1);
+        Q_CreatePesanan(&odr, 'U', 'U', bd, ji, -1, -1);
         LL_insertLast(&IPL(data), odr);
     }
 
@@ -155,11 +168,14 @@ void load(int type) {
         ji = Scanner.let;
         if (currentChar == BLANK) {
             advScan();
-            p = Scanner.num;
+            d = Scanner.num;
+            advScan();
+            t = Scanner.num;
         } else {
-            p = NULL_PERISHTIME;
+            d = NULL_PERISHTIME;
+            t = NULL_PERISHTIME;
         }
-        Q_CreatePesanan(&odr, to, bp, bd, ji, p);
+        Q_CreatePesanan(&odr, to, bp, bd, ji, d, t);
         S_push(&Tas(data), odr);
     }
 
@@ -191,6 +207,8 @@ void save() {
 
     // Stat (Uang, Waktu, Pos)
     fprintf(saveFile, "%d %d %d %d %d\n", Money(data), Time(data), NDrop(data), PosX(data), PosY(data));
+    // Ability
+    fprintf(saveFile, "%d %d %d %d\n", Speed(data).active, Speed(data).count, Ret(data).active, Ret(data).count);
     // Ukuran Map
     fprintf(saveFile, "%d %d\n", Map(data).rowEff, Map(data).colEff);
     // HQ
@@ -215,7 +233,7 @@ void save() {
     }
 
     // Order
-    int to, p;
+    int to, d, t;
     char bp, bd, ji;
     fprintf(saveFile, "%d\n", NOrder(data));
     for (i = 0; i < NOrder(data); i++) {
@@ -224,9 +242,10 @@ void save() {
         bd = Order(data).buffer[i].dropOffPoint;
         ji = Order(data).buffer[i].jenisItem;
         fprintf(saveFile, "%d %c %c %c", to, bp, bd, ji);
-        p = Order(data).buffer[i].perishTime;
-        if (p != -1) {
-            fprintf(saveFile, " %d\n", p);
+        d = Order(data).buffer[i].duration;
+        if (d != -1) {
+            t = Order(data).buffer[i].timer;
+            fprintf(saveFile, " %d %d\n", d, t);
         } else {
             fprintf(saveFile, "\n");
         }
@@ -248,8 +267,8 @@ void save() {
     while(!S_isEmpty(temp)) {
         S_pop(&temp, &holder);
         fprintf(saveFile, "%d %c %c %c", holder.waktuPesanan, holder.pickUpPoint, holder.dropOffPoint, holder.jenisItem);
-        if (holder.perishTime != - 1) {
-            fprintf(saveFile, " %d\n", holder.perishTime);
+        if (holder.duration != - 1) {
+            fprintf(saveFile, " %d %d\n", holder.duration, holder.timer);
         } else {
             fprintf(saveFile, "\n");
         }

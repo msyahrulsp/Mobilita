@@ -51,4 +51,6 @@ void S_pop(Stack *s, S_ElType *val);
 
 int S_length(Stack s);
 
+void S_disapPerishable(Stack *tas, int curTime, int addTime);
+
 #endif

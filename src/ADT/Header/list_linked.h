@@ -115,6 +115,6 @@ int LL_do_isIn(LL_List l, char x);
 
 int LL_dropOffAvailable(LL_List l, POINT titik, ListDin daftarbangunan);
 
-void LL_disapPerishable (LL_List *l, int time);
+void LL_disapPerishable (LL_List *l, int time, int timeadd);
 
 #endif

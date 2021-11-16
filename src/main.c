@@ -2,7 +2,17 @@
 #include <stdlib.h>
 #include "header.h"
 
-// Butuh tipe data Game > Buat load + save ( Ini nampung semua data )
+boolean endGame(int position) {
+    if (NOrder(data) == 0 && LL_isEmpty(ToDo(data)) && LL_isEmpty(IPL(data)) && S_isEmpty(Tas(data))) {
+        if (position != 0) {
+            printf("\nKembali ke HQ!\n");
+        } else {
+            return true;
+        }
+    }
+    return false;
+}
+
 void printMobilita() {
     printf("  __  __  ___  ___ ___ _    ___ _____ _   \n");
     printf(" |  \\/  |/ _ \\| _ )_ _| |  |_ _|_   _/_\\  \n");
@@ -48,7 +58,7 @@ void buy(ListGadget *inventory, int *money){
     startWord();
     int temp = atoi(currentWord.contents);
 
-    while (temp < 0 || temp > 4) {
+    while (temp < 0 || temp > 5) {
         printf("Silahkan pilih sesuai opsi!");
         resetWord();
         printf("\nENTER COMMAND: ");
@@ -61,7 +71,7 @@ void buy(ListGadget *inventory, int *money){
             Gadget gd;
             gd.gadgetname = 'K';
             gd.gadgetprice = 800;
-            added = LS_insertGadget(inventory, gd);
+            added = LS_insertGadget(inventory, gd, 0);
             if (!added) {
                 printf("Inventory kamu sudah penuh!\n");
             } else {
@@ -78,7 +88,7 @@ void buy(ListGadget *inventory, int *money){
             Gadget gd;
             gd.gadgetname = 'B';
             gd.gadgetprice = 1200;
-            added = LS_insertGadget(inventory, gd);
+            added = LS_insertGadget(inventory, gd, 1);
             if (!added) {
                 printf("Inventory kamu sudah penuh!\n");
             } else {
@@ -95,7 +105,7 @@ void buy(ListGadget *inventory, int *money){
             Gadget gd;
             gd.gadgetname = 'D';
             gd.gadgetprice = 1500;
-            added = LS_insertGadget(inventory, gd);
+            added = LS_insertGadget(inventory, gd, 2);
             if (!added) {
                 printf("Inventory kamu sudah penuh!\n");
             } else {
@@ -113,7 +123,7 @@ void buy(ListGadget *inventory, int *money){
             Gadget gd;
             gd.gadgetname = 'T';
             gd.gadgetprice = 3000;
-            added = LS_insertGadget(inventory, gd);
+            added = LS_insertGadget(inventory, gd, 3);
             if (!added) {
                 printf("Inventory kamu sudah penuh!\n");
             } else {
@@ -130,7 +140,7 @@ void buy(ListGadget *inventory, int *money){
             Gadget gd;
             gd.gadgetname = 'S';
             gd.gadgetprice = 800;
-            added = LS_insertGadget(inventory, gd);
+            added = LS_insertGadget(inventory, gd, 4);
             if (!added) {
                 printf("Inventory kamu sudah penuh!\n");
             } else {
@@ -151,8 +161,8 @@ void delSenterPengecilEff(Stack *bag){
 
     boolean foundGadgetEff = false;
     S_ElType item; // Variabel untuk menampung item yang dipindahkan
-    while(!foundGadgetEff){
-        if(JENIS_ITEM(TOP(*bag)) != 'N'){
+    while(!foundGadgetEff && S_isEmpty(*bag)){
+        if(JENIS_ITEM(TOP(*bag)) != 'n'){
             foundGadgetEff = true;
         }
         else{
@@ -176,14 +186,13 @@ int main(){
     // Semua var dari hasil load dah diubah ke macro
     // Pos Mobita dah ke load, tapi gk tau var apa yang perlu diubah disini
 
-    int idxtdl, idxipl;
+    int idxtdl, idxipl, timeadd;
     int position; 
     Building dumpBuilding;
     POINT point_currentPos; // holder ?
     ListDin moveable;
     Pesanan order, valpesanan; // holder
-    LL_List perishablelist;
-    Ability SpeedBoost, ReturnToSender;
+    // LL_List perishablelist;
     Matrix map;
 
     // main menu
@@ -217,31 +226,19 @@ int main(){
     
     // inisialisasi variabel
     position = LD_point_indexOf(Building(data), Pos(data)); // index HQ of Building(data)
-    LL_CreateList(&perishablelist);
-    AB_createAbility(&SpeedBoost, true);
-    AB_createAbility(&ReturnToSender, false);
+    // LL_CreateList(&perishablelist);
     LD_CreateListDin(&moveable, NBuild(data));
     M_ContructorMap(Building(data), &map, Map(data).rowEff, Map(data).colEff);
-
-    // Menyalin perishable item dari to do list
-    // Untuk keperluan efek gadget Kain Pembungkus Waktu
-    LL_Address perishableptr = FIRST(ToDo(data));
-    while (perishableptr != NULL){
-        if (JENIS_ITEM(INFO(perishableptr)) == 'P'){
-            LL_insertFirst(&perishablelist, INFO(perishableptr));
-        }
-        perishableptr = NEXT(perishableptr);
-    }
 
     printf("\n======= SELAMAT BERMAIN =======\n\n");
     printf("Waktu: %d\n", Time(data));
     printf("Uang: %d Yen\n", Money(data));
-    printf("Posisi: Building %c (%d, %d)\n", BuiNAME(data, position) ,PosX(data), PosY(data));
+    printf("Posisi: Titik %c (%d, %d)\n", BuiNAME(data, position) ,PosX(data), PosY(data));
     resetWord();
     printf("ENTER COMMAND: ");
     startWord();
 
-    while (!isEqual(currentWord, "EXIT")) {
+    while (!isEqual(currentWord, "EXIT") && !endGame(position)) {
         while (!LD_isEmpty(moveable)) {
             LD_deleteLast(&moveable, &dumpBuilding);
         }
@@ -278,37 +275,31 @@ int main(){
                         valid = true;
                         i--;
                         // Time Handle
-                        if(AB_isActive(SpeedBoost)){
-                            if ((Count(SpeedBoost) % 2)!=0){
+                        if(AB_isActive(Speed(data))) {
+							AB_useAbility(&Speed(data));
+                            if ((Count(Speed(data)) % 2)==0){
 								Time(data)++;
+                                LL_disapPerishable(&IPL(data), Time(data), 1);
+                                S_disapPerishable(&Tas(data), Time(data), 1);
 							}
-							AB_useAbility(&SpeedBoost);
-							if (Count(SpeedBoost) == 0){
-								AB_deactivate(&SpeedBoost);
+							if (Count(Speed(data)) == 0){
+								AB_reset(&Speed(data), true);
 							}
                         } else {
-                            Time(data) = Time(data) + 1 + heavy_InProgress(IPL(data));
+                            timeadd = 1 + heavy_InProgress(IPL(data));
+                            Time(data) = Time(data) + timeadd;
+                            LL_disapPerishable(&IPL(data), Time(data), timeadd);
+                            S_disapPerishable(&Tas(data), Time(data), timeadd);
                         }
                         // Handle Perishable item
-                        LL_disapPerishable(&IPL(data), Time(data));
-                        Stack tempTas;
-                        Pesanan tempPesanan;
-                        while (S_isEmpty(Tas(data))) {
-                            S_pop(&Tas(data), &tempPesanan);
-                            if (JENIS_ITEM(tempPesanan) == 'P' && PERISH_TIME(tempPesanan) == Time(data)) {
-                                // DO NOTHING
-                            } else {
-                                S_push(&tempTas, tempPesanan);
-                            }
-                        }
-                        while (S_isEmpty(tempTas)) {
-                            S_pop(&tempTas, &tempPesanan);
-                            S_push(&Tas(data), tempPesanan);
-                        }
+                        //LL_disapPerishable(&IPL(data), Time(data));
+                        //S_disapPerishable(&Tas(data), Time(data));
+                        
                         // Daftar Pesanan -> To Do List
                         while (HEAD(Order(data)).waktuPesanan <= Time(data)){
                             Q_dequeue(&Order(data), &order);
                             LL_insertLast(&ToDo(data), order);
+                            NOrder(data)--;
                         }
                         // Move
                         printf("Mobita sekarang berada di titik %c (%d,%d)\n",BNAME(moveable,i),BPOINTX(moveable,i),BPOINTY(moveable,i));
@@ -340,7 +331,7 @@ int main(){
                             printf("Pesanan berupa VIP Item berhasil diambil!\n");
                         }
                         if(JENIS_ITEM(valpesanan) == 'H'){
-                           AB_reset(&SpeedBoost,true);
+                           AB_reset(&Speed(data),true);
                         }
                     } else {
                         printf("Item VIP sedang dalam proses, tidak dapat mengambil item\n");
@@ -363,10 +354,10 @@ int main(){
                     printf("Pesanan Normal Item berhasil diantarkan\n");
                     Money(data) += 200;
                     printf("Uang yang didapatkan: 200 Yen");
-                } else if (JENIS_ITEM(valpesanan) == 'H') {
+                } else if (JENIS_ITEM(valpesanan) == 'H' || JENIS_ITEM(valpesanan) == 'n') {
                     // Dapet Reward
                     if(heavy_InProgress(IPL(data))==0){
-                        AB_activate(&SpeedBoost);
+                        AB_activate(&Speed(data));
                     }
                     //delSenterPengecilEff(&Tas(data));
                     printf("Pesanan Heavy Item berhasil diantarkan\n");
@@ -385,14 +376,13 @@ int main(){
                 } /*else if (JENIS_ITEM(valpesanan) == 'V') {
                     // dapet reward
                     // delSenterPengecilEff(&Tas(data));
-                    //AB_isActive(ReturnToSender) ? AB_stackAbility(&ReturnToSender): AB_activate(&ReturnToSender);
+                    //AB_isActive(Ret(data)) ? AB_stackAbility(&Ret(data)): AB_activate(&Ret(data));
                     printf("Pesanan VIP Item berhasil diantarkan\n");
                     Money(data) += 600;
                     printf("Uang yang didapatkan: 600 Yen");
                 }*/
                 // Hapus item drop off dari Order(data)
                 NDrop(data)++;
-                NOrder(data)--;
             } else {
                 printf("Tidak ada pesanan yang bisa diantarkan!\n"); 
             }
@@ -427,13 +417,13 @@ int main(){
                 idx = temp - 1;
                 
                 char gd = GNAME(Invent(data), idx);
-                if (gd == 'K'){
+                if (gd == 'K'){ // Kain Pembungkus Waktu
                     Stack tempBag; // Membuat stack untuk tempat penampungan item sementara
                     S_CreateStack(&tempBag);
 
                     boolean foundPerishable = false;
                     S_ElType item; // Variabel untuk menampung item yang dipindahkan
-                    while(!foundPerishable){
+                    while(!S_isEmpty(Tas(data)) && !foundPerishable){
                         if(JENIS_ITEM(TOP(Tas(data))) != 'P'){
                             foundPerishable = true;
                         }
@@ -442,22 +432,19 @@ int main(){
                             S_push(&tempBag, item); // Item dipindahkan ke temporaryBag
                         }
                     }
-                    if (foundPerishable == true){
+                    if (foundPerishable){
                         // Mengembalikan waktu perishable item.
-                        LL_Address ptr = FIRST(perishablelist);
-                        while (ptr != NULL){
-                            // Semua perishable item sudah disalin ke perishable list
-                            // Seharusnya gadget pasti terpakai apabila foundPerishable == true
-                            boolean flag = WAKTU_PESANAN(TOP(Tas(data))) == WAKTU_PESANAN(INFO(ptr));
-                            flag = flag && (PICK_UP_POINT(TOP(Tas(data))) == PICK_UP_POINT(INFO(ptr)));
-                            flag = flag && (DROP_OFF_POINT(TOP(Tas(data))) == DROP_OFF_POINT(INFO(ptr)));
-                            if (flag){
-                                PERISH_TIME(TOP(Tas(data))) = PERISH_TIME(INFO(ptr));
-                            }
-                            else{
+                        LL_Address ptr = FIRST(IPL(data));
+                        boolean donereset = false;
+                        while (ptr != NULL && !donereset){
+                            if (JENIS_ITEM(INFO(ptr)) == 'P'){
+                                TIMER(INFO(ptr)) = DURATION(INFO(ptr));
+                                donereset = true;
+                            } else {
                                 ptr = NEXT(ptr);
                             }
                         }
+                        TIMER(TOP(Tas(data))) = DURATION(TOP(Tas(data)));
                         LS_deleteElmt(&Invent(data), idx);
                         printf("Kain Pembungkus Waktu berhasil digunakan!\n");
                     }
@@ -469,50 +456,66 @@ int main(){
                         S_push(&Tas(data), item);
                     }
                 }
-                if (gd == 'B'){
-                    if (MTas(data) <= 100){
+                if (gd == 'B'){ // Senter Pembesar
+                    if (MTas(data) < 100){
                         MTas(data) = MTas(data) * 2;
                         if (MTas(data) > 100){
                             MTas(data) = 100;
                         }
                         LS_deleteElmt(&Invent(data), idx);
                         printf("Senter Pembesar berhasil digunakan!\n");
-                    }
-                    else{
+                    } else {
                         printf("Kapasitas tas sudah tidak bisa dibesarkan lagi!\n");
                     }
                 }
-                if (gd == 'D'){
+                if (gd == 'D'){ // Pintu Kemana Saja
                     boolean valid = false;
                     while(!valid){
+                        printf("Posisi yang bisa dicapai:\n");
+                        for(int i = 0; i < LD_length(Building(data)); i++){
+                            if (BNAME(Building(data),i)=='8'){
+                                printf("%d. HQ (%d,%d)\n",(i+1),BPOINTX(Building(data),i),BPOINTY(Building(data),i));
+                            } else {
+                                printf("%d. %c (%d,%d)\n",(i+1),BNAME(Building(data),i),BPOINTX(Building(data),i),BPOINTY(Building(data),i));
+                            }
+                        }
                         printf("Posisi yang dipilih? (ketik 0 jika ingin kembali)\n");
                         resetWord();
                         printf("ENTER COMMAND: ");
                         startWord();
                         int int_currentWord = atoi(currentWord.contents);
+
+                        while (int_currentWord < 0 || int_currentWord > NBuild(data)) {
+                            printf("Silahkan pilih sesuai opsi!\n");
+                            resetWord();
+                            printf("ENTER COMMAND: ");
+                            startWord();
+                            int_currentWord = atoi(currentWord.contents);
+                        }
+                        
                         if (int_currentWord == 0){ // Cancel move
                             valid = true;
                             printf("\nMove dibatalkan!\n");
                         } else {
                             int i = 1;
-                            while(i <= LD_length(Building(data)) && (int_currentWord != i)){
+
+                            while(i <= NBuild(data) && (int_currentWord != i)){
                                 i++;
                             }
-                            if(i <= LD_length(Building(data))){
-                                valid = true;
-                                i--;     
-                                // Move
-                                printf("Mobita sekarang berada di titik %c (%d,%d)\n",BNAME(Building(data),i),BPOINTX(Building(data),i),BPOINTY(Building(data),i));
 
-                                position = LD_indexOf(Building(data), LD_ELMT(Building(data),i));
-                                LS_deleteElmt(&Invent(data), idx);
-                            } else{
-                                printf("\nMasukan tidak sesuai!\n");
-                            }
+                            valid = true;
+                            i--;     
+                            // Move
+                            printf("Mobita sekarang berada di titik %c (%d,%d)\n",BNAME(Building(data),i),BPOINTX(Building(data),i),BPOINTY(Building(data),i));
+
+                            position = LD_indexOf(Building(data), LD_ELMT(Building(data),i));
+                            PosX(data) = BPOINTX(Building(data), position);
+                            PosY(data) = BPOINTY(Building(data), position);
+                            LS_deleteElmt(&Invent(data), idx);
                         }
                     }
                 }
-                if (gd == 'T'){
+                if (gd == 'T'){ // Mesin Waktu
                     if (Time(data) < 50){
                         Time(data) = 0;
                     }
@@ -522,14 +525,14 @@ int main(){
                     LS_deleteElmt(&Invent(data), idx);
                     printf("Mesin Waktu berhasil digunakan!\n");
                 }
-                if (gd == 'S'){
+                if (gd == 'S'){ // Senter Pengecil
                     // Menghilangkan efek heavy item
                     Stack tempBag; // Membuat stack untuk tempat penampungan item sementara
                     S_CreateStack(&tempBag);
 
                     boolean foundHeavy = false;
                     S_ElType item; // Variabel untuk menampung item yang dipindahkan
-                    while(!foundHeavy){
+                    while(!S_isEmpty(Tas(data)) && !foundHeavy){
                         if(JENIS_ITEM(TOP(Tas(data))) != 'H'){
                             foundHeavy = true;
                         }
@@ -560,7 +563,7 @@ int main(){
         } else if (isEqual(currentWord, "SAVE_GAME")) {
             save();
         } /*else if (isEqual(currentWord, "RETURN")) {
-            if(AB_isActive(ReturnToSender)){
+            if(AB_isActive(Ret(data))){
                 if(!S_isEmpty(Tas(data)) && !LL_isEmpty(IPL(data))){
                     if(JENIS_ITEM(TOP(Tas(data))) != 'V'){
                         LL_deleteFirst(&IPL(data), &valpesanan);
@@ -576,19 +579,20 @@ int main(){
                 }
                 printf("Ability berhasil digunakan\n");
                 delSenterPengecilEff(&Tas(data));
-                AB_useAbility(&ReturnToSender);
-                if (Count(ReturnToSender)==0){
-                    AB_reset(&ReturnToSender, false);
+                AB_useAbility(&Ret(data));
+                if (Count(Ret(data))==0){
+                    AB_reset(&Ret(data), false);
                 }
             } else {
                 printf("Anda tidak memiliki ability ini\n");
             }
-        }*/ else {
+        } */else {
             printf("Command salah!\n");
         }
         printf("\nWaktu: %d\n", Time(data));
         printf("Uang: %d Yen\n", Money(data));
-        printf("Posisi: Building %c (%d, %d)\n", BuiNAME(data, position) ,PosX(data), PosY(data));
+        printf("Posisi: Titik %c (%d, %d)\n", BuiNAME(data, position) ,PosX(data), PosY(data));
+
         resetWord();
         printf("ENTER COMMAND: ");
         startWord();
@@ -596,6 +600,13 @@ int main(){
 
     }
 
-    printf("\n======= THANKS FOR PLAYING =======\n");
+    if (isEqual(currentWord, "EXIT")) {
+        printf("\n======= THANKS FOR PLAYING =======\n");
+    } else if (endGame(position)) {
+        printf("Selamat, kamu telah menyelesaikan game ini!!");
+        printf("\n======= STAT =======\n");
+        printf("Banyak item yang diantar > %d Item", NDrop(data));
+        printf("Waktu yang dilampaui > %d Waktu", Time(data));
+    }
     return 0;
 }

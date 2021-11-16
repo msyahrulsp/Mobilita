@@ -1,7 +1,1 @@
-endgame belum ke handle
-hapus item yang di drop dari Order(data)
-vip belm ke handle
-ability belum ke handle
-inventory belum di cek
-
-perishable belum di tes
+vip, return belum

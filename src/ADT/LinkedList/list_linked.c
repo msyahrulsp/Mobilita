@@ -64,7 +64,7 @@ int LL_indexOf(LL_List l, LL_ElType val){
     p = FIRST(l);
     found = false;
     while (p!=NULL && !(found)){
-        if ((INFO(p).perishTime == val.perishTime) && (INFO(p).pickUpPoint==val.pickUpPoint) && (INFO(p).dropOffPoint == val.dropOffPoint) && (INFO(p).jenisItem == val.jenisItem)){
+        if ((INFO(p).duration == val.duration) && (INFO(p).pickUpPoint==val.pickUpPoint) && (INFO(p).dropOffPoint == val.dropOffPoint) && (INFO(p).jenisItem == val.jenisItem)){
             found = true;
         } else {
             idx += 1;
@@ -246,7 +246,7 @@ void LL_displayList_ToDo(LL_List l){
             printf("%d. %c -> %c ", ctr, INFO(p).pickUpPoint, INFO(p).dropOffPoint);
             if (INFO(p).jenisItem=='N'){
                 printf("(Normal Item)");
-            } else if (INFO(p).jenisItem=='H'){
+            } else if (INFO(p).jenisItem=='H' || INFO(p).jenisItem=='n'){
                 printf("(Heavy Item)");
             } else if (INFO(p).jenisItem=='P'){
                 printf("(Perishable Item)");
@@ -278,7 +278,7 @@ void LL_displayList_InProgress(LL_List l){
             //printf("%d. %c -> %c ", ctr, INFO(p).pu_point, INFO(p).do_point);
             if (INFO(p).jenisItem=='N'){
                 printf("%d. Normal Item (Tujuan: %c)", ctr, INFO(p).dropOffPoint);
-            } else if (INFO(p).jenisItem=='H'){
+            } else if (INFO(p).jenisItem=='H' || INFO(p).jenisItem=='n'){
                 printf("%d. Heavy Item (Tujuan: %c)", ctr, INFO(p).dropOffPoint);
             } else if (INFO(p).jenisItem=='P'){
                 printf("%d. Perishable Item (Tujuan: %c)", ctr, INFO(p).dropOffPoint);
@@ -413,12 +413,15 @@ int LL_dropOffAvailable(LL_List l, POINT titik, ListDin daftarbangunan){
     return idx;
 }
 
-void LL_disapPerishable (LL_List *l, int time){
+void LL_disapPerishable (LL_List *l, int time, int timeadd){
     int idx = 0;
     LL_Address p = FIRST(*l);
     LL_ElType val;
     while (p!=NULL){
-        if (INFO(p).jenisItem == 'P' && INFO(p).perishTime == time){
+        if (INFO(p).jenisItem == 'P'){
+            INFO(p).timer -= timeadd;
+        }
+        if (INFO(p).jenisItem == 'P' && INFO(p).timer <= 0){
             LL_deleteAt(l, idx, &val);
         } else {
             idx += 1;

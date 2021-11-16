@@ -47,6 +47,7 @@ void AB_useAbility(Ability *a){
 	/* ALGORITMA */
 	Count(*a)--;
 }
+
 void AB_reset(Ability *a, boolean option){
 /* Reset count sesuai spesifikasi masing-masing */
 	/* KAMUS LOKAL */

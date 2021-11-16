@@ -6,6 +6,7 @@
 #include "stack.h"
 #include "listStatik.h"
 #include "queue.h"
+#include "ability.h"
 
 typedef struct {
     int Money;
@@ -13,6 +14,11 @@ typedef struct {
     int NDrop;
     POINT Pos;
 } Stat;
+
+typedef struct {
+    Ability Speed;
+    Ability RTS;
+} Abty;
 
 /*==================== LIST MACRO FOR MAIN ====================*/
 // Stat
@@ -22,6 +28,10 @@ typedef struct {
 #define Pos(d) (d).Player.Pos
 #define PosX(d) (d).Player.Pos.X // PosX Mobita
 #define PosY(d) (d).Player.Pos.Y // PosY Mobita
+
+// Ability
+#define Speed(d) (d).Skill.Speed
+#define Ret(d) (d).Skill.RTS
 
 // Map
 #define Map(d) (d).Map
@@ -64,6 +74,7 @@ typedef struct {
 
 typedef struct { 
     Stat Player; // Uang, Waktu, Lokasi
+    Abty Skill; // SpeedBoost, RTS
     Matrix Map; // Peta
     POINT HQ; // X Y
     int NBuild;
@@ -83,3 +94,5 @@ typedef struct {
 void help(int type);
 
 void printMobilita();
+
+boolean endGame(int position);

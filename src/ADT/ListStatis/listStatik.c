@@ -117,15 +117,21 @@ void LS_gadgetName(ListGadget l, int idx){
     }
 }
 
-boolean LS_insertGadget(ListGadget *l, Gadget val) {
-    int i = 0;
+boolean LS_insertGadget(ListGadget *l, Gadget val, int idx) {
     boolean done = false;
-    while (i < 5 && !done) {
-        if (GNAME(*l, i) == LS_NAME_UNDEF) {
-            LS_ELMT(*l, i) = val;
-            done = true;
+
+    if (GNAME(*l, idx) == LS_NAME_UNDEF) {
+        LS_ELMT(*l, idx) = val;
+        done = true;
+    } else {
+        int i = 0;
+        while (i < 5 && !done) {
+            if (GNAME(*l, i) == LS_NAME_UNDEF) {
+                LS_ELMT(*l, i) = val;
+                done = true;
+            }
+            i++;
         }
-        i++;
     }
 
     return done;
