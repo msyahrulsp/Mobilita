@@ -95,4 +95,4 @@ void help(int type);
 
 void printMobilita();
 
-boolean endGame(int position);
+int endGame(int position);

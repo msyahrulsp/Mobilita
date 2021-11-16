@@ -2,15 +2,12 @@
 #include <stdlib.h>
 #include "header.h"
 
-boolean endGame(int position) {
+int endGame(int position) {
     if (NOrder(data) == 0 && LL_isEmpty(ToDo(data)) && LL_isEmpty(IPL(data)) && S_isEmpty(Tas(data))) {
-        if (position != 0) {
-            printf("\nKembali ke HQ!\n");
-        } else {
-            return true;
-        }
+        if (position != 0) return 1;
+        return 2;
     }
-    return false;
+    return 0;
 }
 
 void printMobilita() {
@@ -230,15 +227,17 @@ int main(){
     LD_CreateListDin(&moveable, NBuild(data));
     M_ContructorMap(Building(data), &map, Map(data).rowEff, Map(data).colEff);
 
-    printf("\n======= SELAMAT BERMAIN =======\n\n");
-    printf("Waktu: %d\n", Time(data));
-    printf("Uang: %d Yen\n", Money(data));
-    printf("Posisi: Titik %c (%d, %d)\n", BuiNAME(data, position) ,PosX(data), PosY(data));
-    resetWord();
-    printf("ENTER COMMAND: ");
-    startWord();
+    printf("\n======= SELAMAT BERMAIN =======\n");
 
-    while (!isEqual(currentWord, "EXIT") && !endGame(position)) {
+    while (!isEqual(currentWord, "EXIT") && endGame(position) != 2) {
+        printf("\nWaktu: %d\n", Time(data));
+        printf("Uang: %d Yen\n", Money(data));
+        printf("Posisi: Titik %c (%d, %d)\n", BuiNAME(data, position) ,PosX(data), PosY(data));
+        if (endGame(position) == 1) printf("Pesan: Kembali ke HQ!\n");
+        resetWord();
+        printf("ENTER COMMAND: ");
+        startWord();
+
         while (!LD_isEmpty(moveable)) {
             LD_deleteLast(&moveable, &dumpBuilding);
         }
@@ -258,7 +257,7 @@ int main(){
             // Validation Loop
             boolean valid = false;
             while(!valid){
-                printf("Posisi yang dipilih? (ketik 0 jika ingin kembali)\n");
+                printf("Posisi yang dipilih? (ketik 0 jika ingin kembali)\n\n");
                 resetWord();
                 printf("ENTER COMMAND: ");
                 startWord();
@@ -296,10 +295,12 @@ int main(){
                         //S_disapPerishable(&Tas(data), Time(data));
                         
                         // Daftar Pesanan -> To Do List
-                        while (HEAD(Order(data)).waktuPesanan <= Time(data)){
-                            Q_dequeue(&Order(data), &order);
-                            LL_insertLast(&ToDo(data), order);
-                            NOrder(data)--;
+                        if (!Q_isEmpty(Order(data))) {
+                            while (HEAD(Order(data)).waktuPesanan <= Time(data)){
+                                Q_dequeue(&Order(data), &order);
+                                LL_insertLast(&ToDo(data), order);
+                                NOrder(data)--;
+                            }
                         }
                         // Move
                         printf("Mobita sekarang berada di titik %c (%d,%d)\n",BNAME(moveable,i),BPOINTX(moveable,i),BPOINTY(moveable,i));
@@ -484,7 +485,7 @@ int main(){
                                 printf("%d. %c (%d,%d)\n",(i+1),BNAME(Building(data),i),BPOINTX(Building(data),i),BPOINTY(Building(data),i));
                             }
                         }
-                        printf("Posisi yang dipilih? (ketik 0 jika ingin kembali)\n");
+                        printf("Posisi yang dipilih? (ketik 0 jika ingin kembali)\\nn");
                         resetWord();
                         printf("ENTER COMMAND: ");
                         startWord();
@@ -594,24 +595,16 @@ int main(){
         } */else {
             printf("Command salah!\n");
         }
-        printf("\nWaktu: %d\n", Time(data));
-        printf("Uang: %d Yen\n", Money(data));
-        printf("Posisi: Titik %c (%d, %d)\n", BuiNAME(data, position) ,PosX(data), PosY(data));
-
-        resetWord();
-        printf("ENTER COMMAND: ");
-        startWord();
-        // endgame -> running = false
-
     }
 
     if (isEqual(currentWord, "EXIT")) {
         printf("\n======= THANKS FOR PLAYING =======\n");
-    } else if (endGame(position)) {
-        printf("Selamat, kamu telah menyelesaikan game ini!!");
-        printf("\n======= STAT =======\n");
-        printf("Banyak item yang diantar > %d Item", NDrop(data));
-        printf("Waktu yang dilampaui > %d Waktu", Time(data));
+    } else if (endGame(position) == 2) {
+        printf("\n----- CONGRATS!! You've finished the game! -----");
+        printf("\n\n========= STAT =========\n");
+        printf("Sisa uang >> %d Yen\n", Money(data));
+        printf("Banyak item yang diantar >> %d Item\n", NDrop(data));
+        printf("Waktu yang dilampaui >> %d\n", Time(data));
     }
     return 0;
 }

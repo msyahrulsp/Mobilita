@@ -205,7 +205,7 @@ void save() {
     toPath();
     saveFile = fopen(currentWord.contents, "w");
 
-    // Stat (Uang, Waktu, Pos)
+    // Stat (Uang, Waktu, NDrop, Pos)
     fprintf(saveFile, "%d %d %d %d %d\n", Money(data), Time(data), NDrop(data), PosX(data), PosY(data));
     // Ability
     fprintf(saveFile, "%d %d %d %d\n", Speed(data).active, Speed(data).count, Ret(data).active, Ret(data).count);
@@ -215,7 +215,7 @@ void save() {
     fprintf(saveFile, "%d %d\n", HQ(data).X, HQ(data).Y);
 
     // Building
-    fprintf(saveFile, "%d\n", NBuild(data));
+    fprintf(saveFile, "%d\n", NBuild(data) - 1);
     int i;
     for (i = 0; i < NBuild(data); i++) {
         fprintf(saveFile, "%c %d %d\n", BuiNAME(data, i), BuiPOINT(data, i).X, BuiPOINT(data, i).Y); // Build + Koor
@@ -263,7 +263,7 @@ void save() {
     Stack temp;
     Pesanan holder;
     S_reverseCopy(&temp, Tas(data));
-    fprintf(saveFile, "%d\n", MTas(data));
+    fprintf(saveFile, "%d %d\n", MTas(data), NTas(data));
     while(!S_isEmpty(temp)) {
         S_pop(&temp, &holder);
         fprintf(saveFile, "%d %c %c %c", holder.waktuPesanan, holder.pickUpPoint, holder.dropOffPoint, holder.jenisItem);
