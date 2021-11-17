@@ -424,24 +424,24 @@ int main(){
                     }
                     if (foundPerishable){
                         // Mengembalikan waktu perishable item.
+                        TIMER(TOP(Tas(data))) = DURATION(TOP(Tas(data)));
                         LL_Address ptr = FIRST(IPL(data));
                         boolean donereset = false;
                         while (ptr != NULL && !donereset){
                             if (JENIS_ITEM(INFO(ptr)) == 'P'){
-                                TIMER(INFO(ptr)) = DURATION(INFO(ptr));
                                 donereset = true;
                             } else {
                                 ptr = NEXT(ptr);
                             }
                         }
-                        TIMER(TOP(Tas(data))) = DURATION(TOP(Tas(data)));
+                        TIMER(INFO(ptr)) = DURATION(INFO(ptr));
                         LS_deleteElmt(&Invent(data), idx);
                         printf("Kain Pembungkus Waktu berhasil digunakan!\n");
                     }
                     else{
                         printf("Tidak ada perishable item di tas!\n");
                     }
-                    while(S_isEmpty(tempBag) != true){
+                    while(!S_isEmpty(tempBag)){
                         S_pop(&tempBag, &item);
                         S_push(&Tas(data), item);
                     }
@@ -531,7 +531,7 @@ int main(){
                             S_push(&tempBag, item); // Item dipindahkan ke temporaryBag
                         }
                     }
-                    if (foundHeavy == true){
+                    if (foundHeavy){
                         JENIS_ITEM(TOP(Tas(data))) = 'n';
                         foundHeavy = false;
                         LL_Address pheavy = FIRST(IPL(data));
@@ -549,7 +549,7 @@ int main(){
                     else{
                         printf("Tidak ada heavy item di tas!\n");
                     }
-                    while(S_isEmpty(tempBag) != true){
+                    while(!S_isEmpty(tempBag)){
                         S_pop(&tempBag, &item);
                         S_push(&Tas(data), item);
                     }
