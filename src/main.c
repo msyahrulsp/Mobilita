@@ -429,42 +429,24 @@ int main(){
                 
                 char gd = GNAME(Invent(data), idx);
                 if (gd == 'K'){ // Kain Pembungkus Waktu
-                    Stack tempBag; // Membuat stack untuk tempat penampungan item sementara
-                    S_CreateStack(&tempBag);
-
                     boolean foundPerishable = false;
                     S_ElType item; // Variabel untuk menampung item yang dipindahkan
-                    while(!S_isEmpty(Tas(data)) && !foundPerishable){
-                        if(JENIS_ITEM(TOP(Tas(data))) == 'P'){
-                            foundPerishable = true;
-                        }
-                        else{
-                            S_pop(&Tas(data), &item);
-                            S_push(&tempBag, item); // Item dipindahkan ke temporaryBag
-                        }
+
+                    // Cek Item paling atas Tas
+                    if(JENIS_ITEM(TOP(Tas(data))) == 'P'){
+                        foundPerishable = true;
                     }
+
                     if (foundPerishable){
                         // Mengembalikan waktu perishable item.
                         TIMER(TOP(Tas(data))) = DURATION(TOP(Tas(data)));
                         LL_Address ptr = FIRST(IPL(data));
-                        boolean donereset = false;
-                        while (ptr != NULL && !donereset){
-                            if (JENIS_ITEM(INFO(ptr)) == 'P'){
-                                donereset = true;
-                            } else {
-                                ptr = NEXT(ptr);
-                            }
-                        }
                         TIMER(INFO(ptr)) = DURATION(INFO(ptr));
-                        LS_deleteElmt(&Invent(data), idx);
                         printf("Kain Pembungkus Waktu berhasil digunakan!\n");
                     } else {
-                        printf("Tidak ada perishable item di tas!\n");
+                        printf("Kain Pembungkus Waktu gagal digunakan! (Wasted)\n");
                     }
-                    while(!S_isEmpty(tempBag)){
-                        S_pop(&tempBag, &item);
-                        S_push(&Tas(data), item);
-                    }
+                    LS_deleteElmt(&Invent(data), idx);
                 }
                 if (gd == 'B'){ // Senter Pembesar
                     if (MTas(data) < 100){
@@ -472,11 +454,11 @@ int main(){
                         if (MTas(data) > 100){
                             MTas(data) = 100;
                         }
-                        LS_deleteElmt(&Invent(data), idx);
                         printf("Senter Pembesar berhasil digunakan!\n");
                     } else {
-                        printf("Kapasitas tas sudah tidak bisa dibesarkan lagi!\n");
+                        printf("Senter Pembesar gagal digunakan! (Wasted)\n");
                     }
+                    LS_deleteElmt(&Invent(data), idx);
                 }
                 if (gd == 'D'){ // Pintu Kemana Saja
                     boolean valid = false;
@@ -561,12 +543,11 @@ int main(){
                         JENIS_ITEM(TOP(Tas(data))) = 'n';
                         LL_Address pheavy = FIRST(IPL(data));
                         JENIS_ITEM(INFO(pheavy)) = 'n';
-                        LS_deleteElmt(&Invent(data), idx);
                         printf("Senter Pengecil berhasil digunakan!\n");
+                    } else {
+                        printf("Senter Pengecil gagal digunakan! (Wasted)\n");
                     }
-                    else{
-                        printf("Senter Pengecil tidak bisa digunakan!\n");
-                    }
+                    LS_deleteElmt(&Invent(data), idx);
                 }
                 if (gd == 'U') {
                     printf("Kamu tidak punya Gadget di slot tersebut!\n");
