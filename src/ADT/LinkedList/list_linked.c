@@ -411,7 +411,7 @@ int LL_dropOffAvailable(LL_List l, POINT titik, ListDin daftarbangunan){
     return idx;
 }
 
-void LL_disapPerishable (LL_List *l, int time, int timeadd, boolean *isdisap){
+void LL_disapPerishable (LL_List *l, int time, int timeadd, int *disap){
     int idx = 0;
     LL_Address p = FIRST(*l);
     LL_ElType val;
@@ -421,7 +421,7 @@ void LL_disapPerishable (LL_List *l, int time, int timeadd, boolean *isdisap){
         }
         if (INFO(p).jenisItem == 'P' && INFO(p).timer <= 0){
             LL_deleteAt(l, idx, &val);
-            *isdisap = true;
+            *disap += 1;
         }
         idx += 1;
         p = NEXT(p);
