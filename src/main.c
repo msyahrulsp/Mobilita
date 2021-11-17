@@ -234,6 +234,8 @@ int main(){
         printf("\nWaktu: %d\n", Time(data));
         printf("Uang: %d Yen\n", Money(data));
         printf("Posisi: Titik %c (%d, %d)\n", BuiNAME(data, position) ,PosX(data), PosY(data));
+        printf("Tas (Max | Current): (%d | %d)\n", MTas(data), NTas(data));
+        if (AB_isActive(Speed(data))) printf("Speed Boost aktif (Sisa %d Move)\n", Count(Speed(data)));
         if (endGame(position) == 1) printf("Pesan: Kembali ke HQ!\n");
         resetWord();
         printf("ENTER COMMAND: ");

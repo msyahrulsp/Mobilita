@@ -108,7 +108,8 @@ void load(int type) {
     char bp, bd, ji;
     Q_CreateQueue(&Order(data));
     LL_CreateList(&ToDo(data));
-    for (i = 0; i < NOrder(data); i++) {
+    int border = NOrder(data);
+    for (i = 0; i < border; i++) {
         advScan();
         to = Scanner.num;
         advScan();
