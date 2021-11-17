@@ -53,17 +53,18 @@ void buy(ListGadget *inventory, int *money){
     resetWord();
     printf("\nENTER COMMAND: ");
     startWord();
-    int temp = atoi(currentWord.contents);
+    // int temp = atoi(currentWord.contents);
 
-    while (temp < 0 || temp > 5) {
+    while (!(isEqual(currentWord, "1") || isEqual(currentWord, "2") || isEqual(currentWord, "3") || isEqual(currentWord, "4") || isEqual(currentWord, "5"))) {
         printf("Silahkan pilih sesuai opsi!");
         resetWord();
         printf("\nENTER COMMAND: ");
         startWord();
-        temp = atoi(currentWord.contents);
     }
 
-    if(temp == 1){
+    // int temp = atoi(currentWord.contents);
+
+    if(isEqual(currentWord, "1")){
         if(*money >= 800){
             Gadget gd;
             gd.gadgetname = 'K';
@@ -80,7 +81,7 @@ void buy(ListGadget *inventory, int *money){
         } else{
             printf("Uang tidak cukup untuk membeli gadget!\n");
         }
-    } else if(temp == 2){
+    } else if(isEqual(currentWord, "2")){
         if(*money >= 1200){
             Gadget gd;
             gd.gadgetname = 'B';
@@ -97,7 +98,7 @@ void buy(ListGadget *inventory, int *money){
         } else{
             printf("Uang tidak cukup untuk membeli gadget!\n");
         }
-    }  else if(temp == 3){
+    }  else if(isEqual(currentWord, "3")){
         if(*money >= 1500){
             Gadget gd;
             gd.gadgetname = 'D';
@@ -115,7 +116,7 @@ void buy(ListGadget *inventory, int *money){
             printf("Uang tidak cukup untuk membeli gadget!\n");
         }
     }
-    else if(temp == 4){
+    else if(isEqual(currentWord, "4")){
         if(*money >= 3000){
             Gadget gd;
             gd.gadgetname = 'T';
@@ -132,7 +133,7 @@ void buy(ListGadget *inventory, int *money){
         } else{
             printf("Uang tidak cukup untuk membeli gadget!\n");
         }
-    } else if(temp == 5){
+    } else if(isEqual(currentWord, "5")){
         if(*money >= 800){
             Gadget gd;
             gd.gadgetname = 'S';
