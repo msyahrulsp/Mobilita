@@ -53,6 +53,10 @@ void load(int type) {
     Speed(data).active = Scanner.num; // 0 atau 1
     advScan();
     Speed(data).count = Scanner.num; // 0 <= x <= 10
+    advScan();
+    RTS(data).active = Scanner.num;
+    advScan();
+    RTS(data).count = Scanner.num;
 
     // Map
     advScan();
@@ -245,7 +249,7 @@ void save() {
     // Stat (Uang, Waktu, NDrop, Pos)
     fprintf(saveFile, "%d %d %d %d %d\n", Money(data), Time(data), NDrop(data), PosX(data), PosY(data));
     // Ability
-    fprintf(saveFile, "%d %d\n", Speed(data).active, Speed(data).count);
+    fprintf(saveFile, "%d %d %d %d\n", Speed(data).active, Speed(data).count, RTS(data).active, RTS(data).count);
     // Ukuran Map
     fprintf(saveFile, "%d %d\n", Map(data).rowEff, Map(data).colEff);
     // HQ

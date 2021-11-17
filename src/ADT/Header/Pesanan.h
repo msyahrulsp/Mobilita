@@ -11,7 +11,7 @@ typedef struct {
     int waktuPesanan;
     char pickUpPoint;
     char dropOffPoint;
-    char jenisItem; // N = Normal, H = Heavy, P = Perishable
+    char jenisItem; // N = Normal, H = Heavy, P = Perishable, V = VIP
     int duration;
     int timer;
 } Pesanan;

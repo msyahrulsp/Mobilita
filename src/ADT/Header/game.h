@@ -17,6 +17,7 @@ typedef struct {
 
 typedef struct {
     Ability Speed;
+    Ability ReturntoSender;
 } Abty;
 
 /*==================== LIST MACRO FOR MAIN ====================*/
@@ -30,6 +31,7 @@ typedef struct {
 
 // Ability
 #define Speed(d) (d).Skill.Speed
+#define RTS(d) (d).Skill.ReturntoSender
 
 // Map
 #define Map(d) (d).Map
@@ -72,7 +74,7 @@ typedef struct {
 
 typedef struct { 
     Stat Player; // Uang, Waktu, Lokasi
-    Abty Skill; // SpeedBoost
+    Abty Skill; // SpeedBoost, Return to Sender
     Matrix Map; // Peta
     POINT HQ; // X Y
     int NBuild;
