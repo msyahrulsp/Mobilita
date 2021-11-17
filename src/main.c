@@ -201,7 +201,7 @@ int main(){
 
     while(!isEqual(currentWord, "NEW_GAME") && !isEqual(currentWord, "LOAD_GAME")) {
         if(isEqual(currentWord, "EXIT")) {
-            printf("\n======= THANKS FOR PLAYING =======\n");
+            printf("\n======= THANKS FOR PLAYING =======\n\n");
             exit(0);
         } else {
             if (isEqual(currentWord, "HELP")) {
@@ -554,7 +554,7 @@ int main(){
     }
 
     if (isEqual(currentWord, "EXIT")) {
-        printf("\n======= THANKS FOR PLAYING =======\n");
+        printf("\n======= THANKS FOR PLAYING =======\n\n");
     } else if (endGame(position) == 2) {
         printf("\n----- CONGRATS!! You've finished the game! -----");
         printf("\n\n========= STAT =========\n");

@@ -213,7 +213,7 @@ void save() {
     // Building
     fprintf(saveFile, "%d\n", NBuild(data) - 1);
     int i;
-    for (i = 0; i < NBuild(data); i++) {
+    for (i = 1; i < NBuild(data); i++) {
         fprintf(saveFile, "%c %d %d\n", BuiNAME(data, i), BuiPOINT(data, i).X, BuiPOINT(data, i).Y); // Build + Koor
     }
 
