@@ -351,7 +351,9 @@ int main(){
             idxipl = LL_dropOffAvailable(IPL(data), point_currentPos, Building(data));
             if (idxipl != IDX_UNDEF){
                 LL_deleteFirst(&IPL(data), &valpesanan);
+                printf("%c\n", valpesanan.jenisItem);
                 S_pop(&Tas(data), &valpesanan);
+                printf("%c\n", valpesanan.jenisItem);
                 NIPL(data) -= 1;
                 NTas(data) -= 1;
                 if (JENIS_ITEM(valpesanan) == 'N') {

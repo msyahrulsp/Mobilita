@@ -213,6 +213,10 @@ void load(int type) {
         Q_CreatePesanan(&odr, to, bp, bd, ji, d, t);
         S_push(&Tas(data), odr);
     }
+    // reverse
+    Stack temp;
+    S_reverseCopy(&temp, Tas(data));
+    Tas(data) = temp;
 
     // Invent;
     for (i = 0; i < 5; i++) {
@@ -324,12 +328,10 @@ void save() {
     }
 
     // Tas
-    Stack temp;
     Pesanan holder;
-    S_reverseCopy(&temp, Tas(data));
     fprintf(saveFile, "%d %d\n", MTas(data), NTas(data));
-    while(!S_isEmpty(temp)) {
-        S_pop(&temp, &holder);
+    while(!S_isEmpty(Tas(data))) {
+        S_pop(&Tas(data), &holder);
         fprintf(saveFile, "%d %c %c %c", holder.waktuPesanan, holder.pickUpPoint, holder.dropOffPoint, holder.jenisItem);
         if (holder.duration != - 1) {
             fprintf(saveFile, " %d %d\n", holder.duration, holder.timer);

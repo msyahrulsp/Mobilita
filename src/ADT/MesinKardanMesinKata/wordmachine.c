@@ -21,7 +21,7 @@ void advScan() {
 
 void getScan() {
     int temp, num = 0;
-    if ((int)currentChar >= 65 && (int)currentChar <= 90) {
+    if (((int)currentChar >= 65 && (int)currentChar <= 90) || (int)currentChar == 110) {
         Scanner.let = currentChar;
         Scanner.num = 0;
         advFile();
