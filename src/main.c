@@ -283,6 +283,7 @@ int main(){
                                 disap = 0;
                                 LL_disapPerishable(&IPL(data), Time(data), 1, &disap);
                                 S_disapPerishable(&Tas(data), Time(data), 1);
+                                NIPL(data) -= disap;
                                 NTas(data) -= disap;
 							}
 							if (Count(Speed(data)) == 0){
@@ -294,6 +295,7 @@ int main(){
                             disap = 0;
                             LL_disapPerishable(&IPL(data), Time(data), timeadd, &disap);
                             S_disapPerishable(&Tas(data), Time(data), timeadd);
+                            NIPL(data) -= disap;
                             NTas(data) -= disap;
                         }
                         // Daftar Pesanan -> To Do List
