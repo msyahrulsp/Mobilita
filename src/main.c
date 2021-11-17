@@ -533,7 +533,16 @@ int main(){
                     }
                     if (foundHeavy == true){
                         JENIS_ITEM(TOP(Tas(data))) = 'n';
-                        JENIS_ITEM(INFO(FIRST(IPL(data)))) = 'n';
+                        foundHeavy = false;
+                        LL_Address pheavy = FIRST(IPL(data));
+                        while (pheavy!=NULL && !foundHeavy){
+                            if (JENIS_ITEM(INFO(pheavy)) = 'H'){
+                                foundHeavy = true;
+                            } else {
+                                pheavy = NEXT(pheavy);
+                            }
+                        }
+                        JENIS_ITEM(INFO(pheavy)) = 'n';
                         LS_deleteElmt(&Invent(data), idx);
                         printf("Senter Pengecil berhasil digunakan!\n");
                     }
