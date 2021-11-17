@@ -17,10 +17,10 @@ E 4 10
 1
 17 A B N
 4
-P D
-N E
-H A
-H C
+D P 100 88
+E N
+A H
+C H
 4 4
 1 E D P 100 88
 3 C A H

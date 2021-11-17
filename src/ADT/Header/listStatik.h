@@ -16,7 +16,7 @@
 /* Indeks tak terdefinisi*/
 #define LS_NAME_UNDEF 'U'
 /* Gadget tak terdefinisi*/
-#define LS_VAL_UNDEF -999
+#define LS_VAL_UNDEF 0
 /* Nilai elemen tak terdefinisi*/
 
 /* Definisi elemen dan koleksi objek */

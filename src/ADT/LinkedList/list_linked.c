@@ -279,7 +279,7 @@ void LL_displayList_InProgress(LL_List l){
             } else if (INFO(p).jenisItem=='H' || INFO(p).jenisItem=='n'){
                 printf("%d. Heavy Item (Tujuan: %c)", ctr, INFO(p).dropOffPoint);
             } else if (INFO(p).jenisItem=='P'){
-                printf("%d. Perishable Item (Tujuan: %c)", ctr, INFO(p).dropOffPoint);
+                printf("%d. Perishable Item (Tujuan: %c) (Sisa Waktu: %d)", ctr, INFO(p).dropOffPoint, INFO(p).timer);
             }
             printf("\n");
             p = NEXT(p);
@@ -417,7 +417,9 @@ void LL_disapPerishable (LL_List *l, int time, int timeadd){
     LL_ElType val;
     while (p!=NULL){
         if (INFO(p).jenisItem == 'P'){
+            printf("%d\n", INFO(p).timer);
             INFO(p).timer -= timeadd;
+            printf("%d\n", INFO(p).timer);
         }
         if (INFO(p).jenisItem == 'P' && INFO(p).timer <= 0){
             LL_deleteAt(l, idx, &val);

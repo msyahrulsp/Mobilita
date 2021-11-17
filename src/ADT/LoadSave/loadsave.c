@@ -140,10 +140,19 @@ void load(int type) {
     LL_CreateList(&IPL(data));
     for (i = 0; i < NIPL(data); i++) {
         advScan();
-        ji = Scanner.let;
-        advScan();
         bd = Scanner.let;
-        Q_CreatePesanan(&odr, 'U', 'U', bd, ji, -1, -1);
+        advScan();
+        ji = Scanner.let;
+        if (currentChar == BLANK) {
+            advScan();
+            d = Scanner.num;
+            advScan();
+            t = Scanner.num;
+        } else {
+            d = NULL_PERISHTIME;
+            t = NULL_PERISHTIME;
+        }
+        Q_CreatePesanan(&odr, 'U', 'U', bd, ji, d, t);
         LL_insertLast(&IPL(data), odr);
     }
 
@@ -247,13 +256,19 @@ void save() {
         }
     }
 
-    // ToDo
+    // IPL
     fprintf(saveFile, "%d\n", NIPL(data));
-    for (i = 0; i < NIPL(data); i++) {
-        bd = Order(data).buffer[i].dropOffPoint;
-        ji = Order(data).buffer[i].jenisItem;
-        fprintf(saveFile, "%c %c\n", ji, bd);
-    }
+    if (NIPL(data) != 0);
+        LL_Address p = FIRST(IPL(data));
+        while(p != NULL) {
+            fprintf(saveFile, "%c %c", INFO(p).dropOffPoint, INFO(p).jenisItem);
+            if (INFO(p).duration != -1) {
+                fprintf(saveFile, " %d %d\n", INFO(p).duration, INFO(p).timer);
+            } else {
+                fprintf(saveFile, "\n");
+            }
+            p = NEXT(p);
+        }
 
     // Tas
     Stack temp;
