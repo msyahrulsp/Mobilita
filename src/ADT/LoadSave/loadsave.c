@@ -18,20 +18,19 @@ void load(int type) {
         toPath();
         loadFile = fopen(currentWord.contents, "r");
     } else {
-        while(isEqual(currentWord, "Default")) {
-            printf("File Load Game salah!\n");
-            resetWord();
-            printf("Masukkan nama file permainan: ");
-            startWord();
-        }
+        Word temp = currentWord;
         toPath();
         loadFile = fopen(currentWord.contents, "r");
-
-        while(loadFile == NULL) {
-            printf("File Load Game tidak ada!\n");
+        while(isEqual(temp, "Default") || loadFile == NULL) {
+            if (isEqual(temp, "Default")) {
+                printf("File Load Game salah!\n");
+            } else {
+                printf("File Load Game tidak ada\n");
+            }
             resetWord();
             printf("Masukkan nama file permainan: ");
             startWord();
+            temp = currentWord;
             toPath();
             loadFile = fopen(currentWord.contents, "r");
         }
