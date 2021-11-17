@@ -347,21 +347,21 @@ int main(){
                 if (JENIS_ITEM(valpesanan) == 'N') {
                     printf("Pesanan Normal Item berhasil diantarkan\n");
                     Money(data) += 200;
-                    printf("Uang yang didapatkan: 200 Yen");
+                    printf("Uang yang didapatkan: 200 Yen\n");
                 } else if (JENIS_ITEM(valpesanan) == 'H' || JENIS_ITEM(valpesanan) == 'n') {
                     if(heavy_InProgress(IPL(data))==0){
                         AB_activate(&Speed(data));
                     }
                     printf("Pesanan Heavy Item berhasil diantarkan\n");
                     Money(data) += 400;
-                    printf("Uang yang didapatkan: 400 Yen");
+                    printf("Uang yang didapatkan: 400 Yen\n");
                 } else if (JENIS_ITEM(valpesanan) == 'P') {
                     if (MTas(data) != 100) {
                         MTas(data)++;
                     }
                     printf("Pesanan Perishable Item berhasil diantarkan\n");
                     Money(data) += 400;
-                    printf("Uang yang didapatkan: 400 Yen");
+                    printf("Uang yang didapatkan: 400 Yen\n");
                 }
                 NDrop(data)++;
             } else {
@@ -560,7 +560,7 @@ int main(){
         printf("\n\n========= STAT =========\n");
         printf("Sisa uang >> %d Yen\n", Money(data));
         printf("Banyak item yang diantar >> %d Item\n", NDrop(data));
-        printf("Waktu yang dilampaui >> %d\n", Time(data));
+        printf("Waktu yang dilampaui >> %d\n\n", Time(data));
     }
     return 0;
 }
