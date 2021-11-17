@@ -291,10 +291,9 @@ int main(){
                             LL_disapPerishable(&IPL(data), Time(data), timeadd);
                             S_disapPerishable(&Tas(data), Time(data), timeadd);
                         }
-                        
                         // Daftar Pesanan -> To Do List
                         if (!Q_isEmpty(Order(data))) {
-                            while (HEAD(Order(data)).waktuPesanan <= Time(data)){
+                            while (!Q_isEmpty(Order(data)) && HEAD(Order(data)).waktuPesanan <= Time(data)){
                                 Q_dequeue(&Order(data), &order);
                                 LL_insertLast(&ToDo(data), order);
                                 NOrder(data)--;
@@ -319,6 +318,8 @@ int main(){
                     LL_deleteAt(&ToDo(data), idxtdl, &valpesanan);
                     LL_insertFirst(&IPL(data), valpesanan);
                     S_push(&Tas(data), valpesanan);
+                    NIPL(data) += 1;
+                    NTas(data) += 1;
                     if (valpesanan.jenisItem == 'N'){
                         printf("Pesanan berupa Normal Item berhasil diambil!\n");
                     } else if (valpesanan.jenisItem == 'H'){
@@ -341,6 +342,8 @@ int main(){
             if (idxipl != IDX_UNDEF){
                 LL_deleteFirst(&IPL(data), &valpesanan);
                 S_pop(&Tas(data), &valpesanan);
+                NIPL(data) -= 1;
+                NTas(data) -= 1;
                 if (JENIS_ITEM(valpesanan) == 'N') {
                     printf("Pesanan Normal Item berhasil diantarkan\n");
                     Money(data) += 200;
@@ -546,6 +549,7 @@ int main(){
             save();
         } else {
             printf("Command salah!\n");
+            printf("Silahkan cek HELP untuk melihat list command\n");
         }
     }
 
