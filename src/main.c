@@ -53,16 +53,13 @@ void buy(ListGadget *inventory, int *money){
     resetWord();
     printf("\nENTER COMMAND: ");
     startWord();
-    // int temp = atoi(currentWord.contents);
 
-    while (!(isEqual(currentWord, "1") || isEqual(currentWord, "2") || isEqual(currentWord, "3") || isEqual(currentWord, "4") || isEqual(currentWord, "5"))) {
+    while (!(isEqual(currentWord, "0") || isEqual(currentWord, "1") || isEqual(currentWord, "2") || isEqual(currentWord, "3") || isEqual(currentWord, "4") || isEqual(currentWord, "5"))) {
         printf("Silahkan pilih sesuai opsi!");
         resetWord();
         printf("\nENTER COMMAND: ");
         startWord();
     }
-
-    // int temp = atoi(currentWord.contents);
 
     if(isEqual(currentWord, "1")){
         if(*money >= 800){
@@ -150,6 +147,8 @@ void buy(ListGadget *inventory, int *money){
         } else{
             printf("Uang tidak cukup untuk membeli gadget!\n");
         }
+    } else {
+        printf("Buy dibatalkan!\n");
     }
 }
 
@@ -395,19 +394,26 @@ int main(){
             printf("\nENTER COMMAND: ");
             startWord();
 
-            int idx;
-            // Memroses inputan menjadi indeks sebenarnya
-            int temp = atoi(currentWord.contents);
-
-            while(temp < 0 || temp > 5) {
+            while (!(isEqual(currentWord, "0") || isEqual(currentWord, "1") || isEqual(currentWord, "2") || isEqual(currentWord, "3") || isEqual(currentWord, "4") || isEqual(currentWord, "5"))) {
                 printf("Silahkan pilih sesuai opsi!");
                 resetWord();
                 printf("\nENTER COMMAND: ");
                 startWord();
-                temp = atoi(currentWord.contents);
             }
 
-            if (temp != 0) {
+            int idx;
+            // Memroses inputan menjadi indeks sebenarnya
+            int temp = atoi(currentWord.contents);
+
+            // while(temp < 0 || temp > 5) {
+            //     printf("Silahkan pilih sesuai opsi!");
+            //     resetWord();
+            //     printf("\nENTER COMMAND: ");
+            //     startWord();
+            //     temp = atoi(currentWord.contents);
+            // }
+
+            if (!isEqual(currentWord, "0")) {
                 idx = temp - 1;
                 
                 char gd = GNAME(Invent(data), idx);
@@ -441,8 +447,7 @@ int main(){
                         TIMER(INFO(ptr)) = DURATION(INFO(ptr));
                         LS_deleteElmt(&Invent(data), idx);
                         printf("Kain Pembungkus Waktu berhasil digunakan!\n");
-                    }
-                    else{
+                    } else {
                         printf("Tidak ada perishable item di tas!\n");
                     }
                     while(!S_isEmpty(tempBag)){
@@ -540,7 +545,7 @@ int main(){
                         foundHeavy = false;
                         LL_Address pheavy = FIRST(IPL(data));
                         while (pheavy!=NULL && !foundHeavy){
-                            if (JENIS_ITEM(INFO(pheavy)) = 'H'){
+                            if (JENIS_ITEM(INFO(pheavy)) == 'H'){
                                 foundHeavy = true;
                             } else {
                                 pheavy = NEXT(pheavy);
@@ -561,6 +566,8 @@ int main(){
                 if (gd == 'U') {
                     printf("Kamu tidak punya Gadget di slot tersebut!\n");
                 }
+            } else {
+                printf("Inventory dibatalkan!\n");
             }
         } else if (isEqual(currentWord, "HELP")) {
             help(1);
