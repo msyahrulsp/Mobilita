@@ -186,6 +186,7 @@ int main(){
 
     int idxtdl, idxipl, timeadd;
     int position; 
+    boolean isdisap;
     Building dumpBuilding;
     POINT point_currentPos; // holder ?
     ListDin moveable;
@@ -281,8 +282,12 @@ int main(){
 							AB_useAbility(&Speed(data));
                             if ((Count(Speed(data)) % 2)==0){
 								Time(data)++;
-                                LL_disapPerishable(&IPL(data), Time(data), 1);
+                                isdisap = false;
+                                LL_disapPerishable(&IPL(data), Time(data), 1, &isdisap);
                                 S_disapPerishable(&Tas(data), Time(data), 1);
+                                if (isdisap){
+                                    NTas(data) -= 1;
+                                }
 							}
 							if (Count(Speed(data)) == 0){
 								AB_reset(&Speed(data), true);
@@ -290,8 +295,12 @@ int main(){
                         } else {
                             timeadd = 1 + heavy_InProgress(IPL(data));
                             Time(data) = Time(data) + timeadd;
-                            LL_disapPerishable(&IPL(data), Time(data), timeadd);
+                            isdisap = false;
+                            LL_disapPerishable(&IPL(data), Time(data), timeadd, &isdisap);
                             S_disapPerishable(&Tas(data), Time(data), timeadd);
+                            if (isdisap){
+                                NTas(data) -= 1;
+                            }
                         }
                         // Daftar Pesanan -> To Do List
                         if (!Q_isEmpty(Order(data))) {
@@ -414,7 +423,7 @@ int main(){
                     boolean foundPerishable = false;
                     S_ElType item; // Variabel untuk menampung item yang dipindahkan
                     while(!S_isEmpty(Tas(data)) && !foundPerishable){
-                        if(JENIS_ITEM(TOP(Tas(data))) != 'P'){
+                        if(JENIS_ITEM(TOP(Tas(data))) == 'P'){
                             foundPerishable = true;
                         }
                         else{
