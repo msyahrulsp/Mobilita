@@ -417,15 +417,12 @@ void LL_disapPerishable (LL_List *l, int time, int timeadd){
     LL_ElType val;
     while (p!=NULL){
         if (INFO(p).jenisItem == 'P'){
-            printf("%d\n", INFO(p).timer);
             INFO(p).timer -= timeadd;
-            printf("%d\n", INFO(p).timer);
         }
         if (INFO(p).jenisItem == 'P' && INFO(p).timer <= 0){
             LL_deleteAt(l, idx, &val);
-        } else {
-            idx += 1;
-            p = NEXT(p);
         }
+        idx += 1;
+        p = NEXT(p);
     }
 }
