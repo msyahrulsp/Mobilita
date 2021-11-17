@@ -405,14 +405,6 @@ int main(){
             // Memroses inputan menjadi indeks sebenarnya
             int temp = atoi(currentWord.contents);
 
-            // while(temp < 0 || temp > 5) {
-            //     printf("Silahkan pilih sesuai opsi!");
-            //     resetWord();
-            //     printf("\nENTER COMMAND: ");
-            //     startWord();
-            //     temp = atoi(currentWord.contents);
-            // }
-
             if (!isEqual(currentWord, "0")) {
                 idx = temp - 1;
                 
@@ -483,13 +475,24 @@ int main(){
                         printf("ENTER COMMAND: ");
                         startWord();
                         int int_currentWord = atoi(currentWord.contents);
-
-                        while (int_currentWord < 0 || int_currentWord > NBuild(data)) {
+                        if (int_currentWord == 0) {
+                            if (!isEqual(currentWord, "0")) {
+                                int_currentWord = -1;
+                            }
+                        }
+                        // printf("%d", int_currentWord);
+                        while (!(int_currentWord >= 0 && int_currentWord <= NBuild(data))) {
                             printf("Silahkan pilih sesuai opsi!\n");
                             resetWord();
                             printf("ENTER COMMAND: ");
                             startWord();
                             int_currentWord = atoi(currentWord.contents);
+                            if (int_currentWord == 0) {
+                                if (!isEqual(currentWord, "0")) {
+                                    int_currentWord = -1;
+                                }
+                            }
+                            // printf("%d", int_currentWord);
                         }
                         
                         if (int_currentWord == 0){ // Cancel move
