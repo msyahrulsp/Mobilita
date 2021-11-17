@@ -130,9 +130,10 @@ void load(int type) {
 
         if (to <= Time(data)) {
             LL_insertLast(&ToDo(data), odr);
+            NOrder(data)--;
+        } else {
+            Q_enqueue(&Order(data), odr);
         }
-
-        Q_enqueue(&Order(data), odr);
     }
     // IPL
     advScan();
