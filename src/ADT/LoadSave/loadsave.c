@@ -258,7 +258,7 @@ void save() {
 
     // IPL
     fprintf(saveFile, "%d\n", NIPL(data));
-    if (NIPL(data) != 0);
+    if (NIPL(data) != 0) {
         LL_Address p = FIRST(IPL(data));
         while(p != NULL) {
             fprintf(saveFile, "%c %c", INFO(p).dropOffPoint, INFO(p).jenisItem);
@@ -269,6 +269,7 @@ void save() {
             }
             p = NEXT(p);
         }
+    }
 
     // Tas
     Stack temp;
