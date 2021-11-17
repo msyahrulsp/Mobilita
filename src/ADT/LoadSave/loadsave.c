@@ -230,8 +230,6 @@ void load(int type) {
 }
 
 void save() {
-    FILE *saveFile;
-
     resetWord();
     printf("Masukkan nama save file permainan: ");
     startWord();
@@ -328,10 +326,12 @@ void save() {
     }
 
     // Tas
+    Stack temp;
     Pesanan holder;
     fprintf(saveFile, "%d %d\n", MTas(data), NTas(data));
-    while(!S_isEmpty(Tas(data))) {
-        S_pop(&Tas(data), &holder);
+    temp = Tas(data);
+    while(!S_isEmpty(temp)) {
+        S_pop(&temp, &holder);
         fprintf(saveFile, "%d %c %c %c", holder.waktuPesanan, holder.pickUpPoint, holder.dropOffPoint, holder.jenisItem);
         if (holder.duration != - 1) {
             fprintf(saveFile, " %d %d\n", holder.duration, holder.timer);

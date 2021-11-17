@@ -12,6 +12,7 @@
 extern char currentChar;
 extern boolean eot;
 extern FILE *loadFile;
+extern FILE *saveFile;
 
 void startFile();
 

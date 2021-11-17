@@ -152,27 +152,34 @@ void buy(ListGadget *inventory, int *money){
     }
 }
 
-void delSenterPengecilEff(Stack *bag){
+void delSenterPengecilEff(){
     Stack tempBag; // Membuat stack untuk tempat penampungan item sementara
     S_CreateStack(&tempBag);
 
-    boolean foundGadgetEff = false;
     S_ElType item; // Variabel untuk menampung item yang dipindahkan
-    while(!foundGadgetEff && S_isEmpty(*bag)){
-        if(JENIS_ITEM(TOP(*bag)) != 'n'){
-            foundGadgetEff = true;
+    while(!S_isEmpty(Tas(data))){
+        if(JENIS_ITEM(TOP(Tas(data))) == 'n'){
+            JENIS_ITEM(TOP(Tas(data))) = 'H';
         }
         else{
-            S_pop(bag, &item);
+            S_pop(&Tas(data), &item);
             S_push(&tempBag, item); // Item dipindahkan ke temporaryBag
         }
     }
-    if (foundGadgetEff == true){
-        JENIS_ITEM(TOP(*bag)) = 'H';
-    }
-    while(S_isEmpty(tempBag) != true){
+
+    while(!S_isEmpty(tempBag)){
         S_pop(&tempBag, &item);
-        S_push(bag, item);
+        S_push(&Tas(data), item);
+    }
+
+    LL_Address p = FIRST(IPL(data));
+    if (p != NULL) {
+        while(p != NULL) {
+            if (JENIS_ITEM(INFO(p)) == 'n') {
+                JENIS_ITEM(INFO(p)) = 'H';
+            }
+            p = NEXT(p);
+        }
     }
 }
 
@@ -351,9 +358,7 @@ int main(){
             idxipl = LL_dropOffAvailable(IPL(data), point_currentPos, Building(data));
             if (idxipl != IDX_UNDEF){
                 LL_deleteFirst(&IPL(data), &valpesanan);
-                printf("%c\n", valpesanan.jenisItem);
                 S_pop(&Tas(data), &valpesanan);
-                printf("%c\n", valpesanan.jenisItem);
                 NIPL(data) -= 1;
                 NTas(data) -= 1;
                 if (JENIS_ITEM(valpesanan) == 'N') {
@@ -375,6 +380,7 @@ int main(){
                     Money(data) += 400;
                     printf("Uang yang didapatkan: 400 Yen\n");
                 }
+                delSenterPengecilEff();
                 NDrop(data)++;
             } else {
                 printf("Tidak ada pesanan yang bisa diantarkan!\n"); 
@@ -533,41 +539,24 @@ int main(){
                 }
                 if (gd == 'S'){ // Senter Pengecil
                     // Menghilangkan efek heavy item
-                    Stack tempBag; // Membuat stack untuk tempat penampungan item sementara
-                    S_CreateStack(&tempBag);
-
                     boolean foundHeavy = false;
                     S_ElType item; // Variabel untuk menampung item yang dipindahkan
-                    while(!S_isEmpty(Tas(data)) && !foundHeavy){
-                        if(JENIS_ITEM(TOP(Tas(data))) == 'H'){
-                            foundHeavy = true;
-                        }
-                        else{
-                            S_pop(&Tas(data), &item);
-                            S_push(&tempBag, item); // Item dipindahkan ke temporaryBag
-                        }
+
+                    // Senter Pengecil cuman work buat Heavy Item
+                    // yang ada di top tas
+                    if(JENIS_ITEM(TOP(Tas(data))) == 'H'){
+                        foundHeavy = true;
                     }
+                    
                     if (foundHeavy){
                         JENIS_ITEM(TOP(Tas(data))) = 'n';
-                        foundHeavy = false;
                         LL_Address pheavy = FIRST(IPL(data));
-                        while (pheavy!=NULL && !foundHeavy){
-                            if (JENIS_ITEM(INFO(pheavy)) == 'H'){
-                                foundHeavy = true;
-                            } else {
-                                pheavy = NEXT(pheavy);
-                            }
-                        }
                         JENIS_ITEM(INFO(pheavy)) = 'n';
                         LS_deleteElmt(&Invent(data), idx);
                         printf("Senter Pengecil berhasil digunakan!\n");
                     }
                     else{
-                        printf("Tidak ada heavy item di tas!\n");
-                    }
-                    while(!S_isEmpty(tempBag)){
-                        S_pop(&tempBag, &item);
-                        S_push(&Tas(data), item);
+                        printf("Senter Pengecil tidak bisa digunakan!\n");
                     }
                 }
                 if (gd == 'U') {

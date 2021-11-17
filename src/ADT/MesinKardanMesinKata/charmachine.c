@@ -7,6 +7,7 @@
 char currentChar;
 boolean eot;
 FILE *loadFile;
+FILE *saveFile;
 
 static FILE * tape;
 static int retval;

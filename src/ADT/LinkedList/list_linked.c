@@ -278,6 +278,7 @@ void LL_displayList_InProgress(LL_List l){
                 printf("%d. Normal Item (Tujuan: %c)", ctr, INFO(p).dropOffPoint);
             } else if (INFO(p).jenisItem=='H' || INFO(p).jenisItem=='n'){
                 printf("%d. Heavy Item (Tujuan: %c)", ctr, INFO(p).dropOffPoint);
+                if (INFO(p).jenisItem == 'n') printf(" (Kecil)");
             } else if (INFO(p).jenisItem=='P'){
                 printf("%d. Perishable Item (Tujuan: %c) (Sisa Waktu: %d)", ctr, INFO(p).dropOffPoint, INFO(p).timer);
             }
