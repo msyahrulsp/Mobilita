@@ -334,6 +334,7 @@ int main(){
                     if(JENIS_ITEM(valpesanan) == 'H'){
                         AB_reset(&Speed(data),true);
                     }
+                    printf("Tujuan Pesanan: %c\n", valpesanan.dropOffPoint);
                 } else {
                     printf("Tidak bisa mengambil pesanan karena tas sudah penuh\n");
                 }
