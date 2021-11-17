@@ -600,6 +600,8 @@ int main(){
             } else {
                 printf("Mobita tidak memiliki Ability Return To Sender\n");
             }
+        } else if (isEqual(currentWord, "EXIT")) {
+            // DO NOTHING
         } else {
             printf("Command salah!\n");
             printf("Silahkan cek HELP untuk melihat list command\n");
