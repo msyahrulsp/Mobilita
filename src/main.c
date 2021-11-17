@@ -604,7 +604,7 @@ int main(){
                         }
                         printf(" berhasil dikembalikan ke Pick Up Point %c\n", valpesanan.pickUpPoint);
 
-                        delSenterPengecilEff(&Tas(data));
+                        delSenterPengecilEff();
                         AB_useAbility(&RTS(data));
                         if (RTS(data).count == 0){
                             AB_reset(&RTS(data), false);
