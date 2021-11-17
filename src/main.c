@@ -290,9 +290,6 @@ int main(){
                             LL_disapPerishable(&IPL(data), Time(data), timeadd);
                             S_disapPerishable(&Tas(data), Time(data), timeadd);
                         }
-                        // Handle Perishable item
-                        //LL_disapPerishable(&IPL(data), Time(data));
-                        //S_disapPerishable(&Tas(data), Time(data));
                         
                         // Daftar Pesanan -> To Do List
                         if (!Q_isEmpty(Order(data))) {
@@ -316,27 +313,20 @@ int main(){
         } else if (isEqual(currentWord, "PICK_UP")) {
             point_currentPos = BPOINT(Building(data), position);
             idxtdl = LL_pesananAvailable(ToDo(data), point_currentPos, Building(data));
-            printf("%d, %d\n", LL_length(IPL(data)), MTas(data));
             if (idxtdl != IDX_UNDEF){
                 if (LL_length(IPL(data))<MTas(data)){
-                    if(JENIS_ITEM(TOP(Tas(data))) != 'V'){
-                        LL_deleteAt(&ToDo(data), idxtdl, &valpesanan);
-                        LL_insertFirst(&IPL(data), valpesanan);
-                        S_push(&Tas(data), valpesanan);
-                        if (valpesanan.jenisItem == 'N'){
-                            printf("Pesanan berupa Normal Item berhasil diambil!\n");
-                        } else if (valpesanan.jenisItem == 'H'){
-                            printf("Pesanan berupa Heavy Item berhasil diambil!\n");
-                        } else if (valpesanan.jenisItem == 'P'){
-                            printf("Pesanan berupa Perishable Item berhasil diambil!\n");
-                        } else if (valpesanan.jenisItem == 'V'){
-                            printf("Pesanan berupa VIP Item berhasil diambil!\n");
-                        }
-                        if(JENIS_ITEM(valpesanan) == 'H'){
-                           AB_reset(&Speed(data),true);
-                        }
-                    } else {
-                        printf("Item VIP sedang dalam proses, tidak dapat mengambil item\n");
+                    LL_deleteAt(&ToDo(data), idxtdl, &valpesanan);
+                    LL_insertFirst(&IPL(data), valpesanan);
+                    S_push(&Tas(data), valpesanan);
+                    if (valpesanan.jenisItem == 'N'){
+                        printf("Pesanan berupa Normal Item berhasil diambil!\n");
+                    } else if (valpesanan.jenisItem == 'H'){
+                        printf("Pesanan berupa Heavy Item berhasil diambil!\n");
+                    } else if (valpesanan.jenisItem == 'P'){
+                        printf("Pesanan berupa Perishable Item berhasil diambil!\n");
+                    }
+                    if(JENIS_ITEM(valpesanan) == 'H'){
+                        AB_reset(&Speed(data),true);
                     }
                 } else {
                     printf("Tidak bisa mengambil pesanan karena tas sudah penuh\n");
@@ -345,45 +335,30 @@ int main(){
                 printf("Pesanan tidak ditemukan\n");
             }
         } else if (isEqual(currentWord, "DROP_OFF")) {
-            // TODO : handle kesesuaian lokasi pengiriman
             point_currentPos = BPOINT(Building(data), position);
             idxipl = LL_dropOffAvailable(IPL(data), point_currentPos, Building(data));
             if (idxipl != IDX_UNDEF){
                 LL_deleteFirst(&IPL(data), &valpesanan);
                 S_pop(&Tas(data), &valpesanan);
                 if (JENIS_ITEM(valpesanan) == 'N') {
-                    //delSenterPengecilEff(&Tas(data));
                     printf("Pesanan Normal Item berhasil diantarkan\n");
                     Money(data) += 200;
                     printf("Uang yang didapatkan: 200 Yen");
                 } else if (JENIS_ITEM(valpesanan) == 'H' || JENIS_ITEM(valpesanan) == 'n') {
-                    // Dapet Reward
                     if(heavy_InProgress(IPL(data))==0){
                         AB_activate(&Speed(data));
                     }
-                    //delSenterPengecilEff(&Tas(data));
                     printf("Pesanan Heavy Item berhasil diantarkan\n");
                     Money(data) += 400;
                     printf("Uang yang didapatkan: 400 Yen");
                 } else if (JENIS_ITEM(valpesanan) == 'P') {
-                    // dapet reward
-                    // check perishableitem
                     if (MTas(data) != 100) {
-                        MTas(data)++; // ability increase Capacity
+                        MTas(data)++;
                     }
-                    // delSenterPengecilEff(&Tas(data));
                     printf("Pesanan Perishable Item berhasil diantarkan\n");
                     Money(data) += 400;
                     printf("Uang yang didapatkan: 400 Yen");
-                } /*else if (JENIS_ITEM(valpesanan) == 'V') {
-                    // dapet reward
-                    // delSenterPengecilEff(&Tas(data));
-                    //AB_isActive(Ret(data)) ? AB_stackAbility(&Ret(data)): AB_activate(&Ret(data));
-                    printf("Pesanan VIP Item berhasil diantarkan\n");
-                    Money(data) += 600;
-                    printf("Uang yang didapatkan: 600 Yen");
-                }*/
-                // Hapus item drop off dari Order(data)
+                }
                 NDrop(data)++;
             } else {
                 printf("Tidak ada pesanan yang bisa diantarkan!\n"); 
@@ -568,31 +543,7 @@ int main(){
             help(1);
         } else if (isEqual(currentWord, "SAVE_GAME")) {
             save();
-        } /*else if (isEqual(currentWord, "RETURN")) {
-            if(AB_isActive(Ret(data))){
-                if(!S_isEmpty(Tas(data)) && !LL_isEmpty(IPL(data))){
-                    if(JENIS_ITEM(TOP(Tas(data))) != 'V'){
-                        LL_deleteFirst(&IPL(data), &valpesanan);
-                        S_pop(&Tas(data), &valpesanan);
-                        // TODO : reset durasi persishable, kembalikan item ke lokasi pickup
-                        LL_insertLast(&ToDo(data), valpesanan);
-                    }
-                    else {
-                        printf("Ability tidak dapat digunakan untuk item VIP\n");
-                    }
-                } else {
-                    printf("Tidak ada item yang sedang dibawa\n");
-                }
-                printf("Ability berhasil digunakan\n");
-                delSenterPengecilEff(&Tas(data));
-                AB_useAbility(&Ret(data));
-                if (Count(Ret(data))==0){
-                    AB_reset(&Ret(data), false);
-                }
-            } else {
-                printf("Anda tidak memiliki ability ini\n");
-            }
-        } */else {
+        } else {
             printf("Command salah!\n");
         }
     }

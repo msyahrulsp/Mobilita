@@ -250,8 +250,6 @@ void LL_displayList_ToDo(LL_List l){
                 printf("(Heavy Item)");
             } else if (INFO(p).jenisItem=='P'){
                 printf("(Perishable Item)");
-            } else if (INFO(p).jenisItem=='V'){
-                printf("(VIP Item)");
             }
             printf("\n");
             p = NEXT(p);
@@ -282,8 +280,6 @@ void LL_displayList_InProgress(LL_List l){
                 printf("%d. Heavy Item (Tujuan: %c)", ctr, INFO(p).dropOffPoint);
             } else if (INFO(p).jenisItem=='P'){
                 printf("%d. Perishable Item (Tujuan: %c)", ctr, INFO(p).dropOffPoint);
-            } else if (INFO(p).jenisItem=='V'){
-                printf("%d. VIP Item (Tujuan: %c)", ctr, INFO(p).dropOffPoint);
             }
             printf("\n");
             p = NEXT(p);
