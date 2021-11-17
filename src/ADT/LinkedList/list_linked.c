@@ -420,10 +420,12 @@ void LL_disapPerishable (LL_List *l, int time, int timeadd, int *disap){
             INFO(p).timer -= timeadd;
         }
         if (INFO(p).jenisItem == 'P' && INFO(p).timer <= 0){
+            p = NEXT(p);
             LL_deleteAt(l, idx, &val);
             *disap += 1;
+        } else {
+            idx += 1;
+            p = NEXT(p);
         }
-        idx += 1;
-        p = NEXT(p);
     }
 }
