@@ -523,7 +523,7 @@ int main(){
                     boolean foundHeavy = false;
                     S_ElType item; // Variabel untuk menampung item yang dipindahkan
                     while(!S_isEmpty(Tas(data)) && !foundHeavy){
-                        if(JENIS_ITEM(TOP(Tas(data))) != 'H'){
+                        if(JENIS_ITEM(TOP(Tas(data))) == 'H'){
                             foundHeavy = true;
                         }
                         else{
@@ -533,6 +533,7 @@ int main(){
                     }
                     if (foundHeavy == true){
                         JENIS_ITEM(TOP(Tas(data))) = 'n';
+                        JENIS_ITEM(INFO(FIRST(IPL(data)))) = 'n';
                         LS_deleteElmt(&Invent(data), idx);
                         printf("Senter Pengecil berhasil digunakan!\n");
                     }
