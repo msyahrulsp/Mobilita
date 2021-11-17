@@ -108,6 +108,7 @@ void load(int type) {
     char bp, bd, ji;
     Q_CreateQueue(&Order(data));
     LL_CreateList(&ToDo(data));
+    NToDo(data) = 0;
     int border = NOrder(data);
     for (i = 0; i < border; i++) {
         advScan();
@@ -131,11 +132,39 @@ void load(int type) {
 
         if (to <= Time(data)) {
             LL_insertLast(&ToDo(data), odr);
+            NToDo(data)++;
             NOrder(data)--;
         } else {
             Q_enqueue(&Order(data), odr);
         }
     }
+
+    //ToDo
+    advScan();
+    int btodo = Scanner.num;
+    NToDo(data) += btodo;
+    for (i = 0; i < btodo; i++) {
+        advScan();
+        to = Scanner.num;
+        advScan();
+        bp = Scanner.let;
+        advScan();
+        bd = Scanner.let;
+        advScan();
+        ji = Scanner.let;
+        if (currentChar == BLANK) {
+            advScan();
+            d = Scanner.num; // duration
+            advScan();
+            t = Scanner.num; // timer
+        } else {
+            d = NULL_PERISHTIME;
+            t = NULL_PERISHTIME;
+        }
+        Q_CreatePesanan(&odr, to, bp, bd, ji, d, t);
+        LL_insertLast(&ToDo(data), odr);
+    }
+
     // IPL
     advScan();
     NIPL(data) = Scanner.num;
@@ -258,10 +287,32 @@ void save() {
         }
     }
 
+    // ToDO
+    LL_Address p;
+    fprintf(saveFile, "%d\n", NToDo(data));
+    if (NToDo(data) != 0) {
+        p = FIRST(ToDo(data));
+        while(p != NULL) {
+            to = INFO(p).waktuPesanan;
+            bp = INFO(p).pickUpPoint;
+            bd = INFO(p).dropOffPoint;
+            ji = INFO(p).jenisItem;
+            fprintf(saveFile, "%d %c %c %c", to, bp, bd, ji);
+            d = INFO(p).duration;
+            if (d != -1) {
+                t = INFO(p).timer;
+                fprintf(saveFile, " %d %d\n", d, t);
+            } else {
+                fprintf(saveFile, "\n");
+            }
+            p = NEXT(p);
+        }
+    }
+
     // IPL
     fprintf(saveFile, "%d\n", NIPL(data));
     if (NIPL(data) != 0) {
-        LL_Address p = FIRST(IPL(data));
+        p = FIRST(IPL(data));
         while(p != NULL) {
             fprintf(saveFile, "%c %c", INFO(p).dropOffPoint, INFO(p).jenisItem);
             if (INFO(p).duration != -1) {

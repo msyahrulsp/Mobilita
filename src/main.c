@@ -201,7 +201,7 @@ int main(){
 
     while(!isEqual(currentWord, "NEW_GAME") && !isEqual(currentWord, "LOAD_GAME")) {
         if(isEqual(currentWord, "EXIT")) {
-            printf("\n======= THANKS FOR PLAYING =======\n\n");
+            printf("\n======= THANKS FOR PLAYING =======\n");
             exit(0);
         } else {
             if (isEqual(currentWord, "HELP")) {
@@ -233,8 +233,8 @@ int main(){
     while (!isEqual(currentWord, "EXIT") && endGame(position) != 2) {
         printf("\nWaktu: %d\n", Time(data));
         printf("Uang: %d Yen\n", Money(data));
-        printf("Posisi: Titik %c (%d, %d)\n", BuiNAME(data, position) ,PosX(data), PosY(data));
-        printf("Tas (Max | Current): (%d | %d)\n", MTas(data), NTas(data));
+        printf("Posisi: Titik %c (%d,%d)\n", BuiNAME(data, position) ,PosX(data), PosY(data));
+        printf("Tas (Max|Current): (%d|%d)\n", MTas(data), NTas(data));
         if (AB_isActive(Speed(data))) printf("Speed Boost aktif (Sisa %d Move)\n", Count(Speed(data)));
         if (endGame(position) == 1) printf("Pesan: Kembali ke HQ!\n");
         resetWord();
@@ -298,6 +298,7 @@ int main(){
                             while (!Q_isEmpty(Order(data)) && HEAD(Order(data)).waktuPesanan <= Time(data)){
                                 Q_dequeue(&Order(data), &order);
                                 LL_insertLast(&ToDo(data), order);
+                                NToDo(data)++;
                                 NOrder(data)--;
                             }
                         }
@@ -318,6 +319,7 @@ int main(){
             if (idxtdl != IDX_UNDEF){
                 if (LL_length(IPL(data))<MTas(data)){
                     LL_deleteAt(&ToDo(data), idxtdl, &valpesanan);
+                    NToDo(data)--;
                     LL_insertFirst(&IPL(data), valpesanan);
                     S_push(&Tas(data), valpesanan);
                     NIPL(data) += 1;
@@ -556,13 +558,13 @@ int main(){
     }
 
     if (isEqual(currentWord, "EXIT")) {
-        printf("\n======= THANKS FOR PLAYING =======\n\n");
+        printf("\n======= THANKS FOR PLAYING =======\n");
     } else if (endGame(position) == 2) {
         printf("\n----- CONGRATS!! You've finished the game! -----");
         printf("\n\n========= STAT =========\n");
         printf("Sisa uang >> %d Yen\n", Money(data));
         printf("Banyak item yang diantar >> %d Item\n", NDrop(data));
-        printf("Waktu yang dilampaui >> %d\n\n", Time(data));
+        printf("Waktu yang dilampaui >> %d\n", Time(data));
     }
     return 0;
 }

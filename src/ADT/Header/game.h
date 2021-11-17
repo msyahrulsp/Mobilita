@@ -80,6 +80,7 @@ typedef struct {
     Matrix Adj; // NBuild + 1
     int NOrder;
     Queue Order; // Daftar Pesanan
+    int NToDo;
     LL_List ToDo; // To Do List
     int NIPL;
     LL_List IPL; // In Progress List
