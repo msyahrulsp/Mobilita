@@ -239,7 +239,8 @@ int main(){
         printf("Uang: %d Yen\n", Money(data));
         printf("Posisi: Titik %c (%d,%d)\n", BuiNAME(data, position) ,PosX(data), PosY(data));
         printf("Tas (Max|Current): (%d|%d)\n", MTas(data), NTas(data));
-        if (endGame(position) == 1) printf("Pesan: Kembali ke HQ!\n");
+        if (AB_isActive(RTS(data))) printf("Return To Sender: Available\n");
+        if (endGame(position) == 1) printf("\nPesan: Kembali ke HQ!\n\n");
         resetWord();
         printf("ENTER COMMAND: ");
         startWord();
