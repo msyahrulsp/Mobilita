@@ -5,11 +5,17 @@ ADT_FILES = $(filter-out $(wildcard $(SRC_ADT)/*/driver.c), $(wildcard $(SRC_ADT
 DRIVER_FILES = $(wildcard $(SRC_ADT)/$(f)/*.c)
 LOAD_FILES = $(wildcard $(SRC)/Game/LoadSave/*.c)
 
+ifeq ($(OS), Windows_NT)
+	CLEAR = cls
+else
+	CLEAR = clear
+endif
+
 run: compile
 	$(SRC)/main
 
 compile: 
-	$(CC) -I $(SRC_ADT)/Header $(ADT_FILES) $(SRC)/main.c -o $(SRC)/main
+	$(CC) -I $(SRC_ADT)/Header $(ADT_FILES) $(SRC)/main.c -o $(SRC)/main && $(CLEAR)
 
 run2: $(SRC)/main
 	$(SRC)/main
