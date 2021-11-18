@@ -138,22 +138,22 @@ POINT P_MirrorOf (POINT P, boolean SbX) {
     else
         return P_makePOINT(-Absis(P), Ordinat(P));
 }
-int P_Jarak0 (POINT P) {
-/* Menghitung jarak P ke (0,0) */
-    /* KAMUS */
+// int P_Jarak0 (POINT P) {
+// /* Menghitung jarak P ke (0,0) */
+//     /* KAMUS */
 
-    /* ALGORITMA */
-    return sqrt(pow(Absis(P), 2) + pow(Ordinat(P), 2));
-}
-int P_Jarak (POINT P1, POINT P2) {
-/* Menghitung panjang garis yang dibentuk P1 dan P2 */
-/* Perhatikanlah bahwa di sini spec fungsi kurang baik sebab menyangkut ADT Garis. */
-/* Tuliskan spec fungsi yang lebih tepat. */
-    /* KAMUS */
+//     /* ALGORITMA */
+//     return sqrt(pow(Absis(P), 2) + pow(Ordinat(P), 2));
+// }
+// int P_Jarak (POINT P1, POINT P2) {
+// /* Menghitung panjang garis yang dibentuk P1 dan P2 */
+// /* Perhatikanlah bahwa di sini spec fungsi kurang baik sebab menyangkut ADT Garis. */
+// /* Tuliskan spec fungsi yang lebih tepat. */
+//     /* KAMUS */
 
-    /* ALGORITMA */
-    return sqrt(pow(Absis(P1) - Absis(P2), 2) + pow(Ordinat(P1) - Ordinat(P2), 2));
-}
+//     /* ALGORITMA */
+//     return sqrt(pow(Absis(P1) - Absis(P2), 2) + pow(Ordinat(P1) - Ordinat(P2), 2));
+// }
 void P_Geser (POINT *P, int deltaX, int deltaY) {
 /* I.S. P terdefinisi */
 /* F.S. P digeser, absisnya sebesar deltaX dan ordinatnya sebesar deltaY */
@@ -193,14 +193,14 @@ void P_Mirror (POINT *P, boolean SbX) {
     else
         Absis(*P) *= -1; 
 }
-void P_Putar (POINT *P, float Sudut) {
-/* I.S. P terdefinisi */
-/* F.S. P digeser sebesar Sudut derajat dengan sumbu titik (0,0) */
-    /* KAMUS */
-    POINT tempPoint = *P;
-    float radSudut = (Sudut * (M_PI / 180.0));
-    /* ALGORITMA */
-    radSudut *= -1; // CW
-    Absis(*P) = (Absis(tempPoint) * cos(radSudut)) - (Ordinat(tempPoint) * sin(radSudut));
-    Ordinat(*P) = (Absis(tempPoint) * sin(radSudut)) + (Ordinat(tempPoint) * cos(radSudut));
-}
+// void P_Putar (POINT *P, float Sudut) {
+// /* I.S. P terdefinisi */
+// /* F.S. P digeser sebesar Sudut derajat dengan sumbu titik (0,0) */
+//     /* KAMUS */
+//     POINT tempPoint = *P;
+//     float radSudut = (Sudut * (M_PI / 180.0));
+//     /* ALGORITMA */
+//     radSudut *= -1; // CW
+//     Absis(*P) = (Absis(tempPoint) * cos(radSudut)) - (Ordinat(tempPoint) * sin(radSudut));
+//     Ordinat(*P) = (Absis(tempPoint) * sin(radSudut)) + (Ordinat(tempPoint) * cos(radSudut));
+// }
