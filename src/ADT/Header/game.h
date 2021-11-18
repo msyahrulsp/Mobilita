@@ -97,3 +97,5 @@ void help(int type);
 void printMobilita();
 
 int endGame(int position);
+
+void printStat(int position);

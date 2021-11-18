@@ -11,11 +11,11 @@ int endGame(int position) {
 }
 
 void printMobilita() {
-    printf("  __  __  ___  ___ ___ _    ___ _____ _   \n");
+    printf("%s  __  __  ___  ___ ___ _    ___ _____ _   \n", CYAN);
     printf(" |  \\/  |/ _ \\| _ )_ _| |  |_ _|_   _/_\\  \n");
     printf(" | |\\/| | (_) | _ \\| || |__ | |  | |/ _ \\ \n");
     printf(" |_|  |_|\\___/|___/___|____|___| |_/_/ \\_\\\n");
-    printf("                                          \n");
+    printf("                                          %s\n", NORMAL);
 }
 
 void help(int type) {
@@ -152,6 +152,28 @@ void buy(ListGadget *inventory, int *money){
     }
 }
 
+void printStat(int position) {
+    printf("\n%s----- Stat -----\t\t----- Ability -----%s\n", BLUE, NORMAL);
+    printf("Waktu: %s%d\t\t\t%s", CYAN, Time(data), NORMAL);
+    printf("Speed Boost: "); 
+    if (AB_isActive(Speed(data))) { 
+        printf("%sActive%s ", GREEN, NORMAL);
+        printf("(%d Move Left)\n", Count(Speed(data)));
+    } else { 
+        printf("%sNot Active%s\n", RED, NORMAL);
+    }
+    printf("Uang: %s%d%s Yen\t\t\t", CYAN, Money(data), NORMAL);
+    printf("Return To Sender: ");
+    if (AB_isActive(RTS(data))) { 
+        printf("%sActive%s ", GREEN, NORMAL);
+        printf("(%d Return Left)\n", Count(RTS(data)));
+    } else { 
+        printf("%sNot Active%s\n", RED, NORMAL);
+    }
+    printf("Posisi: %sTitik %c%s (%s%d%s,%s%d%s)\t\t", YELLOW, BuiNAME(data, position), NORMAL, CYAN, PosX(data), NORMAL, CYAN, PosY(data), NORMAL);
+    printf("Tas (Max|Current): (%s%d%s|%s%d%s)\n", CYAN, MTas(data), NORMAL, CYAN, NTas(data), NORMAL);
+}
+
 void delSenterPengecilEff(){
     Stack tempBag; // Membuat stack untuk tempat penampungan item sementara
     S_CreateStack(&tempBag);
@@ -235,16 +257,10 @@ int main(){
     printf("\n======= SELAMAT BERMAIN =======\n");
 
     while (!isEqual(currentWord, "EXIT") && endGame(position) != 2) {
-        printf("\n----- Stat -----\t\t----- Ability -----\n");
-        printf("Waktu: %d\t\t\t", Time(data));
-        printf("Speed Boost: "); (AB_isActive(Speed(data))) ? printf("Active (%d Move Left)\n", Count(Speed(data))) : printf("Not Active\n");
-        printf("Uang: %d Yen\t\t\t", Money(data));
-        printf("Return To Sender: "); (AB_isActive(RTS(data))) ? printf("Active (%d Return Left)\n", Count(RTS(data))) : printf("Not Active\n");
-        printf("Posisi: Titik %c (%d,%d)\t\t", BuiNAME(data, position) ,PosX(data), PosY(data));
-        printf("Tas (Max|Current): (%d|%d)\n", MTas(data), NTas(data));
-        if (endGame(position) == 1) printf("\nPesan: Kembali ke HQ!\n\n");
+        printStat(position);
+        if (endGame(position) == 1) printf("\nPesan: %sKembali ke HQ!%s\n", GREEN, NORMAL);
         resetWord();
-        printf("ENTER COMMAND: ");
+        printf("\nENTER COMMAND: ");
         startWord();
 
         while (!LD_isEmpty(moveable)) {
@@ -614,10 +630,10 @@ int main(){
         printf("\n======= THANKS FOR PLAYING =======\n");
     } else if (endGame(position) == 2) {
         printf("\n----- CONGRATS!! You've finished the game! -----");
-        printf("\n\n========= STAT =========\n");
-        printf("Sisa uang >> %d Yen\n", Money(data));
-        printf("Banyak item yang diantar >> %d Item\n", NDrop(data));
-        printf("Waktu yang dilampaui >> %d\n", Time(data));
+        printf("%s\n\n========= STAT =========\n%s", BLUE, NORMAL);
+        printf("Sisa uang >> %s%d%s Yen\n", CYAN, Money(data), NORMAL);
+        printf("Banyak item yang diantar >> %s%d%s Item\n", CYAN, NDrop(data), NORMAL);
+        printf("Waktu yang dilampaui >> %s%d%s\n", CYAN, Time(data), NORMAL);
     }
     return 0;
 }
