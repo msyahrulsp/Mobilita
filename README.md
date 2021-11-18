@@ -7,13 +7,19 @@ dan menurunkan barang.
 
 ## How to Run
 - Pastikan ada [Chocolatey](https://chocolatey.org/install)
-- Install make dengan Chocolatey `choco install make`
+- Install make dengan Chocolatey 
+    ```
+    choco install make
+    ```
 - Clone repo ini
-```
-git clone https://github.com/msyahrulsp/Mobilita.git Mobilita
-cd Mobilita
-```
-- Jalankan `make`
+    ```
+    git clone https://github.com/msyahrulsp/Mobilita.git Mobilita
+    cd Mobilita
+    ```
+- Compile and Run
+    ```
+    make
+    ```
 
 ## Direktori
 
