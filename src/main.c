@@ -359,6 +359,8 @@ int main(){
                             printf("Pesanan berupa Heavy Item berhasil diambil!\n");
                         } else if (valpesanan.jenisItem == 'P'){
                             printf("Pesanan berupa Perishable Item berhasil diambil!\n");
+                        }else if (valpesanan.jenisItem == 'V'){
+                            printf("Pesanan berupa VIP Item berhasil diambil!\n");
                         }
                         if(JENIS_ITEM(valpesanan) == 'H'){
                             AB_reset(&Speed(data),true);
