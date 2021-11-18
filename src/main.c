@@ -235,11 +235,13 @@ int main(){
     printf("\n======= SELAMAT BERMAIN =======\n");
 
     while (!isEqual(currentWord, "EXIT") && endGame(position) != 2) {
-        printf("\nWaktu: %d\n", Time(data));
-        printf("Uang: %d Yen\n", Money(data));
-        printf("Posisi: Titik %c (%d,%d)\n", BuiNAME(data, position) ,PosX(data), PosY(data));
+        printf("\n----- Stat -----\t\t----- Ability -----\n");
+        printf("Waktu: %d\t\t\t", Time(data));
+        printf("Speed Boost: "); (AB_isActive(Speed(data))) ? printf("Active (%d Move Left)\n", Count(Speed(data))) : printf("Not Active\n");
+        printf("Uang: %d Yen\t\t\t", Money(data));
+        printf("Return To Sender: "); (AB_isActive(RTS(data))) ? printf("Active (%d Return Left)\n", Count(RTS(data))) : printf("Not Active\n");
+        printf("Posisi: Titik %c (%d,%d)\t\t", BuiNAME(data, position) ,PosX(data), PosY(data));
         printf("Tas (Max|Current): (%d|%d)\n", MTas(data), NTas(data));
-        if (AB_isActive(RTS(data))) printf("Return To Sender: Available\n");
         if (endGame(position) == 1) printf("\nPesan: Kembali ke HQ!\n\n");
         resetWord();
         printf("ENTER COMMAND: ");
@@ -265,7 +267,6 @@ int main(){
             boolean valid = false;
             while(!valid){
                 printf("Posisi yang dipilih? (ketik 0 jika ingin kembali)\n");
-                if (AB_isActive(Speed(data))) printf("> Speed Boost (%d) <\n\n", Count(Speed(data)));
                 resetWord();
                 printf("ENTER COMMAND: ");
                 startWord();
