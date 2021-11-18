@@ -51,13 +51,13 @@ void buy(ListGadget *inventory, int *money){
 
     boolean added;
     resetWord();
-    printf("\nENTER COMMAND: ");
+    printf("\n%sENTER COMMAND%s: ", BLUE, NORMAL);
     startWord();
 
     while (!(isEqual(currentWord, "0") || isEqual(currentWord, "1") || isEqual(currentWord, "2") || isEqual(currentWord, "3") || isEqual(currentWord, "4") || isEqual(currentWord, "5"))) {
         printf("Silahkan pilih sesuai opsi!");
         resetWord();
-        printf("\nENTER COMMAND: ");
+        printf("\n%sENTER COMMAND%s: ", BLUE, NORMAL);
         startWord();
     }
 
@@ -222,7 +222,7 @@ int main(){
     // main menu
     printMobilita();
     printf(">>> Main Menu <<<\n");
-    printf("ENTER COMMAND: ");
+    printf("%sENTER COMMAND%s: ", BLUE, NORMAL);
     startWord();
 
     while(!isEqual(currentWord, "NEW_GAME") && !isEqual(currentWord, "LOAD_GAME")) {
@@ -237,7 +237,7 @@ int main(){
                 printf("Silahkan cek HELP untuk melihat list command\n");
             }
             resetWord();
-            printf("ENTER COMMAND: ");
+            printf("%sENTER COMMAND%s: ", BLUE, NORMAL);
             startWord();
         }
     }
@@ -260,7 +260,7 @@ int main(){
         printStat(position);
         if (endGame(position) == 1) printf("\nPesan: %sKembali ke HQ!%s\n", GREEN, NORMAL);
         resetWord();
-        printf("\nENTER COMMAND: ");
+        printf("\n%sENTER COMMAND%s: ", BLUE, NORMAL);
         startWord();
 
         while (!LD_isEmpty(moveable)) {
@@ -284,7 +284,7 @@ int main(){
             while(!valid){
                 printf("Posisi yang dipilih? (ketik 0 jika ingin kembali)\n");
                 resetWord();
-                printf("ENTER COMMAND: ");
+                printf("%sENTER COMMAND%s: ", BLUE, NORMAL);
                 startWord();
                 if (isEqual(currentWord, "0")){ // Cancel move
                     valid = true;
@@ -428,13 +428,13 @@ int main(){
             LS_displayList(Invent(data));
             printf("Gadget mana yang ingin digunakan? (ketik 0 jika ingin kembali)\n");
             resetWord();
-            printf("\nENTER COMMAND: ");
+            printf("\n%sENTER COMMAND%s: ", BLUE, NORMAL);
             startWord();
 
             while (!(isEqual(currentWord, "0") || isEqual(currentWord, "1") || isEqual(currentWord, "2") || isEqual(currentWord, "3") || isEqual(currentWord, "4") || isEqual(currentWord, "5"))) {
                 printf("Silahkan pilih sesuai opsi!");
                 resetWord();
-                printf("\nENTER COMMAND: ");
+                printf("\n%sENTER COMMAND%s: ", BLUE, NORMAL);
                 startWord();
             }
 
@@ -491,7 +491,7 @@ int main(){
                         }
                         printf("Posisi yang dipilih? (ketik 0 jika ingin kembali)\n\n");
                         resetWord();
-                        printf("ENTER COMMAND: ");
+                        printf("%sENTER COMMAND%s: ", BLUE, NORMAL);
                         startWord();
                         int int_currentWord = atoi(currentWord.contents);
                         if (int_currentWord == 0) {
@@ -503,7 +503,7 @@ int main(){
                         while (!(int_currentWord >= 0 && int_currentWord <= NBuild(data))) {
                             printf("Silahkan pilih sesuai opsi!\n");
                             resetWord();
-                            printf("ENTER COMMAND: ");
+                            printf("%sENTER COMMAND%s: ", BLUE, NORMAL);
                             startWord();
                             int_currentWord = atoi(currentWord.contents);
                             if (int_currentWord == 0) {

@@ -10,12 +10,12 @@ static int retval;
 void startScan() {
     advFile();
     while (currentChar == BLANK) advFile();
-    endWord = (currentChar == MARK);
+    endWord = (currentChar == MARK || currentChar == MARKCR);
     if (!endWord) advScan(); // ini udah bener
 }
 
 void advScan() {
-    while (currentChar == BLANK || currentChar == MARK) advFile();
+    while (currentChar == BLANK || currentChar == MARK || currentChar == MARKCR) advFile();
     getScan();
 }
 
@@ -26,7 +26,7 @@ void getScan() {
         Scanner.num = 0;
         advFile();
     } else {
-        while ((currentChar != BLANK) && (currentChar != MARK)) {
+        while ((currentChar != BLANK) && (currentChar != MARK) && (currentChar != MARKCR)) {
             switch (currentChar) {
                 case '0':
                     temp = 0;
@@ -74,7 +74,7 @@ void ignoreBlank() {
 void startWord() {
     start();
     ignoreBlank();
-    endWord = (currentChar == MARK);
+    endWord = (currentChar == MARK || currentChar == MARKCR);
     if (!endWord) advWord();
 }
 
@@ -89,7 +89,7 @@ void advWord() {
 
 void copyWord() {
     int i = 0;
-    while ((currentChar != MARK) && (i != CAPACITY)) {
+    while ((currentChar != MARK) && (i != CAPACITY) && (currentChar != MARKCR)) {
         currentWord.contents[i] = currentChar;
         adv();
         i++;

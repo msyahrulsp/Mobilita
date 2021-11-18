@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 #define MARK '\n'
+#define MARKCR '\r'
 /* Char Engine State */
 extern char currentChar;
 extern boolean eot;
