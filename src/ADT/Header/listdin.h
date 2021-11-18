@@ -157,9 +157,12 @@ void LD_compactList(ListDin *l);
 /* F.S. Ukuran nEff = capacity */
 
 POINT LD_buildingtToPoint (ListDin l, char nama);
+// Mengembalikan point dari building dengan nama nama
 
 boolean LD_isBuildingIn (ListDin l, char b);
+// mengembalikan true jika ada bangunan bernama b di l
 
 IdxType LD_point_indexOf(ListDin l, POINT val);
+// Mengembalikan index dari elemen l dengan point val
 
 #endif
