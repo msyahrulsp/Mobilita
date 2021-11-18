@@ -106,15 +106,21 @@ LL_List LL_concat(LL_List l1, LL_List l2) ;
 /* Tidak ada alokasi/dealokasi pada prosedur ini */
 
 int LL_length(LL_List l);
+// Mengembalikan banyak element l
 
 int heavy_InProgress(LL_List l);
+// Mengembalikan banyal element l dengan jenis item 'H'
 
 int LL_pu_isIn(LL_List l, char x);
+// Mengembalikan 1 jika ada pesanan dalam l dengan pickup point x
 
 int LL_do_isIn(LL_List l, char x);
+// Mengembalikan 1 jika ada pesanan dalam l dengan dropoff point x
 
 int LL_dropOffAvailable(LL_List l, POINT titik, ListDin daftarbangunan);
+// Mengembalikan 1 jika pada titik ada pesanan yang bisa di dropoff
 
 void LL_disapPerishable (LL_List *l, int time, int timeadd, int *isdisap);
+// Mengurangi setiap timer pesanan berjenis item 'P' sebesar timeadd dan isdisap akan bertambah sebesar jumlah item yang hilang
 
 #endif
